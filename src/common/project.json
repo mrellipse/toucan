@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "outputName": "Toucan.Common"
+  },
+  "dependencies": {},
+  "frameworks": {
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1",
+        "StructureMap.Microsoft.DependencyInjection": "1.2.0",
+        "contract": {
+          "target": "project"
+        }
+      }
+    }
+  }
+}
