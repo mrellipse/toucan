@@ -7,19 +7,19 @@ namespace Toucan.UI
 {
     public class WebApp
     {
-        internal static IConfigurationRoot ConfigurationRoot;
+        internal static IConfigurationRoot Configuration;
 
         public static void Main(string[] args)
         {
             var contentRoot = Directory.GetCurrentDirectory();
 
-            ConfigurationRoot = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                 .SetBasePath(contentRoot)
                 .AddToucan()
                 .Build();
 
             var host = new WebHostBuilder()
-                .UseConfiguration(ConfigurationRoot)
+                .UseConfiguration(Configuration)
                 .UseKestrel()
                 .UseContentRoot(contentRoot)
                 .UseStartup<Startup>()

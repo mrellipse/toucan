@@ -1,11 +1,14 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using StructureMap;
+using Toucan.Data;
 
 namespace Toucan.UI
 {
@@ -24,16 +27,54 @@ namespace Toucan.UI
                 }
                 else
                 {
-                    var cfg = context.RequestServices.GetService<IOptions<ToucanOptions>>();
-                    await context.Response.WriteAsync(cfg.Value.Author);
+                    if (context.Request.Path.Value.Contains("blog"))
+                    {
+                        var dbContext = context.RequestServices.GetService<ToucanContext>();
+                        using (dbContext)
+                        {
+                            var blog = dbContext.Blogs.First();
+                            await context.Response.WriteAsync($"#{blog.BlogId} by {blog.Name}");
+                        }
+                    }
+                    else if (context.Request.Path.Value.Contains("posts"))
+                    {
+                        var dbContext = context.RequestServices.GetService<ToucanContext>();
+                        using (dbContext)
+                        {
+                            var blog = dbContext.Blogs.Include(o => o.Posts).First();
+                            var post = blog.Posts.First();
+                            await context.Response.WriteAsync($"#{post.PostId} : \"{post.Title}\" by {post.Blog.Name}");
+                        }
+                    }
+                    else
+                    {
+                        var cfg = context.RequestServices.GetService<IOptions<Config>>();
+                        await context.Response.WriteAsync(cfg.Value.Author);
+                    }
                 }
             });
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var dbContext = serviceScope.ServiceProvider.GetService<ToucanContext>())
+                {
+                    dbContext.Database.Migrate();
+                    dbContext.EnsureSeedData();
+                }
+            }
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            string connectionString = WebApp.Configuration.GetSection(Toucan.Data.Config.DbConnectionKey).Value;
+
             services.AddOptions();
-            services.Configure<ToucanOptions>(WebApp.ConfigurationRoot);
+            services.Configure<Config>(WebApp.Configuration);
+
+            services.AddDbContext<ToucanContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
 
             var container = new Container(c =>
             {

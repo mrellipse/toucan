@@ -7,7 +7,7 @@ namespace Toucan.UI
     {
         public ContainerRegistry()
         {
-            For<IConfiguration>().Use(WebApp.ConfigurationRoot).Singleton();
+            For<IConfiguration>().Use(WebApp.Configuration).Singleton();
         }
     }
 }
