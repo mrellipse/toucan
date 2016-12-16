@@ -1,16 +1,45 @@
 {
     "version": "0.1.0",
-    "command": "dotnet",
+    "command": "cmd",
     "isShellCommand": true,
-    "args": [],
+    "args": [
+        "/C"
+    ],
+    "options": {
+        "cwd": "${workspaceRoot}/src/ui"
+    },
+    "showOutput": "always",
+    "suppressTaskName": true,
     "tasks": [
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}\\src\\ui\\project.json"
+                "dotnet",
+                "build",
+                "${workspaceRoot}/src/server/project.json"
             ],
-            "isBuildCommand": true,
+            "isBuildCommand": false,
             "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "ui build",
+            "args": [
+                "webpack",
+                "-p",
+                "--config",
+                "webpack/development.js"
+            ],
+            "isBuildCommand": false
+        },
+        {
+            "taskName": "ui watch",
+            "args": [
+                "node",
+                "node_modules/webpack-build/lib/bin/webpack-build.js",
+                "--c",
+                "./webpack/watch.js",
+                "--watch"
+            ]
         }
     ]
 }

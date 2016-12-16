@@ -1,0 +1,6 @@
+{
+    "webroot": ".\\wwwroot",
+    "data": {
+        "connectionString": "Server=(localdb)\\mssqllocaldb;Database=ToucanStaging;Trusted_Connection=True;"
+    }
+}

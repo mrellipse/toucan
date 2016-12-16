@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/src/ui/bin/Debug/netcoreapp1.1/Toucan.UI.dll",
+            "program": "${workspaceRoot}/src/server/bin/Debug/netcoreapp1.1/Toucan.UI.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/src/ui",
+            "cwd": "${workspaceRoot}/src/server",
             "externalConsole": false,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

@@ -1,0 +1,12 @@
+<div>
+
+  <h1 class="mb-2"><i class="fa fa-file-text-o"></i> Posts</h1>
+
+  <div class="list-group">
+    <router-link class="list-group-item"
+                 v-for="(post, index) in posts"
+                 :to="{ name: 'post', params: { id: post.id }}">
+      <i class="fa fa-hashtag"></i> {{ index+1 }} | {{ post.title }}
+    </router-link>
+  </div>
+</div>

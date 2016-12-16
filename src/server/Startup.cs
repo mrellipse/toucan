@@ -1,12 +1,13 @@
 using System;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using StructureMap;
 using Toucan.Data;
 
@@ -16,8 +17,16 @@ namespace Toucan.UI
     {
         public void Configure(IApplicationBuilder app)
         {
+            string webRoot = WebApp.Configuration.GetSection(Toucan.UI.Config.WebrootKey).Value;
+            StaticFileOptions staticFileOptions = new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(new DirectoryInfo(webRoot).FullName)
+            };
+            
             app.UseDeveloperExceptionPage();
-            app.UseStaticFiles();
+            app.UseDefaultFiles();
+            app.UseStaticFiles(staticFileOptions);
+
             app.Run(async (context) =>
             {
                 if (context.Request.Path.Value.Contains("foo"))
@@ -49,7 +58,7 @@ namespace Toucan.UI
                     else
                     {
                         var cfg = context.RequestServices.GetService<IOptions<Config>>();
-                        await context.Response.WriteAsync(cfg.Value.Author);
+                        await context.Response.WriteAsync(cfg.Value.Webroot);
                     }
                 }
             });

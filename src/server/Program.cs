@@ -12,7 +12,7 @@ namespace Toucan.UI
         public static void Main(string[] args)
         {
             var contentRoot = Directory.GetCurrentDirectory();
-
+            
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(contentRoot)
                 .AddToucan()

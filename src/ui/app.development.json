@@ -1,6 +1,0 @@
-{
-    "author": "squawk!",
-    "data": {
-        "connectionString": "Server=(localdb)\\mssqllocaldb;Database=ToucanDev;Trusted_Connection=True;"
-    }
-}

@@ -2,7 +2,7 @@
 
 This is a multi-project .Net Core template.
 
-It is structured is designed to help when developing an applicaiton using S.O.L.I.D principles
+Designed to help when developing an SPA application using SOLID principles
 
 ## Getting Started
 
@@ -10,11 +10,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+* [.NET Core 1.1 SDK](https://www.microsoft.com/net/core/)
+* [Visual Studio Code](https://code.visualstudio.com/download/) (or a similar text-based editor like Sublime)
+* [Node.js](https://nodejs.org/en/)
+* [TypeScript](https://www.typescriptlang.org/)
 
 ### Installing
 
@@ -46,14 +45,6 @@ Explain what these tests test and why
 Give an example
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
 Add additional notes about how to deploy this on a live system
@@ -68,7 +59,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Contributing
 
-Closed. It is what it is what is.
+It is what it is what is.
 
 ## Versioning
 
@@ -86,6 +77,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+* [Wille Ristimäki](https://github.com/villeristi) for [vue.js-starter-template](https://github.com/villeristi/vue.js-starter-template)
