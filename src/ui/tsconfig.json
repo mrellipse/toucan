@@ -1,14 +1,15 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "moduleResolution": "Node",
+        "baseUrl": "node_modules",
         "lib": [
             "dom",
             "es2015"
         ],
-        "baseUrl": "node_modules",
+        "experimentalDecorators": true,
         "listEmittedFiles": false,
+        "module": "commonjs",
+        "moduleResolution": "Node",
+        "target": "es5",
         "traceResolution": true
     },
     "include": [

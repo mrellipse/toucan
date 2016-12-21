@@ -11,6 +11,4 @@
         "**/bin": true,
         "**/obj": true   
     }
-,
-"typescript.tsdk": "c:/coding/toucan/src/ui/node_modules/typescript/lib"
 }

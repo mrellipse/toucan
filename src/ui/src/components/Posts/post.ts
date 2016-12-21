@@ -1,34 +1,36 @@
 import Vue = require('vue');
+import Component from 'vue-class-component';
 import { postsResource } from '../../helpers/resources';
 import { LoadingState } from '../../main';
+import { IPost } from '../../model/post';
 
-export default Vue.extend({
-  template : require('./post.html'),
+@Component({
+  name: 'Post',
+  template: require('./post.html')
+})
+class Post extends Vue {
 
-  data() {
-    return {
-      post: {},
-    };
-  },
+  post: IPost = { id: 1, userId: 0, title: '', body: '' };
 
   created() {
-    (<any>this).fetchPost();
-  },
-
-  methods: {
-    fetchPost() {
-      const id = (<any>this).$route.params.id;
-
-      LoadingState.$emit('toggle', true);
-
-      return postsResource.get({ id }).then((response) => {
-        (<any>this).post = response.data;
-        LoadingState.$emit('toggle', false);
-      }, (errorResponse) => {
-        // Handle error...
-        console.log('API responded with:', errorResponse.status);
-        LoadingState.$emit('toggle', false);
-      });
-    }
+    this.fetchPost();
   }
-});
+
+  fetchPost() {
+    const id: string = this.$route.params['id'];
+    
+    LoadingState.$emit('toggle', true);
+
+    return postsResource.get({ id }).then((response) => {
+
+      Object.assign(this.post, response.data);
+
+      LoadingState.$emit('toggle', false);
+    }, (errorResponse) => {
+      console.log('API responded with:', errorResponse.status);
+      LoadingState.$emit('toggle', false);
+    });
+  }
+}
+
+export default Post;

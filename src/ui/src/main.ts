@@ -17,8 +17,10 @@ export const LoadingState = new Vue();
 
 export const router = new VueRouter(options);
 
-export const App = new Vue({
+export const app = new Vue({
+
   router,
+
   components: {
     Loader,
     Navigation

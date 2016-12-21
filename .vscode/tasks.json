@@ -27,12 +27,12 @@
                 "webpack",
                 "-p",
                 "--config",
-                "./webpack/development.js"
+                "webpack/development.js"
             ],
             "isBuildCommand": true
         },
         {
-            "taskName": "dev watch",
+            "taskName": "watch",
             "args": [
                 "node",
                 "node_modules/webpack-build/lib/bin/webpack-build.js",

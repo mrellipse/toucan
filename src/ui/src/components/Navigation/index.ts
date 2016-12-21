@@ -1,5 +1,10 @@
 import Vue = require('vue');
+import Component from 'vue-class-component';
 
-export default Vue.extend({
-    template: require('./navigation.html')
-});
+@Component({
+  template: require('./navigation.html')
+})
+class Navigation extends Vue {
+}
+
+export default Navigation;

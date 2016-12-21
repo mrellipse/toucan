@@ -9,7 +9,7 @@
             "program": "${workspaceRoot}/src/server/bin/Debug/netcoreapp1.1/Toucan.UI.dll",
             "args": [],
             "cwd": "${workspaceRoot}/src/server",
-            "externalConsole": true,
+            "externalConsole": false,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         },
