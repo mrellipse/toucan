@@ -4,10 +4,11 @@ var autoprefixer = require('autoprefixer');
 module.exports = {
 
   entry: {
-    app: [path.resolve(__dirname, '../src/main.js')]
+    app: [path.resolve(__dirname, '../src/main.ts')]
   },
 
   output: {
+    path: path.resolve(__dirname, '../../server/wwwroot'),
     publicPath: '/',
     filename: '[name].[hash].js',
     sourceMapFilename: '[name].[hash].js.map',
@@ -15,7 +16,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.html'],
+    extensions: ['', '.js', '.ts', '.html'],
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
       'src': path.resolve(__dirname, '../src'),
@@ -27,15 +28,7 @@ module.exports = {
   },
 
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        include: path.resolve(__dirname, '../src'),
-        exclude: /node_modules/
-      }
-    ],
-
+    
     loaders: [
       {
         test: /\.html$/,
@@ -43,8 +36,8 @@ module.exports = {
       },
 
       {
-        test: /\.js$/,
-        loader: 'babel',
+        test: /\.ts$/,
+        loader: 'babel!ts-loader',
         exclude: /node_modules/
       },
 
@@ -52,7 +45,6 @@ module.exports = {
         test: /\.(png|jpg|jpeg|gif)$/,
         loader: 'url?prefix=img/&limit=5000'
       },
-
       {
         test: /\.scss$/,
         loader: 'style!css!postcss!sass?sourceMap'
@@ -71,12 +63,8 @@ module.exports = {
   },
 
   babel: {
-    presets: ['es2015'],
-    plugins: ['transform-runtime']
-  },
-
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
+    plugins: ['transform-runtime'],
+    presets: ['es2015']    
   },
 
   postcss: function() {

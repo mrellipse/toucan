@@ -5,11 +5,11 @@
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "dev build",
             "program": "${workspaceRoot}/src/server/bin/Debug/netcoreapp1.1/Toucan.UI.dll",
             "args": [],
             "cwd": "${workspaceRoot}/src/server",
-            "externalConsole": false,
+            "externalConsole": true,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         },

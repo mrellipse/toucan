@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue = require('vue');
 
 import './loader.scss';
 

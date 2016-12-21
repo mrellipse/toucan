@@ -1,8 +1,6 @@
 # Toucan
 
-This is a multi-project .Net Core template.
-
-Designed to help when developing an SPA application using SOLID principles
+This is a multi-project .Net Core template designed as a starting point for building an SPA application using SOLID principles.
 
 ## Getting Started
 
@@ -17,21 +15,38 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+Update dependencies and build the .Dot Net based server projects by switching to the root directory of the solution and running
 
 ```
-Give the example
+dotnet restore ./src
+dotnet build ./src/server/project.json
 ```
 
-And repeat
+Update dependencies and build the Nodejs based UI project by switching to ./src/ui and running
 
 ```
-until finished
+npm install
+npm install webpack -g
+npm install typings -g
+typings install
+webpack -p --config webpack/development.js
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+The final step is to update the configuration file *./src/server/app.development.json*. Edit *data:connectionString* configuration key to point to a local (or remote) instance of SQL server.
+
+Entity Framework migrations code will then create and seed the database upon server startup.
+
+```
+    "data": {
+      "connectionString": "Server=(localdb)\\mssqllocaldb;Database=ToucanDevelopment;Trusted_Connection=True;"
+    }
+```
+
+You should now be able to start the server by switching to ./src/server and running
+
+```
+dotnet run -p ./src/server/project.json -c Development
+```
 
 ## Running the tests
 
@@ -67,7 +82,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* [**mrellipse**](https://github.com/mrellipse)
+* [mrellipse](https://github.com/mrellipse)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
@@ -78,3 +93,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * [Wille Ristimäki](https://github.com/villeristi) for [vue.js-starter-template](https://github.com/villeristi/vue.js-starter-template)
+* Discussions on [Importing files other than TS modules](https://github.com/Microsoft/TypeScript/issues/2709)

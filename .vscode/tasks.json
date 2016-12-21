@@ -12,7 +12,7 @@
     "suppressTaskName": true,
     "tasks": [
         {
-            "taskName": "build",
+            "taskName": "dev build",
             "args": [
                 "dotnet",
                 "build",
@@ -22,17 +22,17 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "taskName": "ui build",
+            "taskName": "dev build ui",
             "args": [
                 "webpack",
                 "-p",
                 "--config",
-                "webpack/development.js"
+                "./webpack/development.js"
             ],
-            "isBuildCommand": false
+            "isBuildCommand": true
         },
         {
-            "taskName": "ui watch",
+            "taskName": "dev watch",
             "args": [
                 "node",
                 "node_modules/webpack-build/lib/bin/webpack-build.js",

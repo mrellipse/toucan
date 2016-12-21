@@ -1,12 +1,9 @@
-import Vue from 'vue';
-
-import { postsResource } from 'src/helpers/resources';
-import { LoadingState } from 'src/main';
-
-import template from './post.html';
+import Vue = require('vue');
+import { postsResource } from '../../helpers/resources';
+import { LoadingState } from '../../main';
 
 export default Vue.extend({
-  template,
+  template : require('./post.html'),
 
   data() {
     return {
@@ -14,16 +11,18 @@ export default Vue.extend({
     };
   },
 
-  created(){
-    this.fetchPost();
+  created() {
+    (<any>this).fetchPost();
   },
 
   methods: {
-    fetchPost(){
-      const id = this.$route.params.id;
+    fetchPost() {
+      const id = (<any>this).$route.params.id;
+
       LoadingState.$emit('toggle', true);
+
       return postsResource.get({ id }).then((response) => {
-        this.post = response.data;
+        (<any>this).post = response.data;
         LoadingState.$emit('toggle', false);
       }, (errorResponse) => {
         // Handle error...
