@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,11 +11,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
 using Toucan.Data;
+using Toucan.Data.Migration;
+
 
 namespace Toucan.UI
 {
     public class Startup
     {
+
         public void Configure(IApplicationBuilder app)
         {
             string webRoot = WebApp.Configuration.GetSection(Toucan.UI.Config.WebrootKey).Value;
@@ -22,46 +26,11 @@ namespace Toucan.UI
             {
                 FileProvider = new PhysicalFileProvider(new DirectoryInfo(webRoot).FullName)
             };
-            
+
             app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
             app.UseStaticFiles(staticFileOptions);
-
-            app.Run(async (context) =>
-            {
-                if (context.Request.Path.Value.Contains("foo"))
-                {
-                    var foo = context.RequestServices.GetService<Toucan.Contract.IFoo>();
-                    await context.Response.WriteAsync(foo.Action1());
-                }
-                else
-                {
-                    if (context.Request.Path.Value.Contains("blog"))
-                    {
-                        var dbContext = context.RequestServices.GetService<ToucanContext>();
-                        using (dbContext)
-                        {
-                            var blog = dbContext.Blogs.First();
-                            await context.Response.WriteAsync($"#{blog.BlogId} by {blog.Name}");
-                        }
-                    }
-                    else if (context.Request.Path.Value.Contains("posts"))
-                    {
-                        var dbContext = context.RequestServices.GetService<ToucanContext>();
-                        using (dbContext)
-                        {
-                            var blog = dbContext.Blogs.Include(o => o.Posts).First();
-                            var post = blog.Posts.First();
-                            await context.Response.WriteAsync($"#{post.PostId} : \"{post.Title}\" by {post.Blog.Name}");
-                        }
-                    }
-                    else
-                    {
-                        var cfg = context.RequestServices.GetService<IOptions<Config>>();
-                        await context.Response.WriteAsync(cfg.Value.Webroot);
-                    }
-                }
-            });
+            app.Run(Startup.Handler);
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
@@ -82,7 +51,7 @@ namespace Toucan.UI
 
             services.AddDbContext<ToucanContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                options.UseSqlServer(connectionString, s => s.MigrationsAssembly("Toucan.Data.Migration"));
             });
 
             var container = new Container(c =>
@@ -121,6 +90,43 @@ namespace Toucan.UI
         {
             this.ConfigureServices(services);
         }
+
+        private static async Task Handler(HttpContext context)
+        {
+            if (context.Request.Path.Value.Contains("foo"))
+            {
+                var foo = context.RequestServices.GetService<Toucan.Contract.IFoo>();
+                await context.Response.WriteAsync(foo.Action1());
+            }
+            else
+            {
+                if (context.Request.Path.Value.Contains("blog"))
+                {
+                    var dbContext = context.RequestServices.GetService<ToucanContext>();
+                    using (dbContext)
+                    {
+                        var blog = dbContext.Blogs.First();
+                        await context.Response.WriteAsync($"#{blog.BlogId} by {blog.Name}");
+                    }
+                }
+                else if (context.Request.Path.Value.Contains("posts"))
+                {
+                    var dbContext = context.RequestServices.GetService<ToucanContext>();
+                    using (dbContext)
+                    {
+                        var blog = dbContext.Blogs.Include(o => o.Posts).First();
+                        var post = blog.Posts.First();
+                        await context.Response.WriteAsync($"#{post.PostId} : \"{post.Title}\" by {post.Blog.Name}");
+                    }
+                }
+                else
+                {
+                    var cfg = context.RequestServices.GetService<IOptions<Config>>();
+                    await context.Response.WriteAsync(cfg.Value.Webroot);
+                }
+            }
+        }
+
 
     }
 }

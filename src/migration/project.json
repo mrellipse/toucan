@@ -2,16 +2,23 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable",
-    "outputName": "Toucan.Data"
+    "outputName": "Toucan.Data.Migration"
   },
   "dependencies": {
     "Microsoft.EntityFrameworkCore": "1.1.0",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Tools": {
+      "version": "1.1.0-preview4-final",
+      "type": "build"
+    },
     "StructureMap.Microsoft.DependencyInjection": "1.2.0",
     "common": {
       "target": "project"
     },
     "contract": {
+      "target": "project"
+    },
+    "data": {
       "target": "project"
     }
   },
@@ -23,6 +30,6 @@
     }
   },
   "tools": {
-
+    "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4-final"
   }
 }

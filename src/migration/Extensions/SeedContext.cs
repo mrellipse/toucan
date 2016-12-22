@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Toucan.Data.Model;
 
-namespace Toucan.Data
+namespace Toucan.Data.Migration
 {
     public static partial class Extensions
     {

@@ -9,7 +9,7 @@ namespace Toucan.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<ToucanContext>();
 
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ToucanDev;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=.;Database=ToucanDevelopment;Trusted_Connection=True;");
 
             return new ToucanContext(optionsBuilder.Options);
         }
