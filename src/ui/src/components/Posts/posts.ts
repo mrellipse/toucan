@@ -7,7 +7,7 @@ import { IPost } from '../../model/post';
 @Component({
   template: require('./posts.html')
 })
-class Posts extends Vue {
+export class Posts extends Vue {
 
   posts: IPost[] = [];
 

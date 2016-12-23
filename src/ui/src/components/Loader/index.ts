@@ -5,7 +5,7 @@ import './loader.scss';
 @Component({
   template: '<div class="loader"></div>'
 })
-class Loader extends Vue {
+export class Loader extends Vue {
 }
 
 export default Loader;

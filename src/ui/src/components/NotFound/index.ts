@@ -4,7 +4,7 @@ import Component from 'vue-class-component';
 @Component({
   template: require('./notfound.html')
 })
-class NotFound extends Vue {
+export class PageNotFound extends Vue {
 }
 
-export default NotFound;
+export default PageNotFound;

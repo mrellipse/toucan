@@ -8,7 +8,7 @@ import { IPost } from '../../model/post';
   name: 'Post',
   template: require('./post.html')
 })
-class Post extends Vue {
+export class Post extends Vue {
 
   post: IPost = { id: 1, userId: 0, title: '', body: '' };
 
