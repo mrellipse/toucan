@@ -1,13 +1,19 @@
 <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-    <router-link class="navbar-brand" to="/">
-      <img alt="Brand" src="~assets/images/logo.png" height="20">
-    </router-link>
+  <router-link class="navbar-brand" to="/">
+    <img alt="Brand" src="~assets/images/logo.png" height="20">
+  </router-link>
   <ul class="nav navbar-nav">
     <router-link class="nav-item" tag="li" to="/" exact>
       <a class="nav-link"><i class="fa fa-home"></i> Home</a>
     </router-link>
-    <router-link class="nav-item" tag="li" to="/posts" exact>
-      <a class="nav-link"><i class="fa fa-file-text-o"></i> Posts</a>
+    <router-link class="nav-item" tag="li" to="/login" v-if="!user.authenticated" exact>
+      <a class="nav-link"><i class="fa fa-sign-in"></i> Login</a>
     </router-link>
+    <router-link class="nav-item" tag="li" to="/signup" v-if="!user.authenticated" exact>
+      <a class="nav-link"><i class="fa fa-user-plus"></i> Sign Up</a>
+    </router-link>
+    <li class="nav-item">
+      <a class="nav-link" href="#" v-if="user.authenticated" @click="logout()"><i class="fa fa-sign-out"></i> Logout</a>
+    </li>
   </ul>
 </nav>

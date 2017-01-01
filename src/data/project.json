@@ -7,6 +7,12 @@
   "dependencies": {
     "Microsoft.EntityFrameworkCore": "1.1.0",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Tools": {
+      "version": "1.1.0-preview4-final",
+      "type": "build"
+    },
+    "Microsoft.Extensions.Configuration": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
     "StructureMap.Microsoft.DependencyInjection": "1.2.0",
     "common": {
       "target": "project"
@@ -23,6 +29,6 @@
     }
   },
   "tools": {
-
+    "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4-final"
   }
 }

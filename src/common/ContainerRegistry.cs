@@ -7,7 +7,7 @@ namespace Toucan.Common
     {
         public ContainerRegistry()
         {
-            For<IFoo>().Use<Foo>();
+            For<ICryptoService>().Use<CryptoHelper>();
         }
     }
 }

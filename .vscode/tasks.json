@@ -22,6 +22,16 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "taskName": "test",
+            "args": [
+                "dotnet",
+                "test",
+                "${workspaceRoot}/test/common.tests"
+            ],
+            "isTestCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
             "taskName": "dev build ui",
             "args": [
                 "webpack",

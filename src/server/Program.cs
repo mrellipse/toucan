@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace Toucan.UI
+namespace Toucan.Server
 {
     public class WebApp
     {

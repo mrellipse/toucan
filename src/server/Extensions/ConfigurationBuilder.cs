@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace Toucan.UI
+namespace Toucan.Server
 {
     public static partial class Extensions
     {

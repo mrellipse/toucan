@@ -1,6 +1,22 @@
 {
     "webroot": ".\\wwwroot",
     "data": {
-        "connectionString": "Server=.;Database=ToucanDevelopment;Trusted_Connection=True;"
+        "connectionString": "Server=(localdb)\\mssqllocaldb;Database=ToucanTest;Trusted_Connection=True;"
+    },
+    "service": {
+        "tokenProvider": {
+            "tokenSecurityKey": "heartyingsquawkingisrequiredofaparrotmateys",
+            "tokenSecurityAlgorithm": "HS256",
+            "tokenIssuer": "localhost",
+            "tokenAudience": "toucanapp"
+        }
+    },
+    "Logging": {
+        "IncludeScopes": false,
+        "LogLevel": {
+            "Default": "Verbose",
+            "System": "Information",
+            "Microsoft": "Information"
+        }
     }
 }

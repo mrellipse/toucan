@@ -4,15 +4,17 @@
     "debugType": "portable",
     "outputName": "Toucan.Common"
   },
-  "dependencies": {},
+  "dependencies": {
+    "contract": {
+      "target": "project"
+    },
+    "Microsoft.AspNetCore.Cryptography.KeyDerivation": "1.1.0",
+    "StructureMap.Microsoft.DependencyInjection": "1.2.0"
+  },
   "frameworks": {
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.1",
-        "StructureMap.Microsoft.DependencyInjection": "1.2.0",
-        "contract": {
-          "target": "project"
-        }
+        "NETStandard.Library": "1.6.1"
       }
     }
   }

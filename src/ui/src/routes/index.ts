@@ -1,24 +1,30 @@
 import VueRouter = require('vue-router');
-import { Home, PageNotFound, Post, Posts } from '../components';
+import { Home, Login, PageNotFound, Signup } from '../components';
 
-const routes: VueRouter.RouteConfig[] = [
+export const routeNames = {
+  home: 'home',
+  login: 'login',
+  signup: 'signup'
+}
+
+export const routeConfig: VueRouter.RouteConfig[] = [
   {
-    path: '/',
-    component: Home
-  },
-    {
-    path: '/posts',
-    component: Posts
-  },
-  {
-    path: '/post/:id',
-    name: 'post',
-    component: Post
+    component: Home,
+    name: routeNames.home,
+    path: '/'
   },
   {
-    path: '*',
-    component: PageNotFound
+    component: Login,
+    name: routeNames.login,
+    path: '/login'
+  },
+  {
+    component: Signup,
+    name: routeNames.signup,
+    path: '/signup',
+  },
+  {
+    component: PageNotFound,
+    path: '*'
   }
 ];
-
-export default routes;

@@ -1,43 +1,47 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
+using Toucan.Contract;
 using Toucan.Data;
-using Toucan.Data.Migration;
+using Toucan.Service;
 
-
-namespace Toucan.UI
+namespace Toucan.Server
 {
-    public class Startup
+    public partial class Startup
     {
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            string webRoot = WebApp.Configuration.GetSection(Toucan.UI.Config.WebrootKey).Value;
+            Config cfg = app.ApplicationServices.GetRequiredService<IOptions<Config>>().Value;
+
+            loggerFactory.AddConsole(LogLevel.Debug);
+            loggerFactory.AddDebug();
+
             StaticFileOptions staticFileOptions = new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(new DirectoryInfo(webRoot).FullName)
+                FileProvider = new PhysicalFileProvider(new DirectoryInfo(cfg.Webroot).FullName)
             };
 
             app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
+            app.UseToucanAuth(cfg.Service.TokenProvider);
             app.UseStaticFiles(staticFileOptions);
-            app.Run(Startup.Handler);
+            app.UseMvc();
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 using (var dbContext = serviceScope.ServiceProvider.GetService<ToucanContext>())
                 {
+                    ICryptoService crypto = app.ApplicationServices.GetRequiredService<ICryptoService>();
                     dbContext.Database.Migrate();
-                    dbContext.EnsureSeedData();
+                    dbContext.EnsureSeedData(crypto);
                 }
             }
         }
@@ -47,11 +51,15 @@ namespace Toucan.UI
             string connectionString = WebApp.Configuration.GetSection(Toucan.Data.Config.DbConnectionKey).Value;
 
             services.AddOptions();
-            services.Configure<Config>(WebApp.Configuration);
+            services.Configure<Config>(WebApp.Configuration); // root web configuration
+            services.Configure<Toucan.Service.Config>(WebApp.Configuration.GetSection("service")); // services configuration
+            services.Configure<Toucan.Service.TokenProviderConfig>(WebApp.Configuration.GetSection("service:tokenProvider")); // token provider configuration
+            services.Configure<Toucan.Data.Config>(WebApp.Configuration.GetSection("data")); // configuration
+            services.AddMvc();
 
             services.AddDbContext<ToucanContext>(options =>
             {
-                options.UseSqlServer(connectionString, s => s.MigrationsAssembly("Toucan.Data.Migration"));
+                options.UseSqlServer(connectionString, s => s.MigrationsAssembly("Toucan.Data"));
             });
 
             var container = new Container(c =>
@@ -61,7 +69,7 @@ namespace Toucan.UI
                 registry.IncludeRegistry<Toucan.Common.ContainerRegistry>();
                 registry.IncludeRegistry<Toucan.Data.ContainerRegistry>();
                 registry.IncludeRegistry<Toucan.Service.ContainerRegistry>();
-                registry.IncludeRegistry<Toucan.UI.ContainerRegistry>();
+                registry.IncludeRegistry<Toucan.Server.ContainerRegistry>();
 
                 c.AddRegistry(registry);
                 c.Populate(services);
@@ -70,7 +78,7 @@ namespace Toucan.UI
             return container.GetInstance<IServiceProvider>();
         }
 
-        public void ConfigureProduction(IApplicationBuilder app)
+        public void ConfigureProduction(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseStaticFiles();
             app.UseExceptionHandler("/error.html");
@@ -81,52 +89,14 @@ namespace Toucan.UI
             this.ConfigureServices(services);
         }
 
-        public void ConfigureStaging(IApplicationBuilder app)
+        public void ConfigureStaging(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            this.Configure(app);
+            this.Configure(app, env, loggerFactory);
         }
 
         public void ConfigureStagingServices(IServiceCollection services)
         {
             this.ConfigureServices(services);
         }
-
-        private static async Task Handler(HttpContext context)
-        {
-            if (context.Request.Path.Value.Contains("foo"))
-            {
-                var foo = context.RequestServices.GetService<Toucan.Contract.IFoo>();
-                await context.Response.WriteAsync(foo.Action1());
-            }
-            else
-            {
-                if (context.Request.Path.Value.Contains("blog"))
-                {
-                    var dbContext = context.RequestServices.GetService<ToucanContext>();
-                    using (dbContext)
-                    {
-                        var blog = dbContext.Blogs.First();
-                        await context.Response.WriteAsync($"#{blog.BlogId} by {blog.Name}");
-                    }
-                }
-                else if (context.Request.Path.Value.Contains("posts"))
-                {
-                    var dbContext = context.RequestServices.GetService<ToucanContext>();
-                    using (dbContext)
-                    {
-                        var blog = dbContext.Blogs.Include(o => o.Posts).First();
-                        var post = blog.Posts.First();
-                        await context.Response.WriteAsync($"#{post.PostId} : \"{post.Title}\" by {post.Blog.Name}");
-                    }
-                }
-                else
-                {
-                    var cfg = context.RequestServices.GetService<IOptions<Config>>();
-                    await context.Response.WriteAsync(cfg.Value.Webroot);
-                }
-            }
-        }
-
-
     }
 }

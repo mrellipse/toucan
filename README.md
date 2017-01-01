@@ -93,4 +93,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * [Wille Ristimäki](https://github.com/villeristi) for [vue.js-starter-template](https://github.com/villeristi/vue.js-starter-template)
+* [Nate Barbettini](https://github.com/nbarbettini) for [SimpleTokenProvider](https://github.com/nbarbettini/SimpleTokenProvider)
 * Discussions on [Importing files other than TS modules](https://github.com/Microsoft/TypeScript/issues/2709)

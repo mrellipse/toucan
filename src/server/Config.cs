@@ -1,14 +1,13 @@
-namespace Toucan.UI
+namespace Toucan.Server
 {
     public class Config
     {
-        public const string WebrootKey = @"webroot";
-
         public Config()
         {
         }
 
-        public string Webroot { get; set; }  
-        public Toucan.Data.Config Data { get; set; }     
+        public string Webroot { get; set; }
+        public Toucan.Data.Config Data { get; set; }
+        public Toucan.Service.Config Service { get; set; }
     }
 }

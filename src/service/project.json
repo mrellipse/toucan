@@ -4,21 +4,24 @@
     "debugType": "portable",
     "outputName": "Toucan.Service"
   },
-  "dependencies": {},
+  "dependencies": {
+    "StructureMap.Microsoft.DependencyInjection": "1.2.0",
+    "System.IdentityModel.Tokens.Jwt": "5.1.0",
+    "System.Security.Claims": "4.3.0",
+    "common": {
+      "target": "project"
+    },
+    "contract": {
+      "target": "project"
+    },
+    "data": {
+      "target": "project"
+    }
+  },
   "frameworks": {
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.1",
-        "StructureMap.Microsoft.DependencyInjection": "1.2.0",
-        "common": {
-          "target": "project"
-        },
-        "contract": {
-          "target": "project"
-        },
-        "data": {
-          "target": "project"
-        }
+        "NETStandard.Library": "1.6.1"
       }
     }
   }

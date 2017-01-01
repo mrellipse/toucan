@@ -1,7 +1,7 @@
 using StructureMap;
 using Microsoft.Extensions.Configuration;
 
-namespace Toucan.UI
+namespace Toucan.Server
 {
     internal class ContainerRegistry : Registry
     {

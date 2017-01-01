@@ -1,4 +1,6 @@
 using StructureMap;
+using Toucan.Contract;
+using Toucan.Common;
 
 namespace Toucan.Service
 {
@@ -6,7 +8,9 @@ namespace Toucan.Service
     {
         public ContainerRegistry()
         {
-
+            For<ICryptoService>().Use<CryptoHelper>();
+            For<ILocalAuthenticationService>().Use<LocalAuthenticationService>();
+            For<ITokenProviderService<Token>>().Use<TokenProviderService>();
         }
     }
 }
