@@ -8,8 +8,7 @@ namespace Toucan.Server
 {
     public static partial class Extensions
     {
-
-        public static void UseToucanAuth(this IApplicationBuilder app, TokenProviderConfig cfg)
+        public static void UseTokenBasedAuthentication(this IApplicationBuilder app, TokenProviderConfig cfg)
         {
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(cfg.TokenSecurityKey));
             

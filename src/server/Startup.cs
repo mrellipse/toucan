@@ -31,10 +31,10 @@ namespace Toucan.Server
 
             app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
-            app.UseToucanAuth(cfg.Service.TokenProvider);
+            app.UseTokenBasedAuthentication(cfg.Service.TokenProvider);
             app.UseStaticFiles(staticFileOptions);
             app.UseMvc();
-
+            
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 using (var dbContext = serviceScope.ServiceProvider.GetService<ToucanContext>())
@@ -55,7 +55,7 @@ namespace Toucan.Server
             services.Configure<Toucan.Service.Config>(WebApp.Configuration.GetSection("service")); // services configuration
             services.Configure<Toucan.Service.TokenProviderConfig>(WebApp.Configuration.GetSection("service:tokenProvider")); // token provider configuration
             services.Configure<Toucan.Data.Config>(WebApp.Configuration.GetSection("data")); // configuration
-            services.AddMvc();
+            services.ConfigureMvc();
 
             services.AddDbContext<ToucanContext>(options =>
             {

@@ -1,6 +1,6 @@
 
 export interface IPayloadMessage {
-    message: string;
+    text: string;
     messageTypeId: string;
 }
 

@@ -1,3 +1,4 @@
+using System;
 
 namespace Toucan.Server.Model
 {
@@ -5,10 +6,7 @@ namespace Toucan.Server.Model
     {
         public Payload()
         {
-            this.Message = new PayloadMessage()
-            {
-                MessageTypeId = PayloadMessageType.Success
-            };
+            this.Message = new PayloadMessage();
         }
 
         public T Data { get; set; }
