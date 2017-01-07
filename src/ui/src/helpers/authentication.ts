@@ -1,11 +1,14 @@
 // src/auth/index.js
 import { events, router, routes } from '../main';
-import { IUser, IPayload } from '../model';
+import { ICredential, IPayload, ISignupOptions, IUser } from '../model';
+import { PayloadMessageTypes } from './message';
+import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // URL and endpoint constants
-const API_URL = 'http://localhost:5000/api/'
-const LOGIN_URL = API_URL + 'auth/token'
-const SIGNUP_URL = API_URL + 'auth/signup'
+const API_URL = 'http://localhost:5000/api/';
+const LOGIN_URL = API_URL + 'auth/token';
+const SIGNUP_URL = API_URL + 'auth/signup';
+const VALIDATEUSERNAME_URL = API_URL + 'auth/validateusername';
 
 interface IVueHttpResponse {
     url: string;
@@ -33,11 +36,14 @@ export class AuthenticationHelper {
         this.checkAuth();
     }
 
-    login(context, creds, routeName) {
+    login(credentials: ICredential, routeName: string) {
 
-        let onSuccess = (data: IVueHttpResponse) => {
+        let data = credentials;
 
-            data.json<IPayload<IAccessToken>>().then((payload) => {
+        let onSuccess = (res: AxiosResponse) => {
+
+            let payload: IPayload<IAccessToken> = res.data;
+            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
 
                 localStorage.setItem(AuthenticationHelper.AccessTokenKey, payload.data.access_token);
                 this.user.authenticated = true;
@@ -45,26 +51,52 @@ export class AuthenticationHelper {
 
                 if (routeName)
                     router.push({ name: routeName });
-            });
-        };
+            } else {
+                throw new Error(payload.message.text);
+            }
+        }
 
-        let onError = err => context.error = err.body;
-
-        context.$http.post(LOGIN_URL, creds, { emulateJSON: true })
-            .then(onSuccess, onError);
+        return Axios.post(LOGIN_URL, data)
+            .then(onSuccess);
     }
 
-    signup(context, creds, routeName) {
+    validateUsername(userName: string) {
 
-        context.$http.post(SIGNUP_URL, creds, (data) => {
+        let config = {
+            params: { userName: userName }
+        };
 
-            localStorage.setItem(AuthenticationHelper.AccessTokenKey, data.access_token)
-            this.user.authenticated = true;
-            events.$emit(events.global.login, Object.assign({}, this.user));
-            if (routeName)
-                router.push({ name: routeName });
+        let onSuccess = (res: AxiosResponse) => {
+            let payload: IPayload<boolean> = res.data;
+            return payload;
+        }
 
-        }, err => context.error = err.body);
+        return Axios.get(VALIDATEUSERNAME_URL, config)
+            .then(onSuccess);
+    }
+
+    signup(signup: ISignupOptions, routeName: string) {
+
+        let data = signup;
+
+        let onSuccess = (res: AxiosResponse) => {
+
+            let payload: IPayload<IAccessToken> = res.data;
+            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+
+                localStorage.setItem(AuthenticationHelper.AccessTokenKey, payload.data.access_token);
+                this.user.authenticated = true;
+                events.$emit(events.global.login, Object.assign({}, this.user));
+
+                if (routeName)
+                    router.push({ name: routeName });
+            } else {
+                throw new Error(payload.message.text);
+            }
+        }
+
+        return Axios.post(SIGNUP_URL, data)
+            .then(onSuccess);
     }
 
     logout() {

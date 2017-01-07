@@ -14,9 +14,9 @@ namespace Toucan.Data.Model
 
         public int UserId { get; set; }
         public DateTime CreatedOn { get; set; }
-        public string Email { get; set; }
+        public string Username { get; set; }
         public bool Enabled { get; set; }
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
         public bool Verified { get; set; }
 
         public virtual ICollection<Content> Content { get; set; }

@@ -38,7 +38,7 @@ namespace Toucan.Server
                 AutomaticChallenge = true,
                 AuthenticationScheme = "Cookie",
                 CookieName = "access_token",
-                TicketDataFormat = new CustomJwtDataFormat(cfg.TokenSecurityAlgorithm, "Cookie", tokenValidationParameters)
+                TicketDataFormat = new Model.TokenDataFormat(cfg.TokenSecurityAlgorithm, "Cookie", tokenValidationParameters)
             });
         }
 

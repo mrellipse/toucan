@@ -9,8 +9,11 @@ using Toucan.Service;
 
 namespace Toucan.Server.Controllers
 {
-    [Route("api/[controller]")]
-    public class AuthController : BaseController
+
+    [Route("api/[controller]/[action]")]
+    [ServiceFilter(typeof(Filters.ApiResultFilter))]
+    [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
+    public class AuthController : Controller
     {
         private readonly ILocalAuthenticationService authService;
         private readonly ITokenProviderService<Token> tokenService;
@@ -21,30 +24,44 @@ namespace Toucan.Server.Controllers
             this.tokenService = tokenService;
         }
 
-        [HttpPost("{path}")]
-        public async Task<JsonResult> Token(string username, string password)
+        [HttpPost()]
+        public async Task<object> Token([FromBody] Model.TokenRequest credentials)
         {
-            var identity = await this.authService.ResolveUser(username, password);
+            var identity = await this.authService.ResolveUser(credentials.Username, credentials.password);
 
             if (identity == null)
-                return Payload(PayloadMessageType.Failure, "Invalid username or password");
+                throw new ServiceException("Invalid username or password");
 
-            var token = await this.tokenService.IssueToken(identity, identity.Name);
-
-            return Payload(token);
+            return await this.tokenService.IssueToken(identity, identity.Name);
         }
 
-        // [HttpGet]
-        // public IEnumerable<string> Get()
-        // {
-        //     return new string[] { "value1", "value2" };
-        // }
 
-        // [HttpGet("{id}")]
-        // [Authorize]
-        // public string Get(int id)
-        // {
-        //     return "value";
-        // }
+        [HttpGet()]
+        public async Task<object> ValidateUsername(string username)
+        {
+            bool available = await this.authService.ValidateUsername(username);
+
+            if (!available)
+                throw new ServiceException("Email address is not available");
+
+            return "Email address is available";
+        }
+
+        [HttpPost()]
+        public async Task<object> Signup([FromBody]Service.Model.SignupOptions options)
+        {
+            if (!await this.authService.ValidateUsername(options.Username))
+                throw new ServiceException("Email address is not available");
+
+            options.Roles = new string[] { Toucan.Data.RoleTypes.User };
+
+            var identity = await this.authService.SignupUser(options);
+
+            if (identity == null)
+                throw new ServiceException("Invalid username or password");
+
+            return await this.tokenService.IssueToken(identity, identity.Name);
+        }
+
     }
 }

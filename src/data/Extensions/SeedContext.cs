@@ -39,7 +39,7 @@ namespace Toucan.Data
 
         private static void EnsureRoles(ToucanContext db)
         {
-            User adminUser = db.User.SingleOrDefault(o => o.Email == AdminEmail);
+            User adminUser = db.User.SingleOrDefault(o => o.Username == AdminEmail);
             Role userRole = db.Role.FirstOrDefault(o => o.RoleId == RoleTypes.User);
 
             if (userRole == null)
@@ -61,15 +61,15 @@ namespace Toucan.Data
         {
             
 
-            User adminUser = db.User.SingleOrDefault(o => o.Email == AdminEmail);
+            User adminUser = db.User.SingleOrDefault(o => o.Username == AdminEmail);
 
             if (adminUser == null)
             {
                 adminUser = new User()
                 {
-                    Email = AdminEmail,
+                    Username = AdminEmail,
                     Enabled = true,
-                    Name = "Webmaster",
+                    DisplayName = "Webmaster",
                     Verified = true
                 };
 

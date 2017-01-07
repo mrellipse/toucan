@@ -19,7 +19,12 @@ export class Login extends Vue {
             password: this.credentials.password
         }
 
-        auth.login(this, Object.assign({}, this.credentials), routes.home);
+        let onError = (error: any) => {
+            this.error = error;
+        };
+
+        auth.login(Object.assign({}, this.credentials), routes.home)
+            .catch(onError);
     }
 }
 

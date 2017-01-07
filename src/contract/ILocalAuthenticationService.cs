@@ -5,15 +5,16 @@ namespace Toucan.Contract
 {
     public interface ILocalAuthenticationService
     {
-        Task<ClaimsIdentity> ResolveUser(string email, string password);
+        Task<ClaimsIdentity> ResolveUser(string username, string password);
         Task<ClaimsIdentity> SignupUser(ISignupOptions options);
+        Task<bool> ValidateUsername(string username);
     }
 
     public interface ISignupOptions
     {
-        string Email { get; }
+        string Username { get; }
         bool Enabled { get; }
-        string Name { get; }
+        string DisplayName { get; }
         string Password {get;}
         bool Verified { get;}
         string[] Roles { get;}

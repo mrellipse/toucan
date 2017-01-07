@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Toucan.Server
+namespace Toucan.Server.Model
 {
-    public class CustomJwtDataFormat : ISecureDataFormat<AuthenticationTicket>
+    public class TokenDataFormat : ISecureDataFormat<AuthenticationTicket>
     {
         private readonly string algorithm;
         private readonly string scheme;
         private readonly TokenValidationParameters validationParameters;
 
-        public CustomJwtDataFormat(string algorithm, string scheme, TokenValidationParameters validationParameters)
+        public TokenDataFormat(string algorithm, string scheme, TokenValidationParameters validationParameters)
         {
             this.algorithm = algorithm;
             this.scheme = scheme;

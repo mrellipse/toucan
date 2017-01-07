@@ -120,13 +120,13 @@ namespace Toucan.Data
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("getdate()");
 
-                entity.Property(e => e.Email)
+                entity.Property(e => e.Username)
                     .IsRequired()
                     .HasColumnType("varchar(128)");
 
                 entity.Property(e => e.Enabled).HasDefaultValueSql("1");
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.DisplayName)
                     .IsRequired()
                     .HasColumnType("varchar(128)");
 

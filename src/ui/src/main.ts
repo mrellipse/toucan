@@ -1,6 +1,8 @@
 import Vue = require('vue');
 import VueRouter = require('vue-router');
 import VueResource = require('vue-resource');
+import { default as Axios } from 'axios';
+
 import { Loader, Navigation } from './components';
 import { AuthenticationHelper } from './helpers/authentication';
 import { EventBus } from './events';
