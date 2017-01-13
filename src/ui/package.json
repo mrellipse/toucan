@@ -17,8 +17,8 @@
     "bootstrap": "^4.0.0-alpha.5",
     "font-awesome": "^4.7.0",
     "vue": "^2.0.5",
-    "vue-resource": "^1.0.3",
-    "vue-router": "^2.0.1"
+    "vue-router": "^2.0.1",
+    "vuelidate": "^0.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.7",

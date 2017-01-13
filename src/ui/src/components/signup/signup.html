@@ -1,46 +1,41 @@
 <div class="col-sm-4 col-sm-offset-4">
   <h2>Sign Up</h2>
   <p>Sign up for an account.</p>
-  <div class="alert alert-danger" v-if="error">
-    <p>{{ error }}</p>
-  </div>
 
   <div class="form-group">
     <input type="text" class="form-control" placeholder="Enter your display name"
-      v-model="signup.displayName"
-      v-bind:class="{ 'alert-success' : signup.displayNameValidated }"
-      v-on:blur="validateDisplayName"
-      >
+    v-model="signup.displayName"
+    @input="$v.signup.displayName.$touch()">
+    <span class="alert-danger" v-if="!$v.signup.displayName.required">Required.</span>
+    <span class="alert-danger" v-if="!$v.signup.displayName.minLength">Must be a min length of 2 characters</span>
   </div>
 
   <div class="form-group">
-    <input type="text" id="signupEmail" class="form-control" placeholder="Enter your user name"
-    v-model="signup.userName"
-    v-bind:class="{ 'alert-success' : signup.userNameValidated }" 
-    v-on:blur="validateUsername"
-    v-bind:disabled="!signup.displayNameValidated"
-    >
+    <input type="text" class="form-control" placeholder="Enter your user name"
+    v-model="signup.userName" @input="$v.signup.userName.$touch()">
+    <span class="alert-danger" v-if="!$v.signup.userName.required">Required.</span>
+    <span class="alert-danger" v-if="!$v.signup.userName.email">Must be a valid email address</span>
+    <span class="alert-danger" v-if="!$v.signup.userName.registered">Already registered</span>
   </div>
 
   <div class="form-group">
     <input type="password" class="form-control" placeholder="Enter your password"
-    v-model="signup.password"
-    v-bind:class="{ 'alert-success' : signup.passwordValidated }"
-    v-on:blur="validatePassword"
-    v-bind:disabled="!signup.userNameValidated"
-    >
+    v-model="signup.password" @input="$v.signup.password.$touch()">
+    <span class="alert-danger" v-if="!$v.signup.password.required">Required.</span>
+    <span class="alert-danger" v-if="!$v.signup.password.complexity">Does not meet complexity requirements</span>
   </div>
 
   <div class="form-group">
     <input type="password" class="form-control" placeholder="Confirm your password"
     v-model="signup.confirmPassword"
-    v-bind:class="{ 'alert-success' : signup.confirmPasswordValidated }"
-    v-bind:disabled="!signup.passwordValidated"
-    v-on:blur="confirmPassword"
+    @input="$v.signup.confirmPassword.$touch()"
     >
+    <span class="alert-danger" v-if="!$v.signup.confirmPassword.required">Required.</span>
+    <span class="alert-danger" v-if="!$v.signup.confirmPassword.sameAsPassword">Must match password</span>
   </div>
 
   <button class="btn btn-primary"
-    v-bind:disabled="!formValidated"
+    :class="{ 'btn-primary' : $v.signup.$error || $v.signup.$invalid, 'btn-success' : !$v.signup.$error && !$v.signup.$invalid }"
+    v-bind:disabled="$v.signup.$error || $v.signup.$invalid"
     @click="submit()">Submit</button>
 </div>

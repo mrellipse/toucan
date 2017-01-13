@@ -1,6 +1,6 @@
 import Vue = require('vue');
 import VueRouter = require('vue-router');
-import VueResource = require('vue-resource');
+import Vuelidate = require('vuelidate');
 import { default as Axios } from 'axios';
 
 import { Loader, Navigation } from './components';
@@ -9,7 +9,7 @@ import { EventBus } from './events';
 import { routeNames, routeConfig } from './routes';
 
 Vue.use(VueRouter);
-Vue.use(VueResource);
+Vue.use(Vuelidate.default);
 
 import 'src/style.scss';
 
