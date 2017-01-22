@@ -4,16 +4,16 @@
   </router-link>
   <ul class="nav navbar-nav">
     <router-link class="nav-item" tag="li" to="/" exact>
-      <a class="nav-link"><i class="fa fa-home"></i> Home</a>
+      <a class="nav-link"><i class="fa fa-home"></i> {{$t('navigation.home')}}</a>
     </router-link>
     <router-link class="nav-item" tag="li" to="/login" v-if="!user.authenticated" exact>
-      <a class="nav-link"><i class="fa fa-sign-in"></i> Login</a>
+      <a class="nav-link"><i class="fa fa-sign-in"></i> {{$t('navigation.login')}}</a>
     </router-link>
     <router-link class="nav-item" tag="li" to="/signup" v-if="!user.authenticated" exact>
-      <a class="nav-link"><i class="fa fa-user-plus"></i> Sign Up</a>
+      <a class="nav-link"><i class="fa fa-user-plus"></i> {{$t('navigation.signup')}}</a>
     </router-link>
     <li class="nav-item">
-      <a class="nav-link" href="#" v-if="user.authenticated" @click="logout()"><i class="fa fa-sign-out"></i> Logout</a>
+      <a class="nav-link" href="#" v-if="user.authenticated" @click="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
     </li>
   </ul>
 </nav>

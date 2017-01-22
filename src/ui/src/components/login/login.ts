@@ -1,12 +1,15 @@
 import Vue = require('vue');
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import Component from 'vue-class-component';
-import { auth, events, routes } from '../../main';
+import { routes } from '../../main';
 import { ICredential } from '../../model/credential';
+import { Formatter } from 'vue-i18n';
+import { AuthMixin, IAuthMixin, IAuthMixinData } from '../../mixins/mixin-auth';
 
 @Component({
     name: 'Login',
     template: require('./login.html'),
+    mixins: [AuthMixin],
     validations: {
         username: {
             email,
@@ -18,9 +21,10 @@ import { ICredential } from '../../model/credential';
         }
     }
 })
-export class Login extends Vue {
+export class Login extends Vue implements IAuthMixin {
 
     error: string = "";
+    password: string = 'password';
 
     submit(): void {
 
@@ -33,11 +37,14 @@ export class Login extends Vue {
             this.error = error;
         };
 
-        auth.login(credentials, routes.home)
+        this.$a.login(credentials, routes.home)
             .catch(onError);
     }
-    password: string = 'password';
+
     username: string = 'webmaster@toucan.org';
+
+    $a: IAuthMixinData
+    $t: Formatter
 }
 
 export default Login;

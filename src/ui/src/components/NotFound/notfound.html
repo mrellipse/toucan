@@ -1,4 +1,4 @@
 <div>
-    <h1 class="mb-2">Not found...</h1>
-    <p>Sorry <i class="fa fa-frown-o"> but I don't think we are in {{city}} anymore</i></p>
+    <h1 class="mb-2">{{$t('notfound.title')}}</h1>
+    <p v-html="$t('notfound.instruction')"></p>
 </div>

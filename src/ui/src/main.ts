@@ -1,29 +1,34 @@
 import Vue = require('vue');
 import VueRouter = require('vue-router');
+import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
 import { default as Axios } from 'axios';
 
 import { Loader, Navigation } from './components';
-import { AuthenticationHelper } from './helpers/authentication';
 import { EventBus } from './events';
-import { routeNames, routeConfig } from './routes';
-
-Vue.use(VueRouter);
-Vue.use(Vuelidate.default);
-
+import { locales } from './locales';
+import { AuthenticationHelper } from './helpers/authentication';
+import { routeConfig, RouteNames, routeOptions } from './routes';
+import { ComponentOptions } from 'vue';
 import 'src/style.scss';
 
-let options: VueRouter.RouterOptions = {
-  routes: routeConfig,
-  mode: 'hash',
-  linkActiveClass: 'active'
-};
+Vue.use(<any>VueI18n); // languages
 
-export const events = new EventBus();
+Object.keys(locales).forEach((lang) => {
+  (<any>Vue).locale(lang, locales[lang]);
+})
 
-export const router = new VueRouter(options);
+Vue.use(Vuelidate.default); // validation
 
-export const routes = routeNames;
+(<any>Vue).config.lang = 'fr';
+
+Vue.use(VueRouter); // router
+
+export const events = new EventBus(); // global event bus
+
+export const router = new VueRouter(routeOptions);
+
+export const routes = RouteNames;
 
 export const auth = new AuthenticationHelper();
 
@@ -36,15 +41,17 @@ export const app = new Vue({
     Navigation
   },
 
-  data() {
-    return {
-      isLoading: false
-    };
-  },
+  mixins: [],
 
   created() {
     events.$on(events.global.loading, (isLoading) => {
       (<any>this).isLoading = isLoading;
     });
+  },
+
+  data() {
+    return {
+      isLoading: false
+    };
   }
 }).$mount('#app');

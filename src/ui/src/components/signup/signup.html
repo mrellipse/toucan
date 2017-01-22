@@ -1,41 +1,34 @@
 <div class="col-sm-4 col-sm-offset-4">
-  <h2>Sign Up</h2>
-  <p>Sign up for an account.</p>
+  <h2>{{$t('signup.title')}}</h2>
+  <p>{{$t('signup.instruction')}}</p>
 
   <div class="form-group">
-    <input type="text" class="form-control" placeholder="Enter your display name"
-    v-model="signup.displayName"
-    @input="$v.signup.displayName.$touch()">
-    <span class="alert-danger" v-if="!$v.signup.displayName.required">Required.</span>
-    <span class="alert-danger" v-if="!$v.signup.displayName.minLength">Must be a min length of 2 characters</span>
+    <input type="text" class="form-control" :placeholder="$t('signup.placeholder.displayName')" v-model="signup.displayName"
+      @input="$v.signup.displayName.$touch()">
+    <span class="alert-danger" v-if="!$v.signup.displayName.required">{{$t('validation.required')}}</span>
+    <span class="alert-danger" v-if="!$v.signup.displayName.minLength">{{$t('validation.minLength', 2)}}</span>
   </div>
 
   <div class="form-group">
-    <input type="text" class="form-control" placeholder="Enter your user name"
-    v-model="signup.userName" @input="$v.signup.userName.$touch()">
-    <span class="alert-danger" v-if="!$v.signup.userName.required">Required.</span>
-    <span class="alert-danger" v-if="!$v.signup.userName.email">Must be a valid email address</span>
-    <span class="alert-danger" v-if="!$v.signup.userName.registered">Already registered</span>
+    <input type="text" class="form-control" :placeholder="$t('signup.placeholder.userName')" v-model="signup.userName" @input="$v.signup.userName.$touch()">
+    <span class="alert-danger" v-if="!$v.signup.userName.required">{{$t('validation.required')}}</span>
+    <span class="alert-danger" v-if="!$v.signup.userName.email">{{$t('validation.email')}}</span>
+    <span class="alert-danger" v-if="!$v.signup.userName.registered">{{$t('signup.registered')}}</span>
   </div>
 
   <div class="form-group">
-    <input type="password" class="form-control" placeholder="Enter your password"
-    v-model="signup.password" @input="$v.signup.password.$touch()">
-    <span class="alert-danger" v-if="!$v.signup.password.required">Required.</span>
-    <span class="alert-danger" v-if="!$v.signup.password.complexity">Does not meet complexity requirements</span>
+    <input type="password" class="form-control" :placeholder="$t('signup.placeholder.password')" v-model="signup.password" @input="$v.signup.password.$touch()">
+    <span class="alert-danger" v-if="!$v.signup.password.required">{{$t('validation.required')}}</span>
+    <span class="alert-danger" v-if="!$v.signup.password.complexity">{{$t('signup.complexity')}}</span>
   </div>
 
   <div class="form-group">
-    <input type="password" class="form-control" placeholder="Confirm your password"
-    v-model="signup.confirmPassword"
-    @input="$v.signup.confirmPassword.$touch()"
-    >
-    <span class="alert-danger" v-if="!$v.signup.confirmPassword.required">Required.</span>
-    <span class="alert-danger" v-if="!$v.signup.confirmPassword.sameAsPassword">Must match password</span>
+    <input type="password" class="form-control" :placeholder="$t('signup.placeholder.confirmPassword')" v-model="signup.confirmPassword"
+      @input="$v.signup.confirmPassword.$touch()">
+    <span class="alert-danger" v-if="!$v.signup.confirmPassword.required">{{$t('validation.required')}}</span>
+    <span class="alert-danger" v-if="!$v.signup.confirmPassword.sameAsPassword">{{$t('validation.sameAs', $t('signup.password'))}}</span>
   </div>
 
-  <button class="btn btn-primary"
-    :class="{ 'btn-primary' : $v.signup.$error || $v.signup.$invalid, 'btn-success' : !$v.signup.$error && !$v.signup.$invalid }"
-    v-bind:disabled="$v.signup.$error || $v.signup.$invalid"
-    @click="submit()">Submit</button>
+  <button class="btn btn-primary" :class="{ 'btn-primary' : $v.signup.$error || $v.signup.$invalid, 'btn-success' : !$v.signup.$error && !$v.signup.$invalid }"
+    v-bind:disabled="$v.signup.$error || $v.signup.$invalid" @click="submit()">{{$t('signup.button.submit')}}</button>
 </div>
