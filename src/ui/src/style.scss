@@ -1,8 +1,9 @@
 @import "styles/variables";
 
 // npm depencies
-@import "~bootstrap/scss/bootstrap-flex";
+@import "~bootstrap/scss/bootstrap";
 @import "~font-awesome/scss/font-awesome";
 
 // Project specific
 @import "styles/global";
+@import "styles/components"

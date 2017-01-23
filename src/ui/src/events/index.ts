@@ -4,6 +4,7 @@ class GlobalEvents {
     public loading: string = 'global.loading';
     public login: string = 'global.login';
     public logout: string = 'global.logoff';
+    public localeChange: string = "global.localeChange";
 }
 
 export class EventBus extends Vue {

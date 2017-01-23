@@ -1,4 +1,7 @@
 export const fr = {
+    dict: {
+        search: 'Chercher'
+    },
     home: {
         title: {
             begin: '',

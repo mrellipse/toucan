@@ -1,9 +1,12 @@
 import { en } from './en';
 import { fr } from './fr';
 
-export const locales = {
+export const SupportedLocales = ['en', 'fr'];
+
+export const Locales = {
     en: en,
-    fr: fr
+    fr: fr,
+    supported: SupportedLocales
 }
 
-export default locales;
+export default Locales;
