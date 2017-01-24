@@ -1,11 +1,12 @@
 import Vue = require('vue');
 import Component from 'vue-class-component';
-import { IUser } from '../../model';
-import { events } from '../../main';
 import { Formatter } from 'vue-i18n';
 import { SupportedLocales } from '../../locales';
+import { IUser } from '../../model';
+import { events } from '../../main';
+import { debounce } from '../../helpers/debounce';
 import { AuthMixin, IAuthMixin, IAuthMixinData } from '../../mixins/mixin-auth';
-import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
+import { IRouterMixin, IRouteMixinData, IRouterMixinData, RouteNames } from '../../mixins/mixin-router';
 
 @Component({
   template: require('./navigation.html'),
@@ -13,15 +14,12 @@ import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mi
 })
 export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
 
-  $a: IAuthMixinData
-
   changeLocale(lang: string, e: Event) {
-    if (e)
-      e.preventDefault();
 
     if (lang !== this.$lang) {
       (<any>Vue.config).lang = lang;
       events.$emit(events.global.localeChange, lang);
+      this.$router.replace(this.$route.path);
     }
 
   }
@@ -38,11 +36,6 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
       Object.assign(user, data);
     });
 
-    events.$on(events.global.localeChange, (lang: string) => {
-
-      this.$router.replace(this.$route.path);
-    });
-
   }
 
   get locales() {
@@ -50,10 +43,32 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
   }
 
   logout(e: Event) {
-    this.$a.logout();
+    this.$auth.logout();
   }
 
-  user: IUser = { authenticated: false };
+  showSearchInput() {
+    this.searchOptions.showInput = !this.searchOptions.showInput;
+  }
+
+  submitSearch(e: Event) {
+
+    let onSubmitSearch = () => {
+
+      this.searchOptions.showInput = false;
+
+      this.$router.push({
+        name: RouteNames.search,
+        params: {
+          searchText: this.searchOptions.searchText
+        }
+      });
+            
+    }
+
+    debounce(onSubmitSearch, 500)();
+  }
+
+  $auth: IAuthMixinData
 
   $lang: string
 
@@ -63,6 +78,18 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
 
   $t: Formatter
 
+  user: IUser = { authenticated: false };
+
+  searchOptions: ISearchOptions = {
+    searchText: '',
+    showInput: false
+  }
+
+}
+
+interface ISearchOptions {
+  searchText: string;
+  showInput: boolean;
 }
 
 export default Navigation;

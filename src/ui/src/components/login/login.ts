@@ -37,13 +37,13 @@ export class Login extends Vue implements IAuthMixin {
             this.error = error;
         };
 
-        this.$a.login(credentials, routes.home)
+        this.$auth.login(credentials, routes.home)
             .catch(onError);
     }
 
     username: string = 'webmaster@toucan.org';
 
-    $a: IAuthMixinData
+    $auth: IAuthMixinData
     $t: Formatter
 }
 

@@ -1,6 +1,7 @@
 export const en = {
     dict: {
-        search: 'Search'
+        search: 'Search',
+        notImplemented: 'Not Implemented',
     },
     home: {
         title: {
@@ -50,6 +51,10 @@ export const en = {
     notfound: {
         title: 'Page Not Found',
         instruction: `Unfortunate circumstances`
+    },
+    search: {
+        title: 'Search Results for \'{0}\'',
+        instruction: 'Not implemented'
     },
     signup: {
         title: 'Sign Up',

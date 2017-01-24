@@ -6,14 +6,14 @@ export { AuthenticationHelper } from '../helpers/authentication';
 
 export const AuthMixin = {
     computed: {
-        $a: () => auth
+        $auth: () => auth
     }
 }
 
 export type IAuthMixinData = AuthenticationHelper;
 
 export interface IAuthMixin {
-    $a: IAuthMixinData;
+    $auth: IAuthMixinData;
 }
 
 export default AuthMixin;

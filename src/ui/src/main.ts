@@ -3,7 +3,6 @@ import VueRouter = require('vue-router');
 import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
 import { default as Axios } from 'axios';
-
 import { Loader, Navigation } from './components';
 import { EventBus } from './events';
 import { Locales } from './locales';

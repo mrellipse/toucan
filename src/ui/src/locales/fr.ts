@@ -1,6 +1,7 @@
 export const fr = {
     dict: {
-        search: 'Chercher'
+        search: 'Chercher',
+        notImplemented: 'Pas mis en œuvre',
     },
     home: {
         title: {
@@ -50,6 +51,10 @@ export const fr = {
     notfound: {
         title: 'Page non trouvée',
         instruction: 'Malheureuses circonstances'
+    },
+    search: {
+        title: 'Résultats de recherche pour \'{0}\'',
+        instruction: 'Pas mis en œuvre'
     },
     signup: {
         title: 'S\'inscrire',

@@ -29,7 +29,7 @@ export class Signup extends Vue {
 
         if (this.allowSubmit) {
             let signup = Object.assign({}, this.signup);
-            this.$a.signup(signup, routes.home);
+            this.$auth.signup(signup, routes.home);
         }
     }
 
@@ -40,7 +40,7 @@ export class Signup extends Vue {
         password: 'P@ssw0rd'
     };
 
-    $a: IAuthMixinData;
+    $auth: IAuthMixinData;
     $v: Vuelidate<TSignup>
 }
 

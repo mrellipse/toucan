@@ -1,4 +1,6 @@
 <div class="container">
+
+
   <nav class="navbar navbar-toggleable-sm fixed-top navbar-inverse bg-inverse">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu"
       aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +14,7 @@
 
       <ul class="nav navbar-nav">
         <router-link class="nav-item" tag="li" to="/" exact>
-          <a class="nav-link"><i class="fa fa-home"></i> {{$t('navigation.home')}}</a>
+          <a class="nav-link">{{$t('navigation.home')}}</a>
         </router-link>
         <router-link class="nav-item" tag="li" to="/login" v-if="!user.authenticated" exact>
           <a class="nav-link"><i class="fa fa-sign-in"></i> {{$t('navigation.login')}}</a>
@@ -21,20 +23,20 @@
           <a class="nav-link"><i class="fa fa-user-plus"></i> {{$t('navigation.signup')}}</a>
         </router-link>
         <li class="nav-item">
-          <a class="nav-link" href="#" v-if="user.authenticated" @click="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
+          <a class="nav-link" href="#" v-if="user.authenticated" @click.prevent="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle lang" id="localeChange" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe"></i></a>
+          <a class="nav-link dropdown-toggle lang" id="localeChange" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-globe"></i></a>
           <div class="dropdown-menu" aria-labelledby="localeChange">
-            <a v-for="locale in locales" class="dropdown-item" href="#" @click="changeLocale(locale, $event);" :class="{'disabled': ($lang === locale)}">{{locale}}</a>
+            <a v-for="locale in locales" class="dropdown-item" href="#" v-on:click.prevent="changeLocale(locale, $event);" :class="{'disabled': ($lang === locale)}">{{locale}}</a>
           </div>
         </li>
       </ul>
-
       <form class="form-inline navbar-form">
-        <input class="form-control" type="text" :placeholder="$t('dict.search')">
+        <a class="nav-link show-search-input" href="#" @click.prevent="showSearchInput()"><i class="fa fa-lg" :class="{ 'fa-search-minus': searchOptions.showInput, 'fa-search': !searchOptions.showInput }"></i></a>
+        <input class="form-control" type="text" v-if="searchOptions.showInput" v-model="searchOptions.searchText" @blur="submitSearch"
+          :placeholder="$t('dict.search')" />
       </form>
-
     </div>
   </nav>
 </div>
