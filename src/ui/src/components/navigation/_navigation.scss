@@ -13,3 +13,12 @@ nav .nav-link.show-search-input{
 nav .nav-link.show-search-input:hover{
   color: $navbar-dark-hover-color
 }
+
+nav .nav-item.nav-search > a{
+  display:inline-block;
+}
+
+nav .nav-item.nav-search > input.form-control{
+  display:inline-block;
+  width: auto;
+}

@@ -1,13 +1,12 @@
 <div class="container">
-
-
   <nav class="navbar navbar-toggleable-sm fixed-top navbar-inverse bg-inverse">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu"
       aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
     <router-link class="navbar-brand" to="/">
-      <img alt="Brand" src="~assets/images/logo.png" height="20">
+      <img alt="Brand" src="~assets/images/logo.png" height="40">
     </router-link>
 
     <div class="collapse navbar-collapse" id="navbarMenu">
@@ -31,12 +30,14 @@
             <a v-for="locale in locales" class="dropdown-item" href="#" v-on:click.prevent="changeLocale(locale, $event);" :class="{'disabled': ($lang === locale)}">{{locale}}</a>
           </div>
         </li>
+        <li class="nav-item nav-search">
+          <a class="nav-link show-search-input" href="#" @click.prevent="showSearchInput()" :class="{'active': searchPageIsActive}">
+            <i class="fa fa-lg" :class="{ 'fa-search-minus': searchOptions.showInput, 'fa-search': !searchOptions.showInput }"></i>
+          </a>
+          <input class="form-control" type="text" v-if="searchOptions.showInput" v-model="searchOptions.searchText" @blur="submitSearch"
+            :placeholder="$t('dict.search')" />
+        </li>
       </ul>
-      <form class="form-inline navbar-form">
-        <a class="nav-link show-search-input" href="#" @click.prevent="showSearchInput()"><i class="fa fa-lg" :class="{ 'fa-search-minus': searchOptions.showInput, 'fa-search': !searchOptions.showInput }"></i></a>
-        <input class="form-control" type="text" v-if="searchOptions.showInput" v-model="searchOptions.searchText" @blur="submitSearch"
-          :placeholder="$t('dict.search')" />
-      </form>
     </div>
   </nav>
 </div>

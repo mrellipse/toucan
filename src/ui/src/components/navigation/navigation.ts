@@ -50,6 +50,10 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
     this.searchOptions.showInput = !this.searchOptions.showInput;
   }
 
+  get searchPageIsActive(): boolean {
+    return (this.$route.name === RouteNames.search);
+  }
+
   submitSearch(e: Event) {
 
     let onSubmitSearch = () => {
@@ -62,7 +66,7 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
           searchText: this.searchOptions.searchText
         }
       });
-            
+
     }
 
     debounce(onSubmitSearch, 500)();
