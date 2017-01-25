@@ -1,10 +1,16 @@
 var path = require('path');
 var autoprefixer = require('autoprefixer');
+var webpack = require('webpack');
 
 module.exports = {
 
   entry: {
-    app: [path.resolve(__dirname, '../src/main.ts')]
+    app: [path.resolve(__dirname, '../src/main.ts')],
+    vendor: [
+      path.resolve(__dirname, '../node_modules/jquery/dist/jquery.slim.js'),
+      path.resolve(__dirname, '../node_modules/tether/dist/js/tether.js'),
+      path.resolve(__dirname, '../node_modules/bootstrap/dist/js/bootstrap.js'),
+    ]
   },
 
   output: {
@@ -14,6 +20,12 @@ module.exports = {
     sourceMapFilename: '[name].[hash].js.map',
     chunkFilename: '[id].chunk.js',
   },
+
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    })
+  ],
 
   resolve: {
     extensions: ['', '.js', '.ts', '.html'],
@@ -40,7 +52,10 @@ module.exports = {
         loader: 'babel!ts-loader',
         exclude: /node_modules/
       },
-
+      {
+        test: /(jquery\.slim\.js|tether\.js)$/,
+        loader: 'script-loader'
+      },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
         loader: 'url?prefix=img/&limit=5000'
