@@ -23,8 +23,12 @@ import { AuthMixin, IAuthMixin, IAuthMixinData } from '../../mixins/mixin-auth';
 })
 export class Login extends Vue implements IAuthMixin {
 
-    error: string = "";
+    errorKey: string = "";
     password: string = 'password';
+
+    get error(): string {
+        return this.errorKey ? this.$t('validation.login.' + this.errorKey) : null;
+    };
 
     submit(): void {
 
@@ -33,8 +37,11 @@ export class Login extends Vue implements IAuthMixin {
             password: this.password
         }
 
-        let onError = (error: any) => {
-            this.error = error;
+        if(this.errorKey)
+            this.errorKey = null;
+
+        let onError = (error: { message: string }) => {
+            this.errorKey = error.message;
         };
 
         this.$auth.login(credentials, routes.home)

@@ -76,7 +76,11 @@ export const fr = {
         email: 'Doit être une adresse e-mail valide',
         required: 'Obligatoire',
         minLength: 'Doit contenir au moins {0} caractères',
-        sameAs: 'Doit correspondre {0}'
+        sameAs: 'Doit correspondre {0}',
+        login: {
+            FailedToResolveUser: 'Nom d\'utilisateur ou mot de passe incorrect',
+            EmailAddressInUse: 'L\'adresse e-mail est déjà utilisée'
+        }
     }
 };
 

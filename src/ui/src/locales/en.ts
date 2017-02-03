@@ -1,7 +1,7 @@
 export const en = {
     dict: {
         search: 'Search',
-        notImplemented: 'Not Implemented',
+        notImplemented: 'Not Implemented'
     },
     home: {
         title: {
@@ -76,7 +76,11 @@ export const en = {
         email: 'Must be a valid email address',
         required: 'Required',
         minLength: 'Must be at least {0} characters',
-        sameAs: 'Must match {0}'
+        sameAs: 'Must match {0}',
+        login: {
+            FailedToResolveUser: 'Invalid username or password',
+            EmailAddressInUse: 'Email address is already being used'
+        }
     }
 };
 

@@ -30,7 +30,7 @@ namespace Toucan.Server.Controllers
             var identity = await this.authService.ResolveUser(credentials.Username, credentials.password);
 
             if (identity == null)
-                throw new ServiceException("Invalid username or password");
+                throw new ServiceException(Constants.FailedToResolveUser);
 
             return await this.tokenService.IssueToken(identity, identity.Name);
         }
@@ -42,7 +42,7 @@ namespace Toucan.Server.Controllers
             bool available = await this.authService.ValidateUsername(username);
 
             if (!available)
-                throw new ServiceException("Email address is not available");
+                throw new ServiceException(Constants.EmailAddressInUse);
 
             return "Email address is available";
         }
@@ -51,14 +51,14 @@ namespace Toucan.Server.Controllers
         public async Task<object> Signup([FromBody]Service.Model.SignupOptions options)
         {
             if (!await this.authService.ValidateUsername(options.Username))
-                throw new ServiceException("Email address is not available");
+                throw new ServiceException(Constants.EmailAddressInUse);
 
             options.Roles = new string[] { Toucan.Data.RoleTypes.User };
 
             var identity = await this.authService.SignupUser(options);
 
             if (identity == null)
-                throw new ServiceException("Invalid username or password");
+                throw new ServiceException(Constants.FailedToResolveUser);
 
             return await this.tokenService.IssueToken(identity, identity.Name);
         }
