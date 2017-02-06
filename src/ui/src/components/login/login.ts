@@ -1,15 +1,15 @@
 import Vue = require('vue');
-import { required, minLength, email } from 'vuelidate/lib/validators';
+import { RawLocation } from 'vue-router';
 import Component from 'vue-class-component';
-import { routes } from '../../main';
+import { required, minLength, email } from 'vuelidate/lib/validators';
+import { AuthenticationHelper } from '../../helpers';
 import { ICredential } from '../../model/credential';
 import { Formatter } from 'vue-i18n';
-import { AuthMixin, IAuthMixin, IAuthMixinData } from '../../mixins/mixin-auth';
+import { IRouterMixin, IRouteMixinData, IRouterMixinData, RouteNames } from '../../mixins/mixin-router';
 
 @Component({
     name: 'Login',
     template: require('./login.html'),
-    mixins: [AuthMixin],
     validations: {
         username: {
             email,
@@ -21,10 +21,15 @@ import { AuthMixin, IAuthMixin, IAuthMixinData } from '../../mixins/mixin-auth';
         }
     }
 })
-export class Login extends Vue implements IAuthMixin {
+export class Login extends Vue implements IRouterMixin {
 
+    private auth: AuthenticationHelper;
     errorKey: string = "";
     password: string = 'password';
+
+    created() {
+        this.auth = new AuthenticationHelper();
+    }
 
     get error(): string {
         return this.errorKey ? this.$t('validation.login.' + this.errorKey) : null;
@@ -37,20 +42,30 @@ export class Login extends Vue implements IAuthMixin {
             password: this.password
         }
 
-        if(this.errorKey)
+        let redirectTo: RawLocation = this.$route.query['redirect'] || { name: 'home' };
+
+        if (this.errorKey)
             this.errorKey = null;
 
         let onError = (error: { message: string }) => {
             this.errorKey = error.message;
         };
 
-        this.$auth.login(credentials, routes.home)
+        let onSuccess = (value: boolean) => {
+            this.$router.push(redirectTo);
+        }
+
+        this.auth.login(credentials)
+            .then(onSuccess)
             .catch(onError);
     }
 
     username: string = 'webmaster@toucan.org';
 
-    $auth: IAuthMixinData
+    $route: IRouteMixinData;
+
+    $router: IRouterMixinData;
+
     $t: Formatter
 }
 

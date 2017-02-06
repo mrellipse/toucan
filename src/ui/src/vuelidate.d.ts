@@ -12,6 +12,12 @@ declare module "vuelidate" {
         }
     }
 
+    module "vue/types/vue" {
+        interface Vue {
+            $v: Vuelidate<any>;
+        }
+    }
+
     /**
      * Represents an instance of validator class at runtime
     */
@@ -50,69 +56,77 @@ declare module "vuelidate" {
         /**
         * Accepts only alphabet characters.
         */
-        alpha?:boolean;
+        alpha?: boolean;
         /**
         * Accepts only alphanumerics.
         */
-        alphaNum?:boolean;
+        alphaNum?: boolean;
         /**
         * Checks if a number is in specified bounds. Min and max are both inclusive.
         */
-        between?:boolean;
+        between?: boolean;
         /**
         * Accepts valid email addresses. Keep in mind you still have to carefully verify it on your server, as it is impossible to tell if the address is real without sending verification email.
         */
-        email?:boolean;
+        email?: boolean;
         /**
         * Requires the input to have a maximum specified length, inclusive. Works with arrays.
         */
-        maxLength?:boolean;
+        maxLength?: boolean;
         /**
         * Requires the input to have a minimum specified length, inclusive. Works with arrays.
         */
-        minLength?:boolean;
+        minLength?: boolean;
         /**
         * Requires non-empty data. Checks for empty arrays and strings containing only whitespaces.
         */
-        required?:boolean;
+        required?: boolean;
         /**
         * Checks for equality with a given property. Locator might be either a sibling property name or a function, that will get your component as this and nested model which sibling properties under second parameter.
         */
-        sameAs?:boolean;
+        sameAs?: boolean;
         /**
         * Passes when at least one of provided validators passes.
         */
-        or?:boolean;
+        or?: boolean;
         /**
         * Passes when all of provided validators passes.
         */
-        and?:boolean;
+        and?: boolean;
     }
 
     type EachByKey<T> = {
-        [K in keyof T]: Validator<T[K], K>
+        [K in keyof T]: Validator<T[K]>
     }
 
     /**
      * Holds all validation models of collection validator. Always preserves the keys of original model, so it can be safely referenced in the v-for loop iterating over your data using the same index.
     */
-    type Each<T, P extends string> = {
-        $each: {
-            [key: number]: EachByKey<T>
-        } & EachByKey<T> & { $trackBy: string | Function }
+    type Each<T> =
+        & { [key: number]: EachByKey<T> }
+        & { $trackBy: string | Function }
+        & IValidator
+
+    global {
+        interface Array<T> {
+            /**
+             * Holds all validation models of collection validator. Always preserves the keys of original model, so it can be safely referenced in the v-for loop iterating over your data using the same index.
+            */
+            $each: Each<T> & Vuelidate<T>;
+        }
     }
 
     /**
       * Represents an instance of validator class at runtime
      */
-    type Validator<T, P extends string> = IValidator & IDefaultValidators & Each<T, P>;
+    type Validator<T> = IValidator & IDefaultValidators & Each<T>;
 
     interface IPredicate {
         (value: any, parentVm?: IValidationRule): boolean | Promise<boolean>
     }
 
     interface IPredicateGenerator {
-        (): IPredicate
+        (...args: any[]): IPredicate
     }
 
     interface IValidationRule {
@@ -125,14 +139,14 @@ declare module "vuelidate" {
      * Represents mixin data exposed by Vuelidate instance
     */
     export type Vuelidate<T> = {
-        [K in keyof T]?: Vuelidate<T[K]> & Validator<T[K], K>;
+        [K in keyof T]?: Vuelidate<T[K]> & Validator<T[K]>;
     };
 
     /**
      * Represents component options used by Vuelidate
     */
     export type ValidationRuleset<T> = {
-        [K in keyof T]?: ValidationPredicate | IValidationRule | IValidationRule[];
+        [K in keyof T]?: ValidationPredicate | IValidationRule | IValidationRule[] | string[];
     }
 
     /**
@@ -169,7 +183,7 @@ declare module "vuelidate" {
      * Vuelidate function that creates a validator directly, given a model, and a set of rules
     */
     export const validateModel: {
-        <T>(model: T, validations: ValidationRuleset<T>): Vuelidate<T>;
+        <T>(model: T, validations: ValidationRuleset<T>): IVuelidate<T>;
     }
 
     /**
@@ -180,16 +194,19 @@ declare module "vuelidate" {
     export default Validation;
 }
 
+
 declare module "vuelidate/lib/validators" {
+
     import { ValidationPredicate } from "vuelidate";
+
     /**
      * Accepts only alphabet characters.
      */
-    function alpha(): (value: any) => boolean;
+    function alpha(value: any): boolean;
     /**
      * Accepts only alphanumerics.
      */
-    function alphaNum(): (value: any) => boolean;
+    function alphaNum(value: any): boolean;
     /**
      * Checks if a number is in specified bounds. Min and max are both inclusive.
      */
@@ -197,7 +214,7 @@ declare module "vuelidate/lib/validators" {
     /**
      * Accepts valid email addresses. Keep in mind you still have to carefully verify it on your server, as it is impossible to tell if the address is real without sending verification email.
     */
-    function email(): (value: any) => boolean;
+    function email(value: any): boolean;
     /**
      * Requires the input to have a maximum specified length, inclusive. Works with arrays.
     */
@@ -209,11 +226,11 @@ declare module "vuelidate/lib/validators" {
     /**
      * Requires non-empty data. Checks for empty arrays and strings containing only whitespaces.
     */
-    function required(): (value: any) => boolean;
+    function required(value: any): boolean;
     /**
      * Checks for equality with a given property. Locator might be either a sibling property name or a function, that will get your component as this and nested model which sibling properties under second parameter.
     */
-    function sameAs(locator: string): (value: any) => boolean;
+    function sameAs(locator: string): (value: any, vm?: any) => boolean;
     /**
      * Passes when at least one of provided validators passes.
      */

@@ -5,14 +5,15 @@ import { SupportedLocales } from '../../locales';
 import { IUser } from '../../model';
 import { events } from '../../main';
 import { debounce } from '../../helpers/debounce';
-import { AuthMixin, IAuthMixin, IAuthMixinData } from '../../mixins/mixin-auth';
+import { AuthenticationHelper } from '../../helpers';
 import { IRouterMixin, IRouteMixinData, IRouterMixinData, RouteNames } from '../../mixins/mixin-router';
 
 @Component({
-  template: require('./navigation.html'),
-  mixins: [AuthMixin]
+  template: require('./navigation.html')
 })
-export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
+export class Navigation extends Vue implements IRouterMixin {
+
+  private auth: AuthenticationHelper;
 
   changeLocale(lang: string, e: Event) {
 
@@ -25,6 +26,10 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
   }
 
   created() {
+    this.auth = new AuthenticationHelper();
+
+    if (this.auth.user.authenticated)
+      this.user = Object.assign({}, this.auth.user);
 
     let user = this.user;
 
@@ -33,7 +38,7 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
     });
 
     events.$on(events.global.logout, (data: IUser) => {
-      Object.assign(user, data);
+      this.auth.clearUserData(this.user);
     });
 
   }
@@ -43,7 +48,7 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
   }
 
   logout(e: Event) {
-    this.$auth.logout();
+    this.auth.logout();
   }
 
   showSearchInput() {
@@ -72,8 +77,6 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
     debounce(onSubmitSearch, 500)();
   }
 
-  $auth: IAuthMixinData
-
   $lang: string
 
   $route: IRouteMixinData;
@@ -82,13 +85,12 @@ export class Navigation extends Vue implements IAuthMixin, IRouterMixin {
 
   $t: Formatter
 
-  user: IUser = { authenticated: false };
-
   searchOptions: ISearchOptions = {
     searchText: '',
     showInput: false
   }
 
+  user: IUser = { authenticated: false, username: null, roles: [] };
 }
 
 interface ISearchOptions {

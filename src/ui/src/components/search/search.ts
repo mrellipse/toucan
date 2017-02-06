@@ -13,6 +13,7 @@ export class Search extends Vue {
   }
 
   $route: IRouteMixinData;
+  
   $t: Formatter
 }
 

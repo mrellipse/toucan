@@ -1,7 +1,8 @@
 export const en = {
     dict: {
-        search: 'Search',
-        notImplemented: 'Not Implemented'
+        notImplemented: 'Not Implemented',
+        project: 'Project',
+        search: 'Search'
     },
     home: {
         title: {
@@ -46,6 +47,7 @@ export const en = {
         home: 'Home',
         login: 'Login',
         logout: 'Logout',
+        profile: 'My Profile',
         signup: 'Sign Up'
     },
     notfound: {

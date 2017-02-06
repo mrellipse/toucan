@@ -21,6 +21,9 @@
         <router-link class="nav-item" tag="li" to="/signup" v-if="!user.authenticated" exact>
           <a class="nav-link"><i class="fa fa-user-plus"></i> {{$t('navigation.signup')}}</a>
         </router-link>
+        <router-link class="nav-item" tag="li" to="/profile" v-if="user.authenticated" exact>
+          <a class="nav-link" :title="user.displayName"><i class="fa fa-user"></i> {{$t('navigation.profile')}}</a>
+        </router-link>
         <li class="nav-item">
           <a class="nav-link" href="#" v-if="user.authenticated" @click.prevent="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
         </li>

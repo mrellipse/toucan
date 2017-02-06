@@ -2,21 +2,27 @@ import Vue = require('vue');
 import Component from 'vue-class-component';
 import { IVuelidate, ValidationRuleset, Vuelidate, validationMixin } from 'vuelidate';
 
-import { IAuthMixinData , AuthMixin } from '../../mixins/mixin-auth';
+import { AuthenticationHelper } from '../../helpers';
 import { ISignupOptions } from '../../model';
-import { routes } from '../../main';
+import { IRouterMixinData, RouteNames } from '../../mixins/mixin-router';
 import { validations, TSignup } from './signup-validate';
 
 @Component({
-    mixins: [AuthMixin, validationMixin],
+    mixins: [validationMixin],
     name: 'Signup',
     template: require('./signup.html'),
     validations: validations
 })
 export class Signup extends Vue {
 
+    private auth: AuthenticationHelper;
+
     constructor() {
         super();
+    }
+
+    created() {
+        this.auth = new AuthenticationHelper;
     }
 
     get allowSubmit() {
@@ -28,8 +34,15 @@ export class Signup extends Vue {
     submit(): void {
 
         if (this.allowSubmit) {
+
             let signup = Object.assign({}, this.signup);
-            this.$auth.signup(signup, routes.home);
+
+            let onSuccess = (o: boolean) => {
+                this.$router.push({ name: 'home' });
+            }
+
+            this.auth.signup(signup)
+                .then(onSuccess);
         }
     }
 
@@ -40,7 +53,8 @@ export class Signup extends Vue {
         password: 'P@ssw0rd'
     };
 
-    $auth: IAuthMixinData;
+    $router: IRouterMixinData;
+
     $v: Vuelidate<TSignup>
 }
 

@@ -10,6 +10,7 @@ module.exports = {
       path.resolve(__dirname, '../node_modules/jquery/dist/jquery.slim.js'),
       path.resolve(__dirname, '../node_modules/tether/dist/js/tether.js'),
       path.resolve(__dirname, '../node_modules/bootstrap/dist/js/bootstrap.js'),
+      path.resolve(__dirname, '../node_modules/jwt-decode/lib/index.js')  
     ]
   },
 

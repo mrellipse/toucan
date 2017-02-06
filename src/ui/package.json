@@ -43,6 +43,7 @@
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.22.0",
     "imports-loader": "^0.6.5",
+    "jwt-decode": "^2.1.0",
     "node-sass": "^3.8.0",
     "postcss-loader": "^0.9.1",
     "prerender-spa-plugin": "^1.1.0",

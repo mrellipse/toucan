@@ -1,5 +1,6 @@
 <div>
-  <h1 class="mb-2">{{$t('home.title.begin')}} <img src="~assets/images/logo.png" height="36" alt=""> {{$t('home.title.end')}}</h1>
+  <h1 v-if="!authenticated" class="mb-2">{{$t('home.title.begin')}} <img src="~assets/images/logo.png" height="36" alt=""> {{$t('home.title.end')}}</h1>
+  <h1 v-if="authenticated" class="mb-2"><img src="~assets/images/logo.png" height="36" alt=""> {{displayName}} {{$t('dict.project')}}</h1>
   <div v-html="$t('home.body[0]')"></div>
   <div v-html="$t('home.body[1]')"></div>
   <div v-html="$t('home.body[2]')"></div>

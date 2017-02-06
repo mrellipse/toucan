@@ -1,7 +1,8 @@
 export const fr = {
     dict: {
-        search: 'Chercher',
         notImplemented: 'Pas mis en œuvre',
+        project: 'Projet',
+        search: 'Chercher'
     },
     home: {
         title: {
@@ -46,6 +47,7 @@ export const fr = {
         home: 'Accueil',
         login: 'S\'identifier',
         logout: 'Se déconnecter',
+        profile: 'Mon profil',
         signup: 'S\'inscrire'
     },
     notfound: {

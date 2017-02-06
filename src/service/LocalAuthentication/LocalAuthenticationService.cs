@@ -23,7 +23,7 @@ namespace Toucan.Service
 
         public Task<ClaimsIdentity> ResolveUser(string username, string password)
         {
-            UserProviderLocal login = (from p in this.db.LocalProvider.Include(o => o.User)
+            UserProviderLocal login = (from p in this.db.LocalProvider.Include(o => o.User).Include(o => o.User.Roles)
                                        where p.User.Username == username
                                        select p).FirstOrDefault();
 
@@ -39,8 +39,8 @@ namespace Toucan.Service
         public async Task<ClaimsIdentity> SignupUser(ISignupOptions options)
         {
             UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)
-                                       where p.User.Username == options.Username
-                                       select p).FirstOrDefaultAsync();
+                                             where p.User.Username == options.Username
+                                             select p).FirstOrDefaultAsync();
 
             if (login != null)
                 throw new ServiceException($"A user account for {options.Username} already exists");
@@ -53,7 +53,7 @@ namespace Toucan.Service
                 DisplayName = options.DisplayName,
                 Verified = false
             };
-            
+
             db.User.Add(user);
 
             string salt = crypto.CreateSalt();
@@ -83,9 +83,9 @@ namespace Toucan.Service
         public async Task<bool> ValidateUsername(string username)
         {
             UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)
-                                       where p.User.Username == username
-                                       select p).FirstOrDefaultAsync();
-            
+                                             where p.User.Username == username
+                                             select p).FirstOrDefaultAsync();
+
             return login == null;
         }
 
@@ -94,9 +94,12 @@ namespace Toucan.Service
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Email, user.Username));
             claims.Add(new Claim(ClaimTypes.Name, user.DisplayName));
-
+            
             var roles = (from r in user.Roles
-                         select new Claim(ClaimTypes.Role, r.RoleId));
+                         select new Claim(ClaimTypes.Role, r.RoleId)).ToArray();
+
+            if (roles.Length == 0)
+                roles = new Claim[] { new Claim(ClaimTypes.Role, RoleTypes.User) };
 
             claims.AddRange(roles);
 

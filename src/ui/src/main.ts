@@ -6,8 +6,7 @@ import { default as Axios } from 'axios';
 import { Loader, Navigation } from './components';
 import { EventBus } from './events';
 import { Locales } from './locales';
-import { AuthenticationHelper } from './helpers/authentication';
-import { routeConfig, RouteNames, routeOptions } from './routes';
+import { RouteGuards, RouteNames, routeOptions } from './routes';
 import { ComponentOptions } from 'vue';
 
 import 'src/style.scss';
@@ -20,17 +19,16 @@ Object.keys(Locales).forEach((lang) => {
 
 Vue.use(Vuelidate.default); // validation
 
-(<any>Vue).config.lang = 'fr';
+(<any>Vue).config.lang = 'en';
 
 Vue.use(VueRouter); // router
 
 export const events = new EventBus(); // global event bus
 
 export const router = new VueRouter(routeOptions);
+router.beforeEach(RouteGuards);
 
 export const routes = RouteNames;
-
-export const auth = new AuthenticationHelper();
 
 export const app = new Vue({
 
