@@ -1,7 +1,7 @@
-// src/auth/index.js
 import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 import jwtDecode = require('jwt-decode');
-import { events, router, routes } from '../../main';
+
+import { EventBus } from '../../events';
 import { ICredential, IJwtToken, IPayload, ISignupOptions, IUser } from '../../model';
 import { PayloadMessageTypes } from './../message';
 import { IClaimsHelper } from './claims-helper';
@@ -18,20 +18,23 @@ export { IClaimsHelper } from './claims-helper';
 export class AuthenticationHelper implements IClaimsHelper {
 
     private static AccessTokenKey: string = 'id_token';
-
     public user: IUser = { authenticated: false, email: null, name: null, username: null, roles: [] };
 
     constructor() {
+
         var token = localStorage.getItem(AuthenticationHelper.AccessTokenKey);
         this.updateUser(token);
+
     }
 
     clearUserData(user: IUser): void {
+
         user.authenticated = false;
         user.email = null;
         user.name = null;
         user.username = null;
         user.roles = null;
+
     }
 
     isInRole(role: string): boolean {
@@ -58,7 +61,7 @@ export class AuthenticationHelper implements IClaimsHelper {
 
                 localStorage.setItem(AuthenticationHelper.AccessTokenKey, token);
                 this.updateUser(token);
-                events.$emit(events.global.login, Object.assign({}, this.user));
+                EventBus.$emit(EventBus.global.login, Object.assign({}, this.user));
 
                 return true;
             } else {
@@ -74,8 +77,8 @@ export class AuthenticationHelper implements IClaimsHelper {
 
         localStorage.removeItem(AuthenticationHelper.AccessTokenKey)
         this.updateUser(null);
-        events.$emit(events.global.logout, Object.assign({}, this.user));
-        router.push({ name: routes.home });
+        EventBus.$emit(EventBus.global.logout, Object.assign({}, this.user));
+
     }
 
     validateUsername(userName: string) {
@@ -91,6 +94,7 @@ export class AuthenticationHelper implements IClaimsHelper {
 
         return Axios.get(VALIDATEUSERNAME_URL, config)
             .then(onSuccess);
+
     }
 
     signup(signup: ISignupOptions) {
@@ -106,7 +110,7 @@ export class AuthenticationHelper implements IClaimsHelper {
 
                 localStorage.setItem(AuthenticationHelper.AccessTokenKey, token);
                 this.updateUser(token);
-                events.$emit(events.global.login, Object.assign({}, this.user));
+                EventBus.$emit(EventBus.global.login, Object.assign({}, this.user));
 
                 return true;
             } else {
@@ -116,9 +120,11 @@ export class AuthenticationHelper implements IClaimsHelper {
 
         return Axios.post(SIGNUP_URL, data)
             .then(onSuccess);
+
     }
 
     private updateUser(token: string): void {
+
         let user = this.user;
 
         if (token) {
@@ -128,22 +134,25 @@ export class AuthenticationHelper implements IClaimsHelper {
                 user.authenticated = true;
 
             let name = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
-            let roles = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role'];
+            let roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
 
             user.displayName = name ? name[1] : null;
             user.email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || null;
             user.name = user.email;
-            user.roles = roles;
+            user.roles = Array.isArray(roles) ? roles : [roles];
 
         } else {
             this.clearUserData(user);
         }
+
     }
 
     getAuthHeader() {
+
         return {
             'Authorization': 'Bearer ' + localStorage.getItem(AuthenticationHelper.AccessTokenKey)
         }
+
     }
 }
 

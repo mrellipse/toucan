@@ -1,8 +1,14 @@
 export const fr = {
     dict: {
+        header: 'Entête',
+        heading: 'Titre',
+        label: 'Étiquette',
+        link: 'Hyperlien',
         notImplemented: 'Pas mis en œuvre',
         project: 'Projet',
-        search: 'Chercher'
+        reports: 'Rapports',
+        search: 'Chercher',
+        settings: 'Paramètres'
     },
     home: {
         title: {
@@ -44,6 +50,8 @@ export const fr = {
         }
     },
     navigation: {
+        admin: 'Admin',
+        dashboard: 'Tableau de bord',
         home: 'Accueil',
         login: 'S\'identifier',
         logout: 'Se déconnecter',
@@ -73,6 +81,9 @@ export const fr = {
         registered: 'Déjà enregistré',
         complexity: 'Ne répond pas aux exigences de complexité',
         password: 'Mot de passe'
+    },
+    site: {
+        copyright: '© Droits d\'auteur 2058, Toucan Société'
     },
     validation: {
         email: 'Doit être une adresse e-mail valide',

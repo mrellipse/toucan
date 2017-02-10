@@ -1,4 +1,3 @@
-import { routes } from '../main';
 import { IPayload } from '../model';
 import { AuthenticationHelper, PayloadMessageTypes } from '../helpers';
 

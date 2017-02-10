@@ -5,12 +5,13 @@ var webpack = require('webpack');
 module.exports = {
 
   entry: {
-    app: [path.resolve(__dirname, '../src/main.ts')],
+    admin: [path.resolve(__dirname, '../src/admin/admin.ts')],
+    app: [path.resolve(__dirname, '../src/root/root.ts')],
     vendor: [
       path.resolve(__dirname, '../node_modules/jquery/dist/jquery.slim.js'),
       path.resolve(__dirname, '../node_modules/tether/dist/js/tether.js'),
       path.resolve(__dirname, '../node_modules/bootstrap/dist/js/bootstrap.js'),
-      path.resolve(__dirname, '../node_modules/jwt-decode/lib/index.js')  
+      path.resolve(__dirname, '../node_modules/jwt-decode/lib/index.js')
     ]
   },
 
@@ -24,7 +25,8 @@ module.exports = {
 
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
+      name: 'common',
+      minChunks: 3
     })
   ],
 
@@ -41,7 +43,7 @@ module.exports = {
   },
 
   module: {
-    
+
     loaders: [
       {
         test: /\.html$/,
@@ -80,10 +82,10 @@ module.exports = {
 
   babel: {
     plugins: ['transform-runtime'],
-    presets: ['es2015']    
+    presets: ['es2015']
   },
 
-  postcss: function() {
+  postcss: function () {
     return [autoprefixer];
   }
 };

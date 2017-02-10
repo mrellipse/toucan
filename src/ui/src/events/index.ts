@@ -7,7 +7,7 @@ class GlobalEvents {
     public localeChange: string = "global.localeChange";
 }
 
-export class EventBus extends Vue {
+class GlobalEventBus extends Vue {
 
     private globalEvents: GlobalEvents;
 
@@ -21,4 +21,4 @@ export class EventBus extends Vue {
     }
 }
 
-export default EventBus;
+export const EventBus = new GlobalEventBus();

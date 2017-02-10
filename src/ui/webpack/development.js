@@ -16,10 +16,21 @@ module.exports = merge(webpackBase, {
     }),
 
     new HtmlWebpackPlugin({
+      chunksSortMode: 'dependency',
+      excludeChunks: ['app'],
+      filename: 'admin.html',
       inject: 'body',
-      template: path.resolve(__dirname, '../src/index.html')
+      template: path.resolve(__dirname, '../src/admin/admin.html')
     }),
-    
+
+    new HtmlWebpackPlugin({
+      chunksSortMode: 'dependency',
+      excludeChunks: ['admin'],
+      filename: 'index.html',
+      inject: 'body',
+      template: path.resolve(__dirname, '../src/root/root.html')
+    }),
+
     new WebpackCleanupPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),

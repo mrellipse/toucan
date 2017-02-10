@@ -1,11 +1,11 @@
 import Vue = require('vue');
 import { RawLocation } from 'vue-router';
 import Component from 'vue-class-component';
+import { Formatter } from 'vue-i18n';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { AuthenticationHelper } from '../../helpers';
 import { ICredential } from '../../model/credential';
-import { Formatter } from 'vue-i18n';
-import { IRouterMixin, IRouteMixinData, IRouterMixinData, RouteNames } from '../../mixins/mixin-router';
+import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 
 @Component({
     name: 'Login',

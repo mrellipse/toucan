@@ -1,8 +1,14 @@
 export const en = {
     dict: {
+        header: 'Header',
+        heading: 'Heading',
+        label: 'Label',
+        link: 'Link',
         notImplemented: 'Not Implemented',
         project: 'Project',
-        search: 'Search'
+        reports: 'Reports',
+        search: 'Search',
+        settings: 'Settings'
     },
     home: {
         title: {
@@ -44,6 +50,8 @@ export const en = {
         }
     },
     navigation: {
+        admin : 'Admin',
+        dashboard: 'Dashboard',
         home: 'Home',
         login: 'Login',
         logout: 'Logout',
@@ -73,6 +81,9 @@ export const en = {
         registered: 'Already registered',
         complexity: 'Does not meet complexity requirements',
         password: 'password'
+    },
+    site: {
+        copyright: '© Copyright 2058, Toucan Corporation'
     },
     validation: {
         email: 'Must be a valid email address',

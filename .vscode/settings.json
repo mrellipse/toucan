@@ -1,7 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "typescript.check.tscVersion": true,
-    "typescript.tsdk": "C:/Coding/toucan/src/ui/node_modules/typescript/lib",
     "workbench.sideBar.location": "left",
     "files.exclude": {
         "**/.git": true,

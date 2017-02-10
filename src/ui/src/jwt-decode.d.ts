@@ -1,0 +1,1 @@
+export function jwtDecode(token: string, options?: { header: boolean }): any

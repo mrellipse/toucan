@@ -1,0 +1,24 @@
+nav .dropdown-toggle.lang::after {
+  content: none;
+}
+
+nav .nav-link.show-search-input{
+  color: $navbar-dark-color;
+  padding: 0.5em 0.5em;
+  @media (max-width: 768px)  {
+    margin-left: -0.5em;
+  }
+}
+
+nav .nav-link.show-search-input:hover{
+  color: $navbar-dark-hover-color
+}
+
+nav .nav-item.nav-search > a{
+  display:inline-block;
+}
+
+nav .nav-item.nav-search > input.form-control{
+  display:inline-block;
+  width: auto;
+}

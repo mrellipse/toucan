@@ -1,0 +1,44 @@
+<main class="container-fluid">
+  <div class="col-sm-4 col-sm-offset-4">
+    <h2>{{$t('signup.title')}}</h2>
+    <p>{{$t('signup.instruction')}}</p>
+
+    <div class="form-group">
+      <input type="text" class="form-control" :placeholder="$t('signup.placeholder.displayName')" v-model="signup.displayName"
+        @input="$v.signup.displayName.$touch()">
+        <span v-show="$v.signup.displayName.$error">
+        <span class="alert-danger" v-if="!$v.signup.displayName.required">{{$t('validation.required')}}</span>
+        <span class="alert-danger" v-if="!$v.signup.displayName.minLength">{{$t('validation.minLength', 2)}}</span>
+        </span>
+    </div>
+
+    <div class="form-group">
+      <input type="text" class="form-control" :placeholder="$t('signup.placeholder.userName')" v-model="signup.userName" @input="$v.signup.userName.$touch()">
+      <span v-show="$v.signup.userName.$error">
+      <span class="alert-danger" v-if="!$v.signup.userName.required">{{$t('validation.required')}}</span>
+      <span class="alert-danger" v-if="!$v.signup.userName.email">{{$t('validation.email')}}</span>
+      <span class="alert-danger" v-if="!$v.signup.userName.registered">{{$t('signup.registered')}}</span>
+      </span>
+    </div>
+
+    <div class="form-group">
+      <input type="password" class="form-control" :placeholder="$t('signup.placeholder.password')" v-model="signup.password" @input="$v.signup.password.$touch()">
+      <span v-show="$v.signup.password.$error">
+      <span class="alert-danger" v-if="!$v.signup.password.required">{{$t('validation.required')}}</span>
+      <span class="alert-danger" v-if="!$v.signup.password.complexity">{{$t('signup.complexity')}}</span>
+      </span>
+    </div>
+
+    <div class="form-group">
+      <input type="password" class="form-control" :placeholder="$t('signup.placeholder.confirmPassword')" v-model="signup.confirmPassword"
+        @input="$v.signup.confirmPassword.$touch()">
+        <span v-show="$v.signup.password.$error">
+        <span class="alert-danger" v-if="!$v.signup.confirmPassword.required">{{$t('validation.required')}}</span>
+        <span class="alert-danger" v-if="!$v.signup.confirmPassword.sameAsPassword">{{$t('validation.sameAs', $t('signup.password'))}}</span>
+        </span>
+    </div>
+
+    <button class="btn btn-primary" :class="{ 'btn-primary' : $v.signup.$error || $v.signup.$invalid, 'btn-success' : !$v.signup.$error && !$v.signup.$invalid }"
+      v-bind:disabled="$v.signup.$error || $v.signup.$invalid" @click="submit()">{{$t('signup.button.submit')}}</button>
+  </div>
+</main>

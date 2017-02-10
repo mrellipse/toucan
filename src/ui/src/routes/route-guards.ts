@@ -1,9 +1,8 @@
 import Vue = require('vue');
-import { RawLocation, Route, RouteRecord } from 'vue-router';
-import { IRouteMeta } from './route-meta';
-import { RouteNames } from './route-names';
+import { NavigationGuard, RawLocation, Route, RouteRecord } from 'vue-router';
 import { AuthenticationHelper, IClaimsHelper } from '../helpers';
 import { IUser } from '../model';
+import { IRouteMeta } from './route-meta';
 
 function routeCheck(user: IUser, helper: IClaimsHelper, meta: IRouteMeta): boolean {
 
@@ -20,20 +19,26 @@ function routeCheck(user: IUser, helper: IClaimsHelper, meta: IRouteMeta): boole
     return true;
 }
 
-export function RouteGuards(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+export function RouteGuards(loginPageName: string): NavigationGuard {
 
-    let auth = new AuthenticationHelper();
+    let fn = (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
 
-    if (to.matched.some(r => routeCheck(auth.user, auth, r.meta))) {
+        let auth = new AuthenticationHelper();
 
-        let sendTo: RawLocation = {
-            name: RouteNames.login,
-            query: { redirect: to.fullPath }
-        };
+        if (to.matched.some(r => routeCheck(auth.user, auth, r.meta))) {
 
-        next(sendTo);
+            let sendTo: RawLocation = {
+                name: loginPageName,
+                query: { redirect: to.fullPath }
+            };
 
-    } else {
-        next();
-    }
+            next(sendTo);
+
+        } else {
+            next();
+        }
+    };
+
+    return fn;
 }
+
