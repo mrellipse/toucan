@@ -2,29 +2,19 @@ import Vue = require('vue');
 import Component from 'vue-class-component';
 import { Formatter } from 'vue-i18n';
 import { AuthenticationHelper, IClaimsHelper } from '../../helpers';
+import { State } from 'vuex-class';
+import { IRootStoreState  } from '../store';
 
 @Component({
   template: require('./home.html')
 })
 export class Home extends Vue {
 
-  private auth: AuthenticationHelper;
+  @State((state:IRootStoreState) => state.common.user.authenticated) authenticated: boolean
+
+  @State((state:IRootStoreState) => state.common.user.displayName) displayName: string
 
   created() {
-
-    this.auth = new AuthenticationHelper();
-
-  }
-
-  get authenticated() {
-
-    return this.auth.user.authenticated;
-
-  }
-
-  get displayName() {
-
-    return this.auth.user.displayName;
 
   }
 

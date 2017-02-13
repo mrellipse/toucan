@@ -1,7 +1,5 @@
 import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 import jwtDecode = require('jwt-decode');
-
-import { EventBus } from '../../events';
 import { ICredential, IJwtToken, IPayload, ISignupOptions, IUser } from '../../model';
 import { PayloadMessageTypes } from './../message';
 import { IClaimsHelper } from './claims-helper';
@@ -15,70 +13,82 @@ const VALIDATEUSERNAME_URL = API_URL + 'auth/validateusername';
 
 export { IClaimsHelper } from './claims-helper';
 
+export function parseUserToken(token: string): IUser {
+
+    let user: IUser = { authenticated: false, email: null, name: null, username: null, roles: [] };
+
+    if (token) {
+
+        let decodedToken: IJwtToken = jwtDecode(token);
+
+        if (!user.authenticated)
+            user.authenticated = true;
+
+        let name = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+        let roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+
+        user.displayName = name ? name[1] : null;
+        user.email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || null;
+        user.name = user.email;
+        user.roles = Array.isArray(roles) ? roles : [roles];
+    }
+
+    return user;
+}
+
 export class AuthenticationHelper implements IClaimsHelper {
 
-    private static AccessTokenKey: string = 'id_token';
-    public user: IUser = { authenticated: false, email: null, name: null, username: null, roles: [] };
+    public static AccessTokenKey: string = 'id_token';
 
-    constructor() {
+    public static getAccessToken(): string {
 
-        var token = localStorage.getItem(AuthenticationHelper.AccessTokenKey);
-        this.updateUser(token);
-
+        return localStorage.getItem(AuthenticationHelper.AccessTokenKey);
     }
 
-    clearUserData(user: IUser): void {
+    public static getUserFromAccessToken(token?: string): IUser {
 
-        user.authenticated = false;
-        user.email = null;
-        user.name = null;
-        user.username = null;
-        user.roles = null;
-
+        return parseUserToken(token || AuthenticationHelper.getAccessToken());
     }
 
-    isInRole(role: string): boolean {
+    constructor() { }
 
-        if (!this.user.roles)
+    isInRole(user: IUser, role: string): boolean {
+
+        if (!user.roles)
             return false;
         else
-            return this.user.roles.find(o => o.toLowerCase() === role.toLowerCase()) !== undefined;
+            return user.roles.find(o => o.toLowerCase() === role.toLowerCase()) !== undefined;
 
     }
 
     login(credentials: ICredential) {
-
-        let data = credentials;
-
-        let defer = new Promise<boolean>(() => { });
 
         let onSuccess = (res: AxiosResponse) => {
 
             let payload: IPayload<IAccessToken> = res.data;
 
             if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+
                 let token = payload.data.access_token;
+                let user = parseUserToken(token);
 
                 localStorage.setItem(AuthenticationHelper.AccessTokenKey, token);
-                this.updateUser(token);
-                EventBus.$emit(EventBus.global.login, Object.assign({}, this.user));
 
-                return true;
+                return user;
             } else {
                 throw new Error(payload.message.text);
             }
         }
 
-        return Axios.post(LOGIN_URL, data)
+        return Axios.post(LOGIN_URL, credentials)
             .then(onSuccess);
     }
 
-    logout() {
+    logout(): IUser {
 
         localStorage.removeItem(AuthenticationHelper.AccessTokenKey)
-        this.updateUser(null);
-        EventBus.$emit(EventBus.global.logout, Object.assign({}, this.user));
 
+        return { authenticated: false, email: null, name: null, username: null, roles: [] };
     }
 
     validateUsername(userName: string) {
@@ -94,67 +104,39 @@ export class AuthenticationHelper implements IClaimsHelper {
 
         return Axios.get(VALIDATEUSERNAME_URL, config)
             .then(onSuccess);
-
     }
 
     signup(signup: ISignupOptions) {
-
-        let data = signup;
 
         let onSuccess = (res: AxiosResponse) => {
 
             let payload: IPayload<IAccessToken> = res.data;
 
             if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+
                 let token = payload.data.access_token;
-
+                let user = parseUserToken(token);
+                
                 localStorage.setItem(AuthenticationHelper.AccessTokenKey, token);
-                this.updateUser(token);
-                EventBus.$emit(EventBus.global.login, Object.assign({}, this.user));
 
-                return true;
+                return user;
             } else {
                 throw new Error(payload.message.text);
             }
         }
 
-        return Axios.post(SIGNUP_URL, data)
+        return Axios.post(SIGNUP_URL, signup)
             .then(onSuccess);
-
-    }
-
-    private updateUser(token: string): void {
-
-        let user = this.user;
-
-        if (token) {
-            let decodedToken: IJwtToken = jwtDecode(token);
-
-            if (!user.authenticated)
-                user.authenticated = true;
-
-            let name = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
-            let roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-
-            user.displayName = name ? name[1] : null;
-            user.email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || null;
-            user.name = user.email;
-            user.roles = Array.isArray(roles) ? roles : [roles];
-
-        } else {
-            this.clearUserData(user);
-        }
-
     }
 
     getAuthHeader() {
 
         return {
+
             'Authorization': 'Bearer ' + localStorage.getItem(AuthenticationHelper.AccessTokenKey)
         }
 
     }
 }
-
 
 export default AuthenticationHelper;

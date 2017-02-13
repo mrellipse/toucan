@@ -1,10 +1,11 @@
 import Vue = require('vue');
+import { Store } from 'vuex';
 import Component from 'vue-class-component';
 import { IVuelidate, ValidationRuleset, Vuelidate, validationMixin } from 'vuelidate';
-
 import { AuthenticationHelper } from '../../helpers';
-import { ISignupOptions } from '../../model';
+import { ISignupOptions, IUser } from '../../model';
 import { IRouterMixinData } from '../../mixins/mixin-router';
+import { StoreTypes } from '../../store';
 import { validations, TSignup } from './signup-validate';
 
 @Component({
@@ -37,12 +38,16 @@ export class Signup extends Vue {
 
             let signup = Object.assign({}, this.signup);
 
-            let onSuccess = (o: boolean) => {
-                this.$router.push({ name: 'home' });
+            let onSignup = (value: IUser) => {
+                this.$store.dispatch(StoreTypes.updateUser, value);
             }
 
+            let onStoreDispatch = (o) => {
+                this.$router.push({ name: 'home' });
+            };
+
             this.auth.signup(signup)
-                .then(onSuccess);
+                .then(onSignup);
         }
     }
 
@@ -54,6 +59,8 @@ export class Signup extends Vue {
     };
 
     $router: IRouterMixinData;
+
+    $store: Store<{}>;
 
     $v: Vuelidate<TSignup>
 }

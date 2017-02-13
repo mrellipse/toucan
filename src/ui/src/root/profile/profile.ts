@@ -1,24 +1,17 @@
 import Vue = require('vue');
 import Component from 'vue-class-component';
+import { State } from 'vuex-class';
 import { Formatter } from 'vue-i18n';
 import { AuthenticationHelper } from '../../helpers';
 import { IUser } from '../../model';
+import { IRootStoreState } from '../store';
 
 @Component({
   template: require('./profile.html')
 })
 export class Profile extends Vue {
 
-  created() {
-    this.updateUser();
-  }
-
-  private updateUser() {
-    let auth = new AuthenticationHelper();
-    this.user = Object.assign({}, auth.user);
-  }
-
-  user: IUser = { authenticated: false, email: null, name: null, username: null, roles: [] };
+  @State((state: IRootStoreState) => state.common.user) user: IUser;
 
   $t: Formatter
 }

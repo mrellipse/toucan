@@ -1,4 +1,6 @@
 
+import { IUser } from '../../model';
+
 export interface IClaimsHelper {
-    isInRole(role: string): boolean;
+    isInRole(user:IUser, role: string): boolean;
 }

@@ -1,13 +1,15 @@
 import Vue = require('vue');
 import Component from 'vue-class-component';
+import { Store } from 'vuex';
+import { State } from 'vuex-class';
 import { Formatter } from 'vue-i18n';
 import { SupportedLocales } from '../../locales';
 import { IUser } from '../../model';
-import { EventBus } from '../../events';
 import { debounce } from '../../helpers/debounce';
 import { AuthenticationHelper } from '../../helpers';
-import { RouteNames } from '../routes/route-names'
 import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
+import { RouteNames } from '../routes/route-names'
+import { IAdminStoreState, RootStoreTypes } from '../store';
 
 @Component({
   template: require('./navigation.html')
@@ -16,11 +18,12 @@ export class AreaNavigation extends Vue implements IRouterMixin {
 
   private auth: AuthenticationHelper;
 
+  @State((state: IAdminStoreState) => state.common.user) user: IUser;
+
   changeLocale(lang: string, e: Event) {
 
     if (lang !== this.$lang) {
       (<any>Vue.config).lang = lang;
-      EventBus.$emit(EventBus.global.localeChange, lang);
       this.$router.replace(this.$route.path);
     }
 
@@ -28,16 +31,6 @@ export class AreaNavigation extends Vue implements IRouterMixin {
 
   created() {
     this.auth = new AuthenticationHelper();
-
-    if (this.auth.user.authenticated)
-      this.user = Object.assign({}, this.auth.user);
-
-    let user = this.user;
-
-    EventBus.$on(EventBus.global.logout, (data: IUser) => {
-      this.auth.clearUserData(this.user);
-    });
-
   }
 
   get locales() {
@@ -45,7 +38,13 @@ export class AreaNavigation extends Vue implements IRouterMixin {
   }
 
   logout(e: Event) {
-    this.auth.logout();
+
+    let user = this.auth.logout();
+    this.$store.dispatch(RootStoreTypes.common.updateUser, user).then(() => 
+    {
+      this.$router.push('/');
+    });
+    
   }
 
   showSearchInput() {
@@ -80,19 +79,15 @@ export class AreaNavigation extends Vue implements IRouterMixin {
 
   $router: IRouterMixinData;
 
+  $store: Store<IAdminStoreState>;
+
   $t: Formatter
 
-  searchOptions: ISearchOptions = {
+  searchOptions = {
     searchText: '',
     showInput: false
   }
 
-  user: IUser = { authenticated: false, username: null, roles: [] };
-}
-
-interface ISearchOptions {
-  searchText: string;
-  showInput: boolean;
 }
 
 export default AreaNavigation;

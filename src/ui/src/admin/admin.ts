@@ -1,17 +1,21 @@
 import Vue = require('vue');
-import { ComponentOptions } from 'vue';
+import Vuex = require('vuex');
 import VueRouter = require('vue-router');
 import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
 import { default as Axios } from 'axios';
-import { Loader } from '../components/loader/loader';
-import { EventBus } from '../events';
-import { Locales } from '../locales';
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
+import { AuthenticationHelper } from '../helpers';
+import { RootStoreTypes } from './store';
+import { Loader } from '../components';
+import { Locales } from '../locales';
 import { AreaNavigation } from './navigation/navigation';
 import { AreaFooter } from './footer/footer';
 
+Vue.use(Vuex);
+
 import './admin.scss';
+import { Store } from './store/store';
 
 Vue.use(<any>VueI18n); // languages
 
@@ -38,17 +42,18 @@ export const app = new Vue({
     Navigation: AreaNavigation
   },
 
-  mixins: [],
+  store: Store,
 
   created() {
-    EventBus.$on(EventBus.global.loading, (isLoading) => {
-      (<any>this).isLoading = isLoading;
-    });
+    let token = AuthenticationHelper.getAccessToken();
+    
+    Store.dispatch(RootStoreTypes.common.updateUser, token);
+    Store.dispatch(RootStoreTypes.common.loadingState, false);
   },
 
-  data() {
-    return {
-      isLoading: false
-    };
+  computed: {
+
+    isLoading: () => Store.state.common.isLoading
   }
+
 }).$mount('#app');
