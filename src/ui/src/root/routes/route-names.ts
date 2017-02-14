@@ -9,6 +9,5 @@ export const RouteNames = {
   profile: 'profile',
   root: 'root',
   search: 'search',
-  searchText: 'searchText',
   signup: 'signup'
 }

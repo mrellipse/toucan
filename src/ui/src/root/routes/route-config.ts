@@ -27,12 +27,12 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
             },
             {
                 component: Search,
-                name: RouteNames.searchText,
+                name: RouteNames.search,
                 path: '/search/:searchText'
             },
             {
                 component: Search,
-                name: RouteNames.search,
+                name: RouteNames.search + 'default',
                 path: '/search'
             }
         ]
