@@ -1,7 +1,17 @@
 <main class="container-fluid">
-  <h1 v-if="!authenticated" class="mb-2">{{$t('home.title.begin')}} <img src="~assets/images/logo.png" height="36" alt=""> {{$t('home.title.end')}}</h1>
-  <h1 v-if="authenticated" class="mb-2"><img src="~assets/images/logo.png" height="36" alt=""> {{displayName}} {{$t('dict.project')}}</h1>
-  <div v-html="$t('home.body[0]')"></div>
-  <div v-html="$t('home.body[1]')"></div>
-  <div v-html="$t('home.body[2]')"></div>
+  <div v-if="!authenticated">
+    <h1 class="mb-2">{{$t('home.title.begin')}} <img src="~assets/images/logo.png" height="36" alt=""> {{$t('home.title.end')}}</h1>
+    <div v-html="$t('home.body[0]')"></div>
+    <div v-html="$t('home.body[1]')"></div>
+    <div v-html="$t('home.body[2]')"></div>
+  </div>
+  <div v-if="authenticated && !isLoading">
+    <h1 class="mb-2"> {{$t('dict.hello')}} {{displayName}}</h1>
+    <p v-if="secureContent ">
+      {{secureContent}}
+    </p>
+    <p v-if="!secureContent">
+      {{$t('dict.errors.unanticipated')}}
+    </p>
+  </div>
 </main>

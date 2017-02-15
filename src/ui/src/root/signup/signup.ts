@@ -47,7 +47,8 @@ export class Signup extends Vue {
             };
 
             this.auth.signup(signup)
-                .then(onSignup);
+                .then(onSignup)
+                .then(onStoreDispatch);
         }
     }
 

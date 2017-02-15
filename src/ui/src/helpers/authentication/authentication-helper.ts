@@ -116,7 +116,7 @@ export class AuthenticationHelper implements IClaimsHelper {
 
                 let token = payload.data.access_token;
                 let user = parseUserToken(token);
-                
+
                 localStorage.setItem(AuthenticationHelper.AccessTokenKey, token);
 
                 return user;
@@ -129,13 +129,14 @@ export class AuthenticationHelper implements IClaimsHelper {
             .then(onSuccess);
     }
 
-    getAuthHeader() {
+    public static getBearerToken() {
 
+        let token = localStorage.getItem(AuthenticationHelper.AccessTokenKey);
+        
         return {
-
-            'Authorization': 'Bearer ' + localStorage.getItem(AuthenticationHelper.AccessTokenKey)
-        }
-
+            Authorization: token? 'Bearer ' + localStorage.getItem(AuthenticationHelper.AccessTokenKey) : null
+        };
+        
     }
 }
 

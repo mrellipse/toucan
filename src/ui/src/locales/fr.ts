@@ -1,7 +1,11 @@
 export const fr = {
     dict: {
+        errors: {
+            unanticipated: 'Une erreur imprévue s\'est produite'
+        },
         header: 'Entête',
         heading: 'Titre',
+        hello: 'Salut',
         label: 'Étiquette',
         link: 'Hyperlien',
         notImplemented: 'Pas mis en œuvre',

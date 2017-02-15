@@ -1,7 +1,11 @@
 export const en = {
     dict: {
+        errors: {
+            unanticipated: 'An unanticipated error has occured'
+        },
         header: 'Header',
         heading: 'Heading',
+        hello: 'Hello',
         label: 'Label',
         link: 'Link',
         notImplemented: 'Not Implemented',

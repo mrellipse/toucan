@@ -32,6 +32,18 @@ Vue.use(VueRouter); // router
 const router = new VueRouter(RouterOptions);
 router.beforeEach(RouteGuards(RouteNames.login));
 
+Axios.interceptors.request.use((config) => {  // client authorization header
+
+  if(!config.headers['Authorization']){
+    let bearerToken = AuthenticationHelper.getBearerToken();
+
+    if(bearerToken.Authorization)
+      Object.assign(config.headers, bearerToken);
+  }
+
+  return config;
+});
+
 export const app = new Vue({
 
   components: {

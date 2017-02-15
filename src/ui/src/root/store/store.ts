@@ -5,7 +5,9 @@ import { IRootStoreState } from './state';
 import { CommonModule } from '../../store';
 
 export const Store = new VuexStore<IRootStoreState>({
-    state: {},
+    state: {
+        secureContent: null
+    },
     actions: Actions,
     mutations: Mutations,
     modules: {
