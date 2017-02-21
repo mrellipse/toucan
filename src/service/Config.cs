@@ -8,5 +8,6 @@ namespace Toucan.Service
         }
 
         public TokenProviderConfig TokenProvider { get; set; }
+        public ExternalProviderConfig[] AuthenticationProviders { get; set; }
     }
 }

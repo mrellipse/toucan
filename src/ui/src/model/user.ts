@@ -5,6 +5,7 @@ export interface IUser {
     name?: string;
     roles: string[];
     username: string;
+    verified?: boolean;
 }
 
 export const UserRoles = {

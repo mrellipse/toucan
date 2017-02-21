@@ -5,7 +5,9 @@ export const RouteNames = {
     dashboard: 'admin.dashboard'
   },
   home: 'home',
-  login: 'login',
+  login: {
+    home: 'login'
+  },
   profile: 'profile',
   root: 'root',
   search: 'search',

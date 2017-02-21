@@ -6,11 +6,11 @@ namespace Toucan.Contract
     public interface ILocalAuthenticationService
     {
         Task<ClaimsIdentity> ResolveUser(string username, string password);
-        Task<ClaimsIdentity> SignupUser(ISignupOptions options);
-        Task<bool> ValidateUsername(string username);
+        Task<ClaimsIdentity> SignupUser(ILocalSignupOptions options);
+        Task<bool> ValidateUser(string username);
     }
 
-    public interface ISignupOptions
+    public interface ILocalSignupOptions
     {
         string Username { get; }
         bool Enabled { get; }

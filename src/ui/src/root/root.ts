@@ -5,7 +5,7 @@ import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
 import { default as Axios } from 'axios';
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
-import { AuthenticationHelper } from '../helpers';
+import { TokenHelper } from '../common';
 import { RootStoreTypes } from './store';
 import { Loader } from '../components';
 import { Locales } from '../locales';
@@ -30,14 +30,14 @@ Vue.use(Vuelidate.default); // validation
 Vue.use(VueRouter); // router
 
 const router = new VueRouter(RouterOptions);
-router.beforeEach(RouteGuards(RouteNames.login));
+router.beforeEach(RouteGuards(RouteNames.login.home));
 
 Axios.interceptors.request.use((config) => {  // client authorization header
 
-  if(!config.headers['Authorization']){
-    let bearerToken = AuthenticationHelper.getBearerToken();
+  if (!config.headers['Authorization']) {
+    let bearerToken = TokenHelper.getBearerToken();
 
-    if(bearerToken.Authorization)
+    if (bearerToken.Authorization)
       Object.assign(config.headers, bearerToken);
   }
 
@@ -58,10 +58,23 @@ export const app = new Vue({
 
   created() {
 
-    let token = AuthenticationHelper.getAccessToken();
-    
+    let token = TokenHelper.getAccessToken();
+
     Store.dispatch(RootStoreTypes.common.updateUser, token);
     Store.dispatch(RootStoreTypes.common.loadingState, false);
+
+    // check if location hash has state/nonce value ...
+    if (location.hash && location.hash.indexOf("state") != -1) {
+
+      let hash = location.hash.substring(1);
+
+      if (hash.indexOf("access_token") != -1 || hash.indexOf("error") != -1) {
+        router.push({
+          name: RouteNames.login.home,
+          query: { hash: hash }
+        });
+      }
+    }
   },
 
   computed: {

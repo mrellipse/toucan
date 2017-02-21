@@ -2,7 +2,7 @@ using Toucan.Contract;
 
 namespace Toucan.Service.Model
 {
-    public class SignupOptions : ISignupOptions
+    public class LocalSignupOptions : ILocalSignupOptions
     {
         public string Username { get; set; }
         public bool Enabled { get; set; }

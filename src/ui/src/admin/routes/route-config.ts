@@ -9,6 +9,11 @@ import { RouteNames } from './route-names';
 
 export const RouteConfig: VueRouter.RouteConfig[] = [
     {
+        component: Login,
+        name: RouteNames.login,
+        path: '/login'
+    },
+    {
         component: AreaLayout,
         name: RouteNames.home,
         path: '/',
@@ -24,17 +29,17 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
             {
                 component: SiteReports,
                 name: RouteNames.siteReports,
-                path: 'reports'
-            },            
+                path: '/reports'
+            },
             {
                 component: SiteSettings,
                 name: RouteNames.siteSettings,
-                path: 'site'
+                path: '/site'
             },
             {
                 component: Search,
                 name: RouteNames.search,
-                path: 'search/:searchText'
+                path: '/search/:searchText'
             },
             {
                 component: Search,
@@ -42,11 +47,6 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
                 path: '/search'
             }
         ]
-    },
-    {
-        component: Login,
-        name: RouteNames.login,
-        path: '/login'
     },
     {
         component: PageNotFound,

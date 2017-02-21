@@ -1,5 +1,5 @@
 {
     "applicationName": "Toucan",
     "environment": "Development",
-    "urls": "http://localhost:5000"
+    "urls": "https://localhost:5000"
 }

@@ -1,10 +1,12 @@
 import Vue = require('vue');
 import { NavigationGuard, RawLocation, Route, RouteRecord } from 'vue-router';
-import { AuthenticationHelper, IClaimsHelper } from '../helpers';
+import { AuthenticationService, IClaimsHelper } from '../services';
 import { IUser } from '../model';
 import { IRouteMeta } from './route-meta';
 
-function routeCheck(user: IUser, helper: IClaimsHelper, meta: IRouteMeta): boolean {
+function routeCheck(helper: IClaimsHelper, meta: IRouteMeta): boolean {
+
+    let user = AuthenticationService.getUser();
 
     if (!meta.private && !meta.roles)
         return false;
@@ -23,10 +25,9 @@ export function RouteGuards(loginPageName: string): NavigationGuard {
 
     let fn = (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
 
-        let auth = new AuthenticationHelper();
-        let user = AuthenticationHelper.getUserFromAccessToken();
-
-        if (to.matched.some(r => routeCheck(user, auth, r.meta))) {
+        let auth = new AuthenticationService();
+        
+        if (to.matched.some(r => routeCheck(auth, r.meta))) {
 
             let sendTo: RawLocation = {
                 name: loginPageName,

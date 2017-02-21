@@ -30,13 +30,13 @@ namespace Toucan.Service
             if (login != null)
             {
                 if (this.crypto.CheckKey(login.PasswordHash, login.PasswordSalt, password))
-                    return Task.FromResult(MapUserToClaimsIdentity(login.User));
+                    return Task.FromResult(login.User.ToClaimsIdentity());
             }
 
             return Task.FromResult<ClaimsIdentity>(null);
         }
 
-        public async Task<ClaimsIdentity> SignupUser(ISignupOptions options)
+        public async Task<ClaimsIdentity> SignupUser(ILocalSignupOptions options)
         {
             UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)
                                              where p.User.Username == options.Username
@@ -67,20 +67,19 @@ namespace Toucan.Service
                 Provider = db.Provider.FirstOrDefault(o => o.ProviderId == ProviderTypes.Local)
             });
 
-            foreach (string roleId in options.Roles)
+            Role role = db.Role.FirstOrDefault(o => o.RoleId == RoleTypes.User);
+
+            user.Roles.Add(new UserRole()
             {
-                db.UserRole.Add(new UserRole()
-                {
-                    User = user,
-                    RoleId = roleId
-                });
-            }
+                User = user,
+                Role = role
+            });
 
             db.SaveChanges();
 
-            return MapUserToClaimsIdentity(user);
+            return user.ToClaimsIdentity();
         }
-        public async Task<bool> ValidateUsername(string username)
+        public async Task<bool> ValidateUser(string username)
         {
             UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)
                                              where p.User.Username == username
@@ -89,24 +88,5 @@ namespace Toucan.Service
             return login == null;
         }
 
-        private static ClaimsIdentity MapUserToClaimsIdentity(User user)
-        {
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Email, user.Username));
-            claims.Add(new Claim(ClaimTypes.Name, user.DisplayName));
-            
-            var roles = (from r in user.Roles
-                         select new Claim(ClaimTypes.Role, r.RoleId)).ToArray();
-
-            if (roles.Length == 0)
-                roles = new Claim[] { new Claim(ClaimTypes.Role, RoleTypes.User) };
-
-            claims.AddRange(roles);
-
-            return new ClaimsIdentity(
-                new System.Security.Principal.GenericIdentity(user.Username, "Token"),
-                claims.ToArray()
-                );
-        }
     }
 }

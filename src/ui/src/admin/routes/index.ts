@@ -6,6 +6,6 @@ export { RouteGuards } from '../../routes/route-guards';
 
 export const RouterOptions: VueRouterOptions = {
   routes: RouteConfig,
-  mode: 'hash',
+  mode: 'history',
   linkActiveClass: 'active'
 };

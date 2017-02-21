@@ -1,5 +1,5 @@
 import { Store, ActionContext, ActionTree } from 'vuex';
-import { parseUserToken } from '../helpers';
+import { TokenHelper } from '../common';
 import { IUser } from '../model';
 import { ICommonState } from './state';
 import { StoreTypes } from './types';
@@ -16,7 +16,7 @@ export const Actions: ActionTree<ICommonState, any> = {
         let payload: IUser = null;
 
         if (typeof userData === 'string')
-            payload = parseUserToken(userData);
+            payload = TokenHelper.parseUserToken(userData);
         else
             payload = userData
 

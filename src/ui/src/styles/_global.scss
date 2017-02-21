@@ -25,3 +25,23 @@ html {
 body {
   padding-top: 5em;
 }
+
+.btn-primary {
+  background-color: $vue-green;
+  border-color: $vue-green;
+  color: $gray-lightest;
+}
+
+.btn-primary:disabled {
+  background-color: $vue-green;
+  border-color: $vue-green;
+}
+
+.btn-primary:hover {
+  background-color: $vue-green-dark;
+  border-color: $vue-green;
+}
+
+.card-title {
+    text-transform: capitalize;
+}

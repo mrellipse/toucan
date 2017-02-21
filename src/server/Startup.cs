@@ -20,13 +20,14 @@ namespace Toucan.Server
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             Config cfg = app.ApplicationServices.GetRequiredService<IOptions<Config>>().Value;
+            string webRoot = new DirectoryInfo(cfg.Webroot).FullName;
 
             loggerFactory.AddConsole(LogLevel.Debug);
             loggerFactory.AddDebug();
 
             StaticFileOptions staticFileOptions = new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(new DirectoryInfo(cfg.Webroot).FullName)
+                FileProvider = new PhysicalFileProvider(webRoot)
             };
 
             app.UseDeveloperExceptionPage();
@@ -34,6 +35,7 @@ namespace Toucan.Server
             app.UseTokenBasedAuthentication(cfg.Service.TokenProvider);
             app.UseStaticFiles(staticFileOptions);
             app.UseMvc();
+            app.UseHtml5HistoryMode(webRoot, cfg.Areas);
             
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
@@ -52,7 +54,10 @@ namespace Toucan.Server
 
             services.AddOptions();
             services.Configure<Config>(WebApp.Configuration); // root web configuration
+            var svcCFG = WebApp.Configuration.GetSection("service");
             services.Configure<Toucan.Service.Config>(WebApp.Configuration.GetSection("service")); // services configuration
+
+            var tokenCfg = WebApp.Configuration.GetSection("service:tokenProvider");
             services.Configure<Toucan.Service.TokenProviderConfig>(WebApp.Configuration.GetSection("service:tokenProvider")); // token provider configuration
             services.Configure<Toucan.Data.Config>(WebApp.Configuration.GetSection("data")); // configuration
             services.ConfigureMvc();

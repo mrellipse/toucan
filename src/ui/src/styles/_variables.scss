@@ -49,7 +49,7 @@ $brand-info:                #5bc0de !default;
 $brand-warning:             #f0ad4e !default;
 $brand-danger:              #d9534f !default;
 $brand-inverse:             $gray-dark !default;
-
+ 
 
 // Options
 //
@@ -849,3 +849,7 @@ $pre-bg:                      #f7f7f9 !default;
 $pre-color:                   $gray-dark !default;
 $pre-border-color:            #ccc !default;
 $pre-scrollable-max-height:   340px !default;
+
+// globally available
+$vue-green: #41b883;
+$vue-green-dark: #309669;

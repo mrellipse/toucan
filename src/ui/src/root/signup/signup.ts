@@ -2,7 +2,7 @@ import Vue = require('vue');
 import { Store } from 'vuex';
 import Component from 'vue-class-component';
 import { IVuelidate, ValidationRuleset, Vuelidate, validationMixin } from 'vuelidate';
-import { AuthenticationHelper } from '../../helpers';
+import { AuthenticationService } from '../../services';
 import { ISignupOptions, IUser } from '../../model';
 import { IRouterMixinData } from '../../mixins/mixin-router';
 import { StoreTypes } from '../../store';
@@ -16,14 +16,14 @@ import { validations, TSignup } from './signup-validate';
 })
 export class Signup extends Vue {
 
-    private auth: AuthenticationHelper;
+    private auth: AuthenticationService;
 
     constructor() {
         super();
     }
 
     created() {
-        this.auth = new AuthenticationHelper;
+        this.auth = new AuthenticationService;
     }
 
     get allowSubmit() {
@@ -54,8 +54,8 @@ export class Signup extends Vue {
 
     signup: ISignupOptions = {
         confirmPassword: 'P@ssw0rd',
-        displayName: 'iota',
-        userName: 'iota@toucan.org',
+        displayName: null,
+        userName: null,
         password: 'P@ssw0rd'
     };
 

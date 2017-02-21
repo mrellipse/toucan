@@ -12,15 +12,37 @@ namespace Toucan.Data
         public static void EnsureSeedData(this ToucanContext db, ICryptoService crypto)
         {
             EnsureLocalProvider(db);
+            EnsureExternalProviders(db);
             User admin = EnsureAdmin(db, crypto);
             EnsureRoles(db);
+        }
+
+        private static Provider EnsureExternalProviders(ToucanContext db)
+        {
+            Provider provider = db.Provider.FirstOrDefault(o => o.ProviderId == ProviderTypes.Google);
+
+            if (provider == null)
+            {
+                provider = new Provider()
+                {
+                    ProviderId = ProviderTypes.Google,
+                    Name = "Google",
+                    Description = "Logon using your google account",
+                    Enabled = true
+                };
+
+                db.Provider.Add(provider);
+                db.SaveChanges();
+            }
+
+            return provider;
         }
 
         private static Provider EnsureLocalProvider(ToucanContext db)
         {
             Provider provider = db.Provider.FirstOrDefault(o => o.ProviderId == ProviderTypes.Local);
 
-            if (!db.Provider.Any())
+            if (provider == null)
             {
                 provider = new Provider()
                 {

@@ -2,7 +2,7 @@ import Vue = require('vue');
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
 import { Formatter } from 'vue-i18n';
-import { AuthenticationHelper } from '../../helpers';
+import { AuthenticationService } from '../../services';
 import { IUser } from '../../model';
 import { IRootStoreState } from '../store';
 

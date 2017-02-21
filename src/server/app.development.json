@@ -1,9 +1,20 @@
 {
     "webroot": ".\\wwwroot",
+    "areas": [
+        "admin"
+    ],
     "data": {
-        "connectionString": "Server=.;Database=ToucanTest;Trusted_Connection=True;"
+        "connectionString": "Server=(localdb)\\mssqllocaldb;Database=ToucanTest;Trusted_Connection=True;"
     },
     "service": {
+        "authenticationProviders": [
+            {
+                "clientId": "1012191853724-f9u0dcapj679ggokk5mblma4fbd77jmv.apps.googleusercontent.com",
+                "profileUri": "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token={0}",
+                "providerId": "GOOGLE",
+                "revokeUri": "https://accounts.google.com/o/oauth2/revoke?token={0}"
+            }
+        ],
         "tokenProvider": {
             "tokenSecurityKey": "heartyingsquawkingisrequiredofaparrotmateys",
             "tokenSecurityAlgorithm": "HS256",

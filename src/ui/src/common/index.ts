@@ -1,4 +1,4 @@
-export * from './authentication/authentication-helper';
+export * from './token-helper';
 export * from './debounce';
 export * from './message';
 export * from './pattern';

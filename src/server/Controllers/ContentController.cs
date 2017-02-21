@@ -13,21 +13,18 @@ namespace Toucan.Server.Controllers
     {
         public ContentController()
         {
-            
+
         }
 
         [HttpGet()]
         [Authorize()]
         public async Task<string> RikerIpsum()
         {
-            var task = new Task<string>(() => {
+            return await Task.Factory.StartNew(() =>
+            {
                 System.Threading.Thread.Sleep(1 * 1000);
                 return "That might've been one of the shortest assignments in the history of Starfleet. Shields up! Rrrrred alert! I think you've let your personal feelings cloud your judgement.";
             });
-            
-            task.Start();
-
-            return await task;
         }
     }
 }

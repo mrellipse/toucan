@@ -2,7 +2,7 @@
 
 namespace Toucan.Data.Model
 {
-    public class Signup : ISignupOptions
+    public class Signup : ILocalSignupOptions
     {
         public Signup()
         {

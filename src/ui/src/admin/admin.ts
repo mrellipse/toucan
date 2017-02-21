@@ -5,7 +5,7 @@ import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
 import { default as Axios } from 'axios';
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
-import { AuthenticationHelper } from '../helpers';
+import { TokenHelper } from '../common';
 import { RootStoreTypes } from './store';
 import { Loader } from '../components';
 import { Locales } from '../locales';
@@ -35,7 +35,7 @@ router.beforeEach(RouteGuards(RouteNames.login));
 Axios.interceptors.request.use((config) => { // client authorization header
 
   if(!config.headers['Authorization']){
-    let bearerToken = AuthenticationHelper.getBearerToken();
+    let bearerToken = TokenHelper.getBearerToken();
 
     if(bearerToken.Authorization)
       Object.assign(config.headers, bearerToken);
@@ -57,7 +57,7 @@ export const app = new Vue({
   store: Store,
 
   created() {
-    let token = AuthenticationHelper.getAccessToken();
+    let token = TokenHelper.getAccessToken();
     
     Store.dispatch(RootStoreTypes.common.updateUser, token);
     Store.dispatch(RootStoreTypes.common.loadingState, false);

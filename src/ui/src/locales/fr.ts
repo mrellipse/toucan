@@ -45,6 +45,11 @@ export const fr = {
     login: {
         title: 's\'identifier',
         instruction: 'Connectez-vous à votre compte',
+        provider: {
+            local: 'ce site',
+            google: 'google',
+            microsoft: 'microsoft'
+        },
         placeholder: {
             email: 'Entrer votre Email',
             password: 'Tapez votre mot de passe'
@@ -95,8 +100,9 @@ export const fr = {
         minLength: 'Doit contenir au moins {0} caractères',
         sameAs: 'Doit correspondre {0}',
         login: {
+            EmailAddressInUse: 'L\'adresse e-mail est déjà utilisée',
             FailedToResolveUser: 'Nom d\'utilisateur ou mot de passe incorrect',
-            EmailAddressInUse: 'L\'adresse e-mail est déjà utilisée'
+            Network: 'Erreur de réseau'
         }
     }
 };

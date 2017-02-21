@@ -1,0 +1,18 @@
+@import "../../styles/variables";
+
+.login-provider {
+
+    .btn {
+        min-width: 8em;
+    }
+
+    .card {
+        @media (max-width: 768px)  {
+            margin-top: 0.5em;
+        }
+    }
+}
+
+
+
+

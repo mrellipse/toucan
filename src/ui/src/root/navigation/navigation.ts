@@ -5,8 +5,8 @@ import { State } from 'vuex-class';
 import { Formatter } from 'vue-i18n';
 import { SupportedLocales } from '../../locales';
 import { IUser, UserRoles } from '../../model';
-import { debounce } from '../../helpers/debounce';
-import { AuthenticationHelper } from '../../helpers';
+import { debounce } from '../../common/debounce';
+import { AuthenticationService } from '../../services';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { RouteNames } from '../routes';
 import { IRootStoreState, RootStoreTypes } from '../store';
@@ -16,7 +16,7 @@ import { IRootStoreState, RootStoreTypes } from '../store';
 })
 export class AreaNavigation extends Vue {
 
-  private auth: AuthenticationHelper;
+  private auth: AuthenticationService;
 
   @State((state: IRootStoreState) => state.common.user) user: IUser;
 
@@ -29,7 +29,7 @@ export class AreaNavigation extends Vue {
   }
 
   created() {
-    this.auth = new AuthenticationHelper();
+    this.auth = new AuthenticationService();
   }
 
   get isInAdminRole() {

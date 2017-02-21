@@ -45,6 +45,11 @@ export const en = {
     login: {
         title: 'Log In',
         instruction: 'Log in to your account.',
+        provider: {
+            local: 'local',
+            google: 'google',
+            microsoft: 'microsoft'
+        },
         placeholder: {
             email: 'Enter your email',
             password: 'Enter your password'
@@ -54,7 +59,7 @@ export const en = {
         }
     },
     navigation: {
-        admin : 'Admin',
+        admin: 'Admin',
         dashboard: 'Dashboard',
         home: 'Home',
         login: 'Login',
@@ -95,8 +100,11 @@ export const en = {
         minLength: 'Must be at least {0} characters',
         sameAs: 'Must match {0}',
         login: {
+            EmailAddressInUse: 'Email address is already being used',
+            InvalidAccessToken: 'Invalid access token',
+            InvalidNonce: 'Invalid nonce',
             FailedToResolveUser: 'Invalid username or password',
-            EmailAddressInUse: 'Email address is already being used'
+            Network: 'Network error'
         }
     }
 };

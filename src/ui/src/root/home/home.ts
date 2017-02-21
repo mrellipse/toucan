@@ -3,12 +3,12 @@ import { Store } from 'vuex';
 import Component from 'vue-class-component';
 import { Formatter } from 'vue-i18n';
 import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { AuthenticationHelper, IClaimsHelper } from '../../helpers';
+import { AuthenticationService, IClaimsHelper } from '../../services';
 import { State } from 'vuex-class';
 import { IRootStoreState, RootStoreTypes } from '../store';
 
 // URL and endpoint constants
-const API_URL = 'http://localhost:5000/api/';
+const API_URL = 'https://localhost:5000/api/';
 const RIKER_IPSUM = API_URL + 'content/rikeripsum';
 
 @Component({

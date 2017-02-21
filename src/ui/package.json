@@ -14,7 +14,9 @@
     "lint:js": "./node_modules/.bin/eslint src; exit 0;"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
     "bootstrap": "^4.0.0-alpha.6",
+    "client-oauth2": "^3.4.1",
     "font-awesome": "^4.7.0",
     "vue": "^2.0.5",
     "vue-i18n": "^4.10.0",

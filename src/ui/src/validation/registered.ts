@@ -1,5 +1,6 @@
 import { IPayload } from '../model';
-import { AuthenticationHelper, PayloadMessageTypes } from '../helpers';
+import { PayloadMessageTypes } from '../common';
+import {AuthenticationService } from '../services';
 
 export function registered(username: string) {
 
@@ -7,9 +8,9 @@ export function registered(username: string) {
         return payload.message.messageTypeId !== PayloadMessageTypes.failure;
     }
 
-    let auth = new AuthenticationHelper();
+    let auth = new AuthenticationService();
 
-    return (<any>auth.validateUsername(username))
+    return (<any>auth.validateUser(username))
         .then(onSuccess);
 };
 

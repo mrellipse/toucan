@@ -6,6 +6,6 @@ export { RouteNames } from './route-names';
 
 export const RouterOptions: VueRouterOptions = {
   routes: RouteConfig,
-  mode: 'hash',
+  mode: 'history',
   linkActiveClass: 'active'
 };

@@ -5,8 +5,8 @@ import { State } from 'vuex-class';
 import { Formatter } from 'vue-i18n';
 import { SupportedLocales } from '../../locales';
 import { IUser } from '../../model';
-import { debounce } from '../../helpers/debounce';
-import { AuthenticationHelper } from '../../helpers';
+import { debounce } from '../../common/debounce';
+import { AuthenticationService } from '../../services';
 import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { RouteNames } from '../routes/route-names'
 import { IAdminStoreState, RootStoreTypes } from '../store';
@@ -16,7 +16,7 @@ import { IAdminStoreState, RootStoreTypes } from '../store';
 })
 export class AreaNavigation extends Vue implements IRouterMixin {
 
-  private auth: AuthenticationHelper;
+  private auth: AuthenticationService;
 
   @State((state: IAdminStoreState) => state.common.user) user: IUser;
 
@@ -30,7 +30,7 @@ export class AreaNavigation extends Vue implements IRouterMixin {
   }
 
   created() {
-    this.auth = new AuthenticationHelper();
+    this.auth = new AuthenticationService();
   }
 
   get locales() {

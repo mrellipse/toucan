@@ -9,8 +9,10 @@ namespace Toucan.Service
         public ContainerRegistry()
         {
             For<ICryptoService>().Use<CryptoHelper>();
+            For<IExternalAuthenticationService>().Use<ExternalAuthenticationService>();
             For<ILocalAuthenticationService>().Use<LocalAuthenticationService>();
             For<ITokenProviderService<Token>>().Use<TokenProviderService>();
+            For<IExternalAuthenticationProvider>().Add<GoogleAuthenticationProvider>();
         }
     }
 }

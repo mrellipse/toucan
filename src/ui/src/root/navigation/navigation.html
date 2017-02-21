@@ -24,7 +24,7 @@
           <a class="nav-link" :title="user.displayName"><i class="fa fa-user"></i> {{$t('navigation.profile')}}</a>
         </router-link>
         <li class="nav-item">
-          <a class="nav-link" href="/admin.html" v-if="isInAdminRole"><i class="fa fa-tachometer"></i> {{$t('navigation.admin')}}</a>
+          <a class="nav-link" href="/admin/" v-if="isInAdminRole"><i class="fa fa-tachometer"></i> {{$t('navigation.admin')}}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#" v-if="user.authenticated" @click.prevent="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>

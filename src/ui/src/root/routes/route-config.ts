@@ -39,7 +39,7 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
     },
     {
         component: Login,
-        name: RouteNames.login,
+        name: RouteNames.login.home,
         path: '/login'
     },
     {
