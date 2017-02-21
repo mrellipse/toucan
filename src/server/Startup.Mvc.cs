@@ -26,13 +26,22 @@ namespace Toucan.Server
         {
             app.Use(async (context, next) =>
             {
-                string area = context.Request.Path.ToString().Split('/')[1];
-                string fileName = fileName = $"{webRoot}\\index.html";
+                string path = context.Request.Path.ToString();
 
-                if (areas.Any(o => string.Equals(o, area, StringComparison.CurrentCultureIgnoreCase)))
-                    fileName = $"{webRoot}\\{area.ToLower()}.html";
-                
-                await context.Response.SendFileAsync(new FileInfo(fileName));
+                if (!path.EndsWith(".ico"))
+                {
+                    string area = path.ToString().Split('/')[1];
+                    string fileName = fileName = $"{webRoot}\\index.html";
+
+                    if (!string.IsNullOrEmpty(area) && areas.Any(o => string.Equals(o, area, StringComparison.CurrentCultureIgnoreCase)))
+                        fileName = $"{webRoot}\\{area.ToLower()}.html";
+
+                    await context.Response.SendFileAsync(new FileInfo(fileName));
+                }
+                else
+                {
+                    await next.Invoke();
+                }
             });
         }
 

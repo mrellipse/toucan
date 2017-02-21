@@ -66,7 +66,7 @@ export class Login extends Vue implements IRouterMixin {
             password: this.password
         }
 
-        let redirectTo: RawLocation = this.$route.query['redirect'] || { name: 'home' };
+        let returnUrl: RawLocation = this.$route.query['returnUrl'] || { name: 'home' };
 
         if (this.errorKey) {
             this.errorKey = null;
@@ -83,7 +83,7 @@ export class Login extends Vue implements IRouterMixin {
         }
 
         let onStoreDispatch = (o) => {
-            this.$router.push(redirectTo);
+            this.$router.push(returnUrl);
         };
 
         this.auth.login(credentials)
@@ -105,8 +105,9 @@ export class Login extends Vue implements IRouterMixin {
 
                 this.provider.access_token = null;
                 this.provider.responseUri = null;
-                this.provider.providerId = providerId;
                 this.provider.nonce = nonce;
+                this.provider.providerId = providerId;
+                this.provider.returnUri = this.$route.query['returnUrl'] || null;
                 this.provider.uri = client.getUri(Object.assign({}, this.provider));
             };
 
@@ -127,11 +128,11 @@ export class Login extends Vue implements IRouterMixin {
 
             provider.access_token = token;
 
-            let redirectTo: RawLocation = this.$route.query['redirect'] || { name: 'home' };
+            let returnUrl: RawLocation = provider.returnUri || { name: 'home' };
 
             let onSuccess = (user: IUser) => {
                 this.$store.dispatch(StoreTypes.updateUser, user);
-                this.$router.push(redirectTo);
+                this.$router.push(returnUrl);
             };
 
             let onError = (error: { message: string }) => {
@@ -156,9 +157,9 @@ export class Login extends Vue implements IRouterMixin {
         }
     }
 
-    provider: ILoginProvider = { nonce: null, providerId: null, uri: null, responseUri: null };
+    provider: ILoginProvider = { nonce: null, providerId: null, uri: null, responseUri: null, returnUri: null };
 
-    password: string = 'password';
+    password: string = 'P@ssword';
 
     username: string = 'webmaster@toucan.org';
 

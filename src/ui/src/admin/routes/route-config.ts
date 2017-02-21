@@ -15,7 +15,6 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
     },
     {
         component: AreaLayout,
-        name: RouteNames.home,
         path: '/',
         meta: {
             roles: [UserRoles.Admin]

@@ -31,7 +31,7 @@ export function RouteGuards(loginPageName: string): NavigationGuard {
 
             let sendTo: RawLocation = {
                 name: loginPageName,
-                query: { redirect: to.fullPath }
+                query: { returnUrl: to.fullPath }
             };
 
             next(sendTo);

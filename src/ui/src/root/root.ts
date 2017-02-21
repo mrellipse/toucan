@@ -3,9 +3,8 @@ import Vuex = require('vuex');
 import VueRouter = require('vue-router');
 import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
-import { default as Axios } from 'axios';
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
-import { TokenHelper } from '../common';
+import { TokenHelper, UseAxios } from '../common';
 import { RootStoreTypes } from './store';
 import { Loader } from '../components';
 import { Locales } from '../locales';
@@ -32,17 +31,7 @@ Vue.use(VueRouter); // router
 const router = new VueRouter(RouterOptions);
 router.beforeEach(RouteGuards(RouteNames.login.home));
 
-Axios.interceptors.request.use((config) => {  // client authorization header
-
-  if (!config.headers['Authorization']) {
-    let bearerToken = TokenHelper.getBearerToken();
-
-    if (bearerToken.Authorization)
-      Object.assign(config.headers, bearerToken);
-  }
-
-  return config;
-});
+UseAxios(router);
 
 export const app = new Vue({
 

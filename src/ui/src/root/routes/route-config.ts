@@ -9,7 +9,6 @@ import { RouteNames } from './route-names';
 export const RouteConfig: VueRouter.RouteConfig[] = [
     {
         component: AreaLayout,
-        name: RouteNames.root,
         path: '/',
         children: [
              {
