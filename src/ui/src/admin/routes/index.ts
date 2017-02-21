@@ -5,7 +5,8 @@ export { RouteNames } from './route-names';
 export { RouteGuards } from '../../routes/route-guards';
 
 export const RouterOptions: VueRouterOptions = {
-  routes: RouteConfig,
+  base: '/admin/',
   mode: 'history',
-  linkActiveClass: 'active'
+  linkActiveClass: 'active',
+  routes: RouteConfig,
 };

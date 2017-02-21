@@ -73,11 +73,19 @@ export class AuthenticationService implements IClaimsHelper {
             .then(onSuccess);
     }
 
-    logout(): IUser {
+    logout(): Promise<IUser> {
 
-        TokenHelper.removeAccessToken();
+        let promise: Promise<IUser> = null;
 
-        return { authenticated: false, email: null, name: null, username: null, roles: [] };
+        let user = { authenticated: false, email: null, name: null, username: null, roles: [], verified: false };
+        try {
+            TokenHelper.removeAccessToken();
+            promise = Promise.resolve(user);
+        } catch (e) {
+            promise = Promise.reject(e);
+        }
+
+        return promise;
     }
 
     validateUser(userName: string) {

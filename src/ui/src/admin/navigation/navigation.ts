@@ -5,10 +5,10 @@ import { State } from 'vuex-class';
 import { Formatter } from 'vue-i18n';
 import { SupportedLocales } from '../../locales';
 import { IUser } from '../../model';
-import { debounce } from '../../common/debounce';
+import { Debounce, GlobalConfig } from '../../common';
 import { AuthenticationService } from '../../services';
 import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
-import { RouteNames } from '../routes/route-names'
+import { RouteNames } from '../routes'
 import { IAdminStoreState, RootStoreTypes } from '../store';
 
 @Component({
@@ -39,12 +39,15 @@ export class AreaNavigation extends Vue implements IRouterMixin {
 
   logout(e: Event) {
 
-    let user = this.auth.logout();
-    this.$store.dispatch(RootStoreTypes.common.updateUser, user).then(() => 
-    {
-      this.$router.push('/');
-    });
-    
+    this.auth.logout()
+      .then(user => {
+        this.$store.dispatch(RootStoreTypes.common.updateUser, user);
+      })
+      .then(() => {
+        let back = window.history.length;
+        window.history.go(back);
+        window.location.replace(GlobalConfig.uri.site);
+      });
   }
 
   showSearchInput() {
@@ -70,7 +73,7 @@ export class AreaNavigation extends Vue implements IRouterMixin {
 
     }
 
-    debounce(onSubmitSearch, 500)();
+    Debounce(onSubmitSearch, 500)();
   }
 
   $lang: string

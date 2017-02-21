@@ -13,7 +13,7 @@
  * @api public
  */
 
-export function debounce(func: Function, wait?: number, immediate?: boolean) {
+export function Debounce(func: Function, wait?: number, immediate?: boolean) {
   var timeout, args, context, timestamp, result;
   if (null == wait) wait = 100;
 
@@ -49,4 +49,4 @@ export function debounce(func: Function, wait?: number, immediate?: boolean) {
   return debounced;
 };
 
-export default debounce;
+export default Debounce;

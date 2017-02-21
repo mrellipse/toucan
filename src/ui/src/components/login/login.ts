@@ -144,8 +144,6 @@ export class Login extends Vue implements IRouterMixin {
                 .then(onSuccess)
                 .catch(onError);
 
-        } else {
-            throw new Error('Could not retreive access token for ' + provider.providerId);
         }
     }
 
