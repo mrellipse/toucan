@@ -1,5 +1,5 @@
 import VueRouter = require('vue-router');
-import { Login, PageNotFound, Search } from '../../components';
+import { Login, PageNotFound, Search, Verify } from '../../components';
 import { AreaLayout } from '../layout/layout';
 import { Home } from '../home/home';
 import { Profile } from '../profile/profile';
@@ -11,7 +11,7 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
         component: AreaLayout,
         path: '/',
         children: [
-             {
+            {
                 component: Home,
                 name: RouteNames.home,
                 path: ''
@@ -33,6 +33,11 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
                 component: Search,
                 name: RouteNames.search + 'default',
                 path: '/search'
+            },
+            {
+                component: Verify,
+                name: RouteNames.login.verify,
+                path: '/verification'
             }
         ]
     },

@@ -14,7 +14,7 @@ namespace Toucan.Service
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Email, user.Username));
             claims.Add(new Claim(ClaimTypes.Name, user.DisplayName));
-            claims.Add(new Claim("Verified", (user.Verified ? 0 : 1).ToString()));
+            claims.Add(new Claim("Verified", user.Verified ? Boolean.TrueString.ToLower() : Boolean.FalseString.ToLower()));
 
             var roles = (from r in user.Roles
                          select new Claim(ClaimTypes.Role, r.RoleId)).ToArray();

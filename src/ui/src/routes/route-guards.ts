@@ -1,12 +1,16 @@
 import Vue = require('vue');
 import { NavigationGuard, RawLocation, Route, RouteRecord } from 'vue-router';
 import { AuthenticationService, IClaimsHelper } from '../services';
+import { TokenHelper } from '../common';
 import { IUser } from '../model';
 import { IRouteMeta } from './route-meta';
+interface IRouteGuardOptions {
+    resolveUser(): IUser;
+    loginRouteName: string;
+    verifyRouteName: string;
+}
 
-function routeCheck(helper: IClaimsHelper, meta: IRouteMeta): boolean {
-
-    let user = AuthenticationService.getUser();
+function routeCheck(user: IUser, helper: IClaimsHelper, meta: IRouteMeta): boolean {
 
     if (!meta.private && !meta.roles)
         return false;
@@ -21,22 +25,42 @@ function routeCheck(helper: IClaimsHelper, meta: IRouteMeta): boolean {
     return true;
 }
 
-export function RouteGuards(loginPageName: string): NavigationGuard {
+function verifyCheck(user: IUser, meta: IRouteMeta): boolean {
+    console.log({ user: user, meta: meta });
+
+    if (user.authenticated && (meta.private || meta.roles))
+        return !user.verified;
+    else
+        return false;
+}
+
+export function RouteGuards(options: IRouteGuardOptions): NavigationGuard {
 
     let fn = (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
 
-        let auth = new AuthenticationService();
-        
-        if (to.matched.some(r => routeCheck(auth, r.meta))) {
+        let claimsHelper: IClaimsHelper = new AuthenticationService();
+
+        let user = options.resolveUser() || TokenHelper.parseUserToken(TokenHelper.getAccessToken());
+
+        if (to.matched.some(r => routeCheck(user, claimsHelper, r.meta))) {
 
             let sendTo: RawLocation = {
-                name: loginPageName,
+                name: options.loginRouteName,
                 query: { returnUrl: to.fullPath }
             };
 
             next(sendTo);
 
-        } else {
+        } else if (to.matched.some(r => verifyCheck(user, r.meta))) {
+
+            let sendTo: RawLocation = {
+                name: options.verifyRouteName,
+                query: { returnUrl: to.fullPath }
+            };
+
+            next(sendTo);
+        }
+        else {
             next();
         }
     };

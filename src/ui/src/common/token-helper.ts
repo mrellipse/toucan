@@ -55,7 +55,7 @@ export class TokenHelper {
             user.email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || null;
             user.name = user.email;
             user.roles = Array.isArray(roles) ? roles : [roles];
-            user.verified = decodedToken['Verified'] || false;
+            user.verified = decodedToken['Verified'] === 'true' ? true : false;
         }
 
         return user;

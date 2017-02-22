@@ -29,7 +29,12 @@ Vue.use(Vuelidate.default); // validation
 Vue.use(VueRouter); // router
 
 const router = new VueRouter(RouterOptions);
-router.beforeEach(RouteGuards(RouteNames.login));
+let options = {
+  resolveUser: () => Store.state.common.user,
+  loginRouteName: RouteNames.login,
+  verifyRouteName: RouteNames.verify
+};
+router.beforeEach(RouteGuards(options));
 
 UseAxios(router);
 

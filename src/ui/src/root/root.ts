@@ -5,6 +5,7 @@ import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import { TokenHelper, UseAxios } from '../common';
+import { IUser } from '../model';
 import { RootStoreTypes } from './store';
 import { Loader } from '../components';
 import { Locales } from '../locales';
@@ -29,7 +30,12 @@ Vue.use(Vuelidate.default); // validation
 Vue.use(VueRouter); // router
 
 const router = new VueRouter(RouterOptions);
-router.beforeEach(RouteGuards(RouteNames.login.home));
+let options = {
+  resolveUser: () => Store.state.common.user,
+  loginRouteName: RouteNames.login.home,
+  verifyRouteName: RouteNames.login.verify
+};
+router.beforeEach(RouteGuards(options));
 
 UseAxios(router);
 

@@ -17,11 +17,6 @@ export { IClaimsHelper } from './claims-helper';
 
 export class AuthenticationService implements IClaimsHelper {
 
-    public static getUser(): IUser {
-
-        return TokenHelper.parseUserToken(TokenHelper.getAccessToken());
-    }
-
     /**
      * Retreives a nonce value, so that incoming redirects from oauth providers can be validated by the server when redeeming access tokens ...
      */

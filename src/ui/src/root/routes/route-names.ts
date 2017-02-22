@@ -6,7 +6,8 @@ export const RouteNames = {
   },
   home: 'home',
   login: {
-    home: 'login'
+    home: 'login',
+    verify: 'verify'
   },
   profile: 'profile',
   root: 'root',
