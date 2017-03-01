@@ -9,7 +9,7 @@ import { Debounce, GlobalConfig } from '../../common';
 import { AuthenticationService } from '../../services';
 import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { RouteNames } from '../routes'
-import { IAdminStoreState, RootStoreTypes } from '../store';
+import { IAdminStoreState, AdminStoreTypes } from '../store';
 
 @Component({
   template: require('./navigation.html')
@@ -41,7 +41,7 @@ export class AreaNavigation extends Vue implements IRouterMixin {
 
     this.auth.logout()
       .then(user => {
-        this.$store.dispatch(RootStoreTypes.common.updateUser, user);
+        this.$store.dispatch(AdminStoreTypes.common.updateUser, user);
       })
       .then(() => {
         let back = window.history.length;

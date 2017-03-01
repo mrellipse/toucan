@@ -1,5 +1,6 @@
 
 export const RouteNames = {
+  forbidden: '403',
   dashboard: 'dashboard',
   home: 'home',
   login: 'login',

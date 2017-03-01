@@ -1,4 +1,19 @@
 <main class="container-fluid">
-    <h1 class="mb-2">Verification</h1>
-    <p>TBC</p>
+    <h3 class="mb-2">{{$t('verify.title')}}</h3>
+
+    <div class="form-group" v-show="!verifyCodeIssued">
+        <p>{{$t('verify.sendCode')}}</p>
+        <button class="btn btn-primary" @click.prevent="issueVerificationCode()"><i class="fa fa-lg fa-lock" aria-hidden="true"></button>
+    </div>
+
+    <div class="form-group" v-show="verifyCodeIssued">
+        <p>
+            <input name="verificationCode" type="text" :placeholder="$t('verify.enterCode')" v-model.trim="verifyCode" :class="{'form-control': true}">
+            <span v-show="$v.verifyCode.$error">
+                <span class="alert-danger" v-if="!$v.verifyCode.required">{{$t('validation.required')}}</span>
+            </span>
+        </p>
+        <button class="btn btn-primary" @click.prevent="redeemVerificationCode()"><i class="fa fa-lg fa-unlock" aria-hidden="true"></button>
+    </div>
+
 </main>

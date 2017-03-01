@@ -1,5 +1,5 @@
 import VueRouter = require('vue-router');
-import { Login, PageNotFound, Search, Verify } from '../../components';
+import { PageForbidden, Login, PageNotFound, Search, Verify } from '../../components';
 import { AreaLayout } from '../layout/layout';
 import { AreaDashboard } from '../dashboard/dashboard';
 import { SiteSettings } from '../settings/settings';
@@ -51,6 +51,11 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
                 path: '/verification'
             }
         ]
+    },   
+    {
+        component: PageForbidden,
+        name: RouteNames.forbidden,
+        path: '/forbidden'
     },
     {
         component: PageNotFound,

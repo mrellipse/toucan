@@ -1,6 +1,7 @@
 import ClientOAuth2 = require('client-oauth2');
 import { Route } from 'vue-router';
 import { ILoginClient, ILoginProvider, LoginProviders } from '../../model';
+import { GlobalConfig } from '../../common';
 
 const GOOGLE_CLIENT_ID = '1012191853724-f9u0dcapj679ggokk5mblma4fbd77jmv.apps.googleusercontent.com';
 
@@ -8,7 +9,7 @@ const options: ClientOAuth2.Options = {
     clientId: GOOGLE_CLIENT_ID,
     accessTokenUri: 'https://accounts.google.com/o/oauth2/token',
     authorizationUri: 'https://accounts.google.com/o/oauth2/auth',
-    redirectUri: 'https://localhost:5000',
+    redirectUri: GlobalConfig.uri.site,
     scopes: ['profile', 'email', 'openid'],
     query: {
         access_type: 'online',
@@ -49,7 +50,7 @@ export class GoogleClient implements ILoginClient {
         let hash = route.query['hash'];
 
         if (hash) {
-            
+
             let dict = hash.split('&');
 
             let [key, value] = dict[0].split('=');

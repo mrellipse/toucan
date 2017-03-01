@@ -1,5 +1,6 @@
 
 export const StoreTypes = {
     updateUser: 'updateUser',
-    loadingState: 'loading'
+    loadingState: 'loading',
+    updateStatusBar: 'updateStatusBar'
 };

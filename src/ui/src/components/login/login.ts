@@ -1,15 +1,15 @@
 import Vue = require('vue');
-import { Store } from 'vuex';
 import { RawLocation } from 'vue-router';
+import { Store } from 'vuex';
+import { State } from 'vuex-class';
 import Component from 'vue-class-component';
-import { Formatter } from 'vue-i18n';
-import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Formatter, KeypathChecker } from 'vue-i18n';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { PayloadMessageTypes, TokenHelper } from '../../common';
 import { AuthenticationService, GoogleClient } from '../../services';
-import { ICredential, ILoginProvider, ILoginClient, IPayload, IUser } from '../../model';
-import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
-import { StoreTypes } from '../../store';
+import { ICredential, ILoginProvider, ILoginClient, IPayload, IPayloadMessage, IUser } from '../../model';
+import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
+import { ICommonState, StoreTypes } from '../../store';
 import './login.scss';
 
 @Component({
@@ -26,16 +26,36 @@ import './login.scss';
         }
     }
 })
-export class Login extends Vue implements IRouterMixin {
+export class Login extends Vue {
 
     private auth: AuthenticationService = new AuthenticationService();
-    private errorKey: string = "";
-    private errorMessage: string = "";
     public externalProviders: ILoginClient[] = [new GoogleClient()];
+
+    @State((state: { common: ICommonState }) => state.common.user) user: IUser;
 
     created() {
 
         let provider: ILoginProvider = TokenHelper.getProvider();
+
+        let onAuthError = (errorCode: string, errorDesc: string) => {
+
+            let titleKey = 'login.' + errorCode;
+            let textKey = 'login.' + errorDesc.replace('/', ' ');
+
+            let msg: IPayloadMessage = {
+                title: this.$te(titleKey) ? titleKey : errorCode,
+                text: this.$te(textKey) ? textKey : errorDesc.replace('/', ' '),
+                messageTypeId: PayloadMessageTypes.warning
+            }
+
+            this.$store.dispatch(StoreTypes.updateStatusBar, msg);
+
+            if (errorCode === 'invalid_token') {
+                console.info('invalid token. clearing vuex store and local storage.');
+                this.$store.dispatch(StoreTypes.updateUser, null)
+                    .then(value => TokenHelper.removeAccessToken());
+            }
+        }
 
         if (provider) {
             Object.assign(this.provider, provider);
@@ -43,21 +63,36 @@ export class Login extends Vue implements IRouterMixin {
         }
 
         this.$watch('provider', this.onProviderChange, { deep: true });
-    }
 
-    get error(): string {
+        let errorCode = this.$route.query['errorCode'];
+        let hasValidToken = this.user.exp && this.user.exp > new Date();
 
-        if (this.errorKey) {
+        debugger;
 
-            let translationKey = 'validation.login.' + this.errorKey;
-            let translation: string = this.$t(translationKey);
-
-            if (translationKey !== translation)
-                return translation;
-            else
-                return this.$t('dict.errors.unanticipated');
+        if (errorCode) {
+            // probably a '302' redirection caused by global Axios interceptors (see src/common/axios.ts)
+            onAuthError(errorCode, this.$route.query['errorDesc'].replace('/', ''));
         }
-    };
+        else if (this.user.authenticated && !hasValidToken) {
+            // the access token loaded from local storage has expired
+            onAuthError('invalid_token', 'Token has expired');
+        }
+        else if (this.user.authenticated && hasValidToken && this.returnUrl) {
+            // the access token is still valid, so redirect the user
+            console.info('redirecting authenticated user to \'' + this.returnUrl + '\'');
+            this.$router.replace(this.returnUrl);
+        }
+        else if (this.returnUrl) {
+
+            let msg: IPayloadMessage = {
+                text: 'login.secureRoute',
+                title: null,
+                messageTypeId: PayloadMessageTypes.warning
+            }
+
+            this.$store.dispatch(StoreTypes.updateStatusBar, msg);
+        }
+    }
 
     login(): void {
 
@@ -66,30 +101,13 @@ export class Login extends Vue implements IRouterMixin {
             password: this.password
         }
 
-        let returnUrl: RawLocation = this.$route.query['returnUrl'] || { name: 'home' };
-
-        if (this.errorKey) {
-            this.errorKey = null;
-            this.errorMessage = null;
-        }
-
-        let onError = (error: { message: string }) => {
-            this.errorKey = error.message;
-            this.errorMessage = error.message;
-        };
-
-        let onLogin = (value: IUser) => {
-            this.$store.dispatch(StoreTypes.updateUser, value);
-        }
-
-        let onStoreDispatch = (o) => {
-            this.$router.push(returnUrl);
-        };
+        let returnUrl: RawLocation = this.returnUrl || { name: 'home' };
 
         this.auth.login(credentials)
-            .then(onLogin)
-            .then(onStoreDispatch)
-            .catch(onError);
+            .then((value: IUser) => this.$store.dispatch(StoreTypes.updateUser, value))
+            .then((value: any[]) => this.$store.dispatch(StoreTypes.updateStatusBar, null))
+            .then((value: any[]) => this.$router.push(returnUrl))
+            .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
     }
 
     loginExternal(providerId: string): void {
@@ -107,7 +125,7 @@ export class Login extends Vue implements IRouterMixin {
                 this.provider.responseUri = null;
                 this.provider.nonce = nonce;
                 this.provider.providerId = providerId;
-                this.provider.returnUri = this.$route.query['returnUrl'] || null;
+                this.provider.returnUri = this.returnUrl || null;
                 this.provider.uri = client.getUri(Object.assign({}, this.provider));
             };
 
@@ -135,15 +153,9 @@ export class Login extends Vue implements IRouterMixin {
                 this.$router.push(returnUrl);
             };
 
-            let onError = (error: { message: string }) => {
-                this.errorKey = error.message;
-                this.errorMessage = error.message;
-            };
-
             this.auth.redeemAccessToken(provider)
                 .then(onSuccess)
-                .catch(onError);
-
+                .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
         }
     }
 
@@ -159,6 +171,13 @@ export class Login extends Vue implements IRouterMixin {
 
     password: string = 'P@ssword';
 
+    public get returnUrl(): string {
+
+        let returnUrl = this.$route.query['returnUrl'];
+
+        return returnUrl ? returnUrl.replace(window.location.origin, '') : null;
+    }
+
     username: string = 'webmaster@toucan.org';
 
     $route: IRouteMixinData;
@@ -167,7 +186,9 @@ export class Login extends Vue implements IRouterMixin {
 
     $store: Store<{}>;
 
-    $t: Formatter
+    $t: Formatter;
+
+    $te: KeypathChecker;
 }
 
 export default Login;

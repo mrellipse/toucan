@@ -56,6 +56,7 @@ export class TokenHelper {
             user.name = user.email;
             user.roles = Array.isArray(roles) ? roles : [roles];
             user.verified = decodedToken['Verified'] === 'true' ? true : false;
+            user.exp = new Date(decodedToken.exp * 1000);
         }
 
         return user;

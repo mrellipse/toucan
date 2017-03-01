@@ -7,19 +7,19 @@ namespace Toucan.Data
 {
     public class ToucanContext : DbContext
     {
-        public virtual DbSet<Content> Content { get; set; }
-        public virtual DbSet<ContentType> ContentType { get; set; }
         public virtual DbSet<Provider> Provider { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserProvider> UserProvider { get; set; }
         public virtual DbSet<UserProviderLocal> LocalProvider { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
+        public virtual DbSet<Verification> Verification { get; set; }
 
         public ToucanContext() : base()
         {
 
         }
+
         public ToucanContext(DbContextOptions<ToucanContext> options) : base(options)
         {
 
@@ -27,55 +27,6 @@ namespace Toucan.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Content>(entity =>
-            {
-                entity.HasIndex(e => e.ContentTypeId)
-                    .HasName("IX_Content_ContentTypeId");
-
-                entity.HasIndex(e => e.UserId)
-                    .HasName("IX_Content_UserId");
-
-                entity.Property(e => e.ContentId).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.Brief).HasColumnType("varchar(512)");
-
-                entity.Property(e => e.ContentData).IsRequired();
-
-                entity.Property(e => e.ContentTypeId)
-                    .IsRequired()
-                    .HasColumnType("varchar(16)");
-
-                entity.Property(e => e.Enabled).HasDefaultValueSql("1");
-
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasColumnType("varchar(128)");
-
-                entity.HasOne(d => d.ContentType)
-                    .WithMany(p => p.Content)
-                    .HasForeignKey(d => d.ContentTypeId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Content_ContentType");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Content)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_Content_User");
-            });
-
-            modelBuilder.Entity<ContentType>(entity =>
-            {
-                entity.Property(e => e.ContentTypeId).HasColumnType("varchar(16)");
-
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasColumnType("varchar(512)");
-
-                entity.Property(e => e.Enabled).HasDefaultValueSql("1");
-
-                entity.Property(e => e.Name).HasColumnType("varchar(64)");
-            });
 
             modelBuilder.Entity<Provider>(entity =>
             {
@@ -106,7 +57,7 @@ namespace Toucan.Data
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnType("varchar(64)");
-                
+
                 entity.HasOne(e => e.CreatedByUser)
                     .WithMany()
                     .HasForeignKey(o => o.CreatedBy)
@@ -163,20 +114,44 @@ namespace Toucan.Data
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_UserProvider_User");
-                
-                 entity.HasDiscriminator<string>("UserProviderType")
-                    .HasValue<UserProvider>("External")
-                    .HasValue<UserProviderLocal>("Local");
+
+                entity.HasDiscriminator<string>("UserProviderType")
+                   .HasValue<UserProvider>("External")
+                   .HasValue<UserProviderLocal>("Local");
             });
 
-            modelBuilder.Entity<UserProviderLocal>(entity => {
+            modelBuilder.Entity<Verification>(entity =>
+            {
+                entity.HasKey(e => e.UserId)
+                    .HasName("PK_Verification");
+
+                entity.Property(e => e.Code)
+                    .IsRequired(true)
+                    .HasColumnType("varchar(64)");
+
+                entity.Property(e => e.IssuedAt)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()");
+
+                entity.Property(e => e.RedeemedAt)
+                    .IsRequired(false)
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(d => d.Verifications)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_Verification_User");
+            });
+
+            modelBuilder.Entity<UserProviderLocal>(entity =>
+            {
 
                 entity.Property(e => e.PasswordSalt)
                     .HasColumnType("varchar(128)");
-                
+
                 entity.Property(e => e.PasswordHash)
                     .HasColumnType("varchar(256)");
-                    
+
             });
 
             modelBuilder.Entity<UserRole>(entity =>

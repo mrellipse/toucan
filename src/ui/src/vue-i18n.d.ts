@@ -1,32 +1,3 @@
-
-// import * as I1 from "./i18n";
-// import _Vue = require("vue");
-
-// declare module "vue/types/vue" {
-//     interface _Vue {
-//         locale: (lang: string, locale: {}) => void;
-//         $t: translate;
-//     }
-// }
-
-// declare module "vue/types/options" {
-//     interface ComponentOptions<V extends _Vue> {
-//         $t: translate;
-//     }
-// }
-
-// interface translate { (resource: string): void }
-// interface translate { (resource: string, obj: any): void }
-
-// declare namespace VueI18n {
-//     export type Translate = translate;
-// }
-
-// declare class VueI18n { }
-
-// export = VueI18n;
-
-
 declare module "vue-i18n" {
 
     import _Vue = require("vue");
@@ -45,7 +16,7 @@ declare module "vue-i18n" {
 
     interface ICustomFormatter { (resource: string, ...args: any[]): string }
     interface IFormatter { (keypath: string, lang?: string, ...args: any[]): string }
-    interface IKeypathChecker { (keypath: string, lang:string): boolean }
+    interface IKeypathChecker { (keypath: string, lang?: string): boolean }
     interface ILocale { (lang: string, success: () => Promise<{}>, failure: () => void): void }
     interface ILocale { (lang: string, locale: {}): void }
     interface IPluralizer { (keypath: string, choice: number, ...args: any[]): string; }
@@ -76,7 +47,7 @@ declare module "vue-i18n" {
     }
 
     function plugin(Vue: typeof _Vue, opts: {}): void;
-    
+
     export default plugin;
 }
 
@@ -88,7 +59,6 @@ declare module "vue-i18n" {
 declare module "vue/types/vue" {
     import { Locale } from 'vue-i18n';
     interface Vue {
-
         locale: Locale
     }
 }

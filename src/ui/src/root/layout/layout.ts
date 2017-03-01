@@ -10,7 +10,6 @@ import { AreaSidebar } from '../sidebar/sidebar';
   template: require('./layout.html')
 })
 export class AreaLayout extends Vue {
-
   $t: Formatter
 }
 

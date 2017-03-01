@@ -4,8 +4,10 @@ import { AuthenticationService, IClaimsHelper } from '../services';
 import { TokenHelper } from '../common';
 import { IUser } from '../model';
 import { IRouteMeta } from './route-meta';
+
 interface IRouteGuardOptions {
     resolveUser(): IUser;
+    forbiddenRouteName: string;
     loginRouteName: string;
     verifyRouteName: string;
 }
@@ -26,7 +28,6 @@ function routeCheck(user: IUser, helper: IClaimsHelper, meta: IRouteMeta): boole
 }
 
 function verifyCheck(user: IUser, meta: IRouteMeta): boolean {
-    console.log({ user: user, meta: meta });
 
     if (user.authenticated && (meta.private || meta.roles))
         return !user.verified;
@@ -44,10 +45,18 @@ export function RouteGuards(options: IRouteGuardOptions): NavigationGuard {
 
         if (to.matched.some(r => routeCheck(user, claimsHelper, r.meta))) {
 
-            let sendTo: RawLocation = {
-                name: options.loginRouteName,
-                query: { returnUrl: to.fullPath }
-            };
+            let sendTo: RawLocation = null;
+
+            if (user.authenticated && to.meta.roles) {
+                sendTo = {
+                    name: options.forbiddenRouteName
+                }
+            } else {
+                sendTo = {
+                    name: options.loginRouteName,
+                    query: { returnUrl: to.fullPath }
+                }
+            }
 
             next(sendTo);
 

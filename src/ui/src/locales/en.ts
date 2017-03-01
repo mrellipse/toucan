@@ -12,7 +12,13 @@ export const en = {
         project: 'Project',
         reports: 'Reports',
         search: 'Search',
-        settings: 'Settings'
+        secureContent: 'Displaying secure content for registered users only',
+        settings: 'Settings',
+        success: 'Success'
+    },
+    forbidden: {
+        title: 'Access Denied',
+        content: 'Insufficent permissions'
     },
     home: {
         title: {
@@ -45,6 +51,9 @@ export const en = {
     login: {
         title: 'Log In',
         instruction: 'Log in to your account.',
+        invalid_token: 'Invalid token',
+        secureRoute: 'Log in to continue',
+        accessDenied: 'Insufficient permission',
         provider: {
             local: 'local',
             google: 'google',
@@ -104,8 +113,15 @@ export const en = {
             InvalidAccessToken: 'Invalid access token',
             InvalidNonce: 'Invalid nonce',
             FailedToResolveUser: 'Invalid username or password',
+            FailedToVerifyUser: 'Failed to verify user',
             Network: 'Network error'
         }
+    },
+    verify: {
+        title: 'Verification',
+        sendCode: 'Send verification code',
+        enterCode: 'Enter verification code',
+        codeAck: 'Code acknowledged'
     }
 };
 

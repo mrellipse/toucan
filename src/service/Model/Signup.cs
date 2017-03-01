@@ -1,8 +1,8 @@
 ﻿using Toucan.Contract;
 
-namespace Toucan.Data.Model
+namespace Toucan.Service.Model
 {
-    public class Signup : ILocalSignupOptions
+    public class Signup : ISignupServiceOptions
     {
         public Signup()
         {

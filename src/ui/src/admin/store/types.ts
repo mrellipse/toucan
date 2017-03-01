@@ -1,5 +1,5 @@
 import { StoreTypes } from '../../store';
 
-export const RootStoreTypes = {
+export const AdminStoreTypes = {
     common: StoreTypes
 }

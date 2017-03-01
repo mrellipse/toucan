@@ -12,7 +12,13 @@ export const fr = {
         project: 'Projet',
         reports: 'Rapports',
         search: 'Chercher',
-        settings: 'Paramètres'
+        secureContent: 'Affichage de contenu sécurisé uniquement pour les utilisateurs enregistrés',
+        settings: 'Paramètres',
+        success: 'Succès'
+    },
+    forbidden: {
+        title: 'Accès refusé',
+        content: 'Autorisations insuffisantes'
     },
     home: {
         title: {
@@ -45,6 +51,8 @@ export const fr = {
     login: {
         title: 's\'identifier',
         instruction: 'Connectez-vous à votre compte',
+        invalid_token: 'Jeton invalide',
+        secureRoute: 'Connectez-vous pour continuer',
         provider: {
             local: 'ce site',
             google: 'google',
@@ -102,8 +110,15 @@ export const fr = {
         login: {
             EmailAddressInUse: 'L\'adresse e-mail est déjà utilisée',
             FailedToResolveUser: 'Nom d\'utilisateur ou mot de passe incorrect',
+            FailedToVerifyUser: 'Échec de la vérification de l\'utilisateur',
             Network: 'Erreur de réseau'
         }
+    },
+    verify: {
+        title: 'Vérification',
+        sendCode: 'Envoyer le code de vérification',
+        enterCode: 'Entrez le code de vérification',
+        codeAck: 'Code reconnu'
     }
 };
 

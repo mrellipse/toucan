@@ -123,7 +123,7 @@ namespace Toucan.Data
                 };
 
                 string salt = crypto.CreateSalt();
-                string hash = crypto.CreateKey(salt, "password");
+                string hash = crypto.CreateKey(salt, "P@ssword");
 
                 var userProvider = new UserProviderLocal
                 {

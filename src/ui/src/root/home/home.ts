@@ -3,13 +3,14 @@ import { Store } from 'vuex';
 import Component from 'vue-class-component';
 import { Formatter } from 'vue-i18n';
 import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { AuthenticationService, IClaimsHelper } from '../../services';
 import { State } from 'vuex-class';
+import { AuthenticationService, IClaimsHelper } from '../../services';
+import { GlobalConfig } from '../../common';
+import { IPayload } from '../../model';
 import { IRootStoreState, RootStoreTypes } from '../store';
 
 // URL and endpoint constants
-const API_URL = 'https://localhost:5000/api/';
-const RIKER_IPSUM = API_URL + 'content/rikeripsum';
+const RIKER_IPSUM = GlobalConfig.uri.services + 'content/rikeripsum';
 
 @Component({
   template: require('./home.html')
@@ -36,10 +37,15 @@ export class Home extends Vue {
 
       let onSuccess = (res: AxiosResponse) => {
 
-        let payload: string = res.data;
+        let payload: IPayload<string> = res.data;
 
-        this.$store.dispatch(RootStoreTypes.secureContent, payload);
-        this.$store.dispatch(RootStoreTypes.common.loadingState, false);
+        try {
+          this.$store.dispatch(RootStoreTypes.secureContent, payload.data);
+          this.$store.dispatch(RootStoreTypes.common.loadingState, false);
+          this.$store.dispatch(RootStoreTypes.common.updateStatusBar, payload.message);
+        } catch (e) {
+          this.$store.dispatch(RootStoreTypes.common.updateStatusBar, e);
+        }
       }
 
       this.$store.dispatch(RootStoreTypes.common.loadingState, true);

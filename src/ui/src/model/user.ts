@@ -6,6 +6,7 @@ export interface IUser {
     roles: string[];
     username: string;
     verified?: boolean;
+    exp?: Date;
 }
 
 export const UserRoles = {

@@ -36,49 +36,11 @@ namespace Toucan.Service
             return Task.FromResult<ClaimsIdentity>(null);
         }
 
-        public async Task<ClaimsIdentity> SignupUser(ILocalSignupOptions options)
+        public async Task<IUser> ResolveUser(string username)
         {
-            UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)
-                                             where p.User.Username == options.Username
-                                             select p).FirstOrDefaultAsync();
-
-            if (login != null)
-                throw new ServiceException($"A user account for {options.Username} already exists");
-
-            User user = new User()
-            {
-                CreatedOn = DateTime.Now,
-                Username = options.Username,
-                Enabled = true,
-                DisplayName = options.DisplayName,
-                Verified = false
-            };
-
-            db.User.Add(user);
-
-            string salt = crypto.CreateSalt();
-
-            db.LocalProvider.Add(new UserProviderLocal()
-            {
-                CreatedOn = DateTime.Now,
-                PasswordSalt = salt,
-                PasswordHash = crypto.CreateKey(salt, options.Password),
-                User = user,
-                Provider = db.Provider.FirstOrDefault(o => o.ProviderId == ProviderTypes.Local)
-            });
-
-            Role role = db.Role.FirstOrDefault(o => o.RoleId == RoleTypes.User);
-
-            user.Roles.Add(new UserRole()
-            {
-                User = user,
-                Role = role
-            });
-
-            db.SaveChanges();
-
-            return user.ToClaimsIdentity();
+            return await this.db.User.SingleOrDefaultAsync(o => o.Username == username);
         }
+
         public async Task<bool> ValidateUser(string username)
         {
             UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Toucan.Contract;
 
 namespace Toucan.Data.Model
 {
-    public partial class User
+    public partial class User : IUser
     {
         public User()
         {
-            Content = new HashSet<Content>();
-            Roles = new HashSet<UserRole>();
             Providers = new HashSet<UserProvider>();
+            Roles = new HashSet<UserRole>();
+            Verifications = new HashSet<Verification>();
         }
 
         public int UserId { get; set; }
@@ -19,8 +20,17 @@ namespace Toucan.Data.Model
         public string DisplayName { get; set; }
         public bool Verified { get; set; }
 
-        public virtual ICollection<Content> Content { get; set; }
         public virtual ICollection<UserRole> Roles { get; set; }
         public virtual ICollection<UserProvider> Providers { get; set; }
+
+        public virtual ICollection<Verification> Verifications { get; set; }
+
+        public string Email
+        {
+            get
+            {
+                return this.Username;
+            }
+        }
     }
 }

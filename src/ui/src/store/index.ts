@@ -10,7 +10,21 @@ export { StoreTypes } from './types';
 export const CommonModule: Module<ICommonState, {}> = {
     state: {
         isLoading: false,
-        user: { authenticated: false, email: null, name: null, username: null, roles: [] }
+        user: {
+            authenticated: false,
+            email: null,
+            name: null,
+            username: null,
+            roles: [],
+            verified: false,
+            exp: null
+        },
+        statusBar: {
+            messageTypeId: null,
+            text: null,
+            title: null,
+            uri: null
+        }
     },
     mutations: Mutations,
     actions: Actions

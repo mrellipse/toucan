@@ -23,7 +23,9 @@ export function UseAxios(router: VueRouter) {
             return config;
         });
 
-        Axios.interceptors.response.use((config) => {  // 302 probably means client token has expired, so redirect to login page 
+        Axios.interceptors.response.use((config) => { 
+            
+            // if the server returns 200 OK + location header, this is the equivalent of a 302 redirection command 
 
             let location: string = config.headers['location'];
 

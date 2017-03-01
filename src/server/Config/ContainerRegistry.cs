@@ -17,7 +17,7 @@ namespace Toucan.Server
             For<IConfiguration>().Use(WebApp.Configuration).Singleton();
             For<Filters.ApiResultFilter>();
             For<Filters.ApiExceptionFilter>().Use(() => new Filters.ApiExceptionFilter(targets));
+            For<Filters.IdentityMappingFilter>();
         }
-
     }
 }

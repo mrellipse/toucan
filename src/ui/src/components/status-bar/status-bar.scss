@@ -1,0 +1,28 @@
+@import "../../styles/variables";
+
+.fade-enter-active, .fade-leave-active {
+    transition : opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-active {
+    opacity: 0;
+}
+
+.status-bar {
+
+    .alert {
+        opacity: 0.85;
+    }
+
+    :hover {
+        opacity: 1.0;
+    }
+
+    .status-title {
+        font-weight: bold;
+    }
+
+    .status-text {
+        margin-left: 0.5em;
+    }
+}

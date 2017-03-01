@@ -1,16 +1,17 @@
 <main class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <status-bar :clear-after="5" :locale-prefix="'validation.login'"></status-bar>
+    </div>
+  </div>
 
   <div class="row">
-
     <div v-for="(provider,index) in externalProviders" class="col-sm-12 col-md-6 col-lg-4 login-provider">
       <div class="card">
         <div class="card-block">
           <h3 class="card-title">{{$t(provider.localeKeys.name)}}</h3>
           <div class="form-group">
             <button class="btn btn-primary" @click.prevent="loginExternal(provider.providerId)"><i class="fa fa-lg" v-bind:class="[externalProviders[index].iconClass]" aria-hidden="true"></button>
-            <span class="alert-danger" v-show="errorKey">
-              {{error}}
-            </span>
           </div>
         </div>
       </div>
@@ -24,7 +25,7 @@
             <p>
               <input name="email" type="text" :placeholder="$t('login.placeholder.email')" v-model.trim="username" :class="{'form-control': true}">
               <span v-show="$v.username.$error">
-          <span class="alert-danger" v-if="!$v.username.required">{{$t('validation.required')}}</span>
+              <span class="alert-danger" v-if="!$v.username.required">{{$t('validation.required')}}</span>
               <span class="alert-danger" v-if="!$v.username.email">{{$t('validation.email')}}</span>
               </span>
             </p>
@@ -38,9 +39,6 @@
           </div>
           <div class="form-group">
             <button class="btn btn-primary" @click.prevent="login()"><i class="fa fa-lg fa-desktop" aria-hidden="true"></button>
-            <span class="alert-danger" v-show="errorKey">
-              {{error}}
-            </span>
           </div>
         </div>
       </div>

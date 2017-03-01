@@ -7,7 +7,7 @@ import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import { TokenHelper, UseAxios } from '../common';
 import { IUser } from '../model';
 import { RootStoreTypes } from './store';
-import { Loader } from '../components';
+import { Loader, StatusBar } from '../components';
 import { Locales } from '../locales';
 import { AreaNavigation } from './navigation/navigation';
 import { AreaFooter } from './footer/footer';
@@ -32,12 +32,15 @@ Vue.use(VueRouter); // router
 const router = new VueRouter(RouterOptions);
 let options = {
   resolveUser: () => Store.state.common.user,
+  forbiddenRouteName: RouteNames.forbidden,
   loginRouteName: RouteNames.login.home,
   verifyRouteName: RouteNames.login.verify
 };
 router.beforeEach(RouteGuards(options));
 
 UseAxios(router);
+
+Vue.component('status-bar', StatusBar);
 
 export const app = new Vue({
 
