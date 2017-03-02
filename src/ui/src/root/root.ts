@@ -56,23 +56,27 @@ export const app = new Vue({
 
   created() {
 
-    let token = TokenHelper.getAccessToken();
-
-    Store.dispatch(RootStoreTypes.common.updateUser, token);
-    Store.dispatch(RootStoreTypes.common.loadingState, false);
-
     // check if location hash has state/nonce value ...
-    if (location.hash && location.hash.indexOf("state") != -1) {
+    let resumeExternalLogin = () => {
 
-      let hash = location.hash.substring(1);
+      if (location.hash && location.hash.indexOf("state") != -1) {
 
-      if (hash.indexOf("access_token") != -1 || hash.indexOf("error") != -1) {
-        router.push({
-          name: RouteNames.login.home,
-          query: { hash: hash }
-        });
+        let hash = location.hash.substring(1);
+
+        if (hash.indexOf("access_token") != -1 || hash.indexOf("error") != -1) {
+          router.push({
+            name: RouteNames.login.home,
+            query: { hash: hash }
+          });
+        }
       }
     }
+
+    let token = TokenHelper.getAccessToken();
+
+    Store.dispatch(RootStoreTypes.common.updateUser, token)
+      .then(value => Store.dispatch(RootStoreTypes.common.loadingState, false))
+      .then(value => resumeExternalLogin());
   },
 
   computed: {

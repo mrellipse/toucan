@@ -5,9 +5,9 @@
     <div v-html="$t('home.body[1]')"></div>
     <div v-html="$t('home.body[2]')"></div>
   </div>
-  <div v-if="authenticated && !isLoading">
+  <div v-if="authenticated && init">
     <h1 class="mb-2"> {{$t('dict.hello')}} {{displayName}}</h1>
-    <p v-if="secureContent ">
+    <p v-if="secureContent">
       {{secureContent}}
     </p>
     <p v-if="!secureContent">

@@ -30,6 +30,7 @@ namespace Toucan.Service
             {
                 Audience = this.config.TokenAudience,
                 Issuer = this.config.TokenIssuer,
+                Expiration = new TimeSpan(0, this.config.TokenExpiration, 0),
                 SigningCredentials = new SigningCredentials(signingKey, this.config.TokenSecurityAlgorithm)
             };
 
@@ -62,7 +63,7 @@ namespace Toucan.Service
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            var token = new Token(encodedJwt, (int)options.Expiration.TotalSeconds);
+            var token = new Token(encodedJwt, jwt.Payload.Exp.Value);
 
             return Task.FromResult<Token>(token);
         }

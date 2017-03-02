@@ -75,7 +75,7 @@ export const app = new Vue({
 
     Store.dispatch(AdminStoreTypes.common.updateUser, token)
       .then(value => Store.dispatch(AdminStoreTypes.common.loadingState, false))
-      .then(value => resumeExternalLogin);
+      .then(value => resumeExternalLogin());
   },
 
   computed: {

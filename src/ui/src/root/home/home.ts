@@ -31,31 +31,31 @@ export class Home extends Vue {
 
       let onError = (e: any) => {
 
-        this.$store.dispatch(RootStoreTypes.secureContent, '');
-        this.$store.dispatch(RootStoreTypes.common.loadingState, false);
+        this.$store.dispatch(RootStoreTypes.common.loadingState, false)
+          .then(value => {
+            this.$store.dispatch(RootStoreTypes.secureContent, '');
+            this.init = true;
+          });
       }
 
       let onSuccess = (res: AxiosResponse) => {
 
         let payload: IPayload<string> = res.data;
 
-        try {
-          this.$store.dispatch(RootStoreTypes.secureContent, payload.data);
-          this.$store.dispatch(RootStoreTypes.common.loadingState, false);
-          this.$store.dispatch(RootStoreTypes.common.updateStatusBar, payload.message);
-        } catch (e) {
-          this.$store.dispatch(RootStoreTypes.common.updateStatusBar, e);
-        }
+        return this.$store.dispatch(RootStoreTypes.secureContent, payload.data)
+          .then(value => this.$store.dispatch(RootStoreTypes.common.loadingState, false))
+          .then(value => this.$store.dispatch(RootStoreTypes.common.updateStatusBar, payload.message))
+          .then(value => this.init = true);
       }
 
-      this.$store.dispatch(RootStoreTypes.common.loadingState, true);
-
-      return Axios.get(RIKER_IPSUM)
+      this.$store.dispatch(RootStoreTypes.common.loadingState, true)
+        .then(value => Axios.get(RIKER_IPSUM))
         .then(onSuccess)
         .catch(onError);
     }
-
   }
+
+  init: Boolean = false;
 
   $store: Store<IRootStoreState>;
 

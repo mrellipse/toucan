@@ -65,9 +65,7 @@ export class Login extends Vue {
         this.$watch('provider', this.onProviderChange, { deep: true });
 
         let errorCode = this.$route.query['errorCode'];
-        let hasValidToken = this.user.exp && this.user.exp > new Date();
-
-        debugger;
+        let hasValidToken = TokenHelper.isTokenCurrent(this.user);
 
         if (errorCode) {
             // probably a '302' redirection caused by global Axios interceptors (see src/common/axios.ts)

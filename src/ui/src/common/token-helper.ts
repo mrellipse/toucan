@@ -71,6 +71,22 @@ export class TokenHelper {
         };
 
     }
+
+    public static isTokenCurrent(value: string | IUser) {
+
+        let user: IUser = null;
+
+        if (typeof value === 'string') {
+            user = TokenHelper.parseUserToken(value);
+        } else {
+            user = value;
+        }
+
+        if(!user)
+            return null;
+        else
+            return user.exp && user.exp > new Date();
+    }
 }
 
 export default TokenHelper;

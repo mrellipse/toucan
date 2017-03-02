@@ -23,18 +23,16 @@ export function UseAxios(router: VueRouter) {
             return config;
         });
 
-        Axios.interceptors.response.use((config) => { 
-            
-            // if the server returns 200 OK + location header, this is the equivalent of a 302 redirection command 
+        Axios.interceptors.response.use((config) => {
 
+            // if the server returns 200 OK + location header, this is the equivalent of a 302 redirection command 
             let location: string = config.headers['location'];
 
             if (config.status === 200 && location) {
 
-                let redirectTo = '/' + location.split('/').slice(3).join('') + '/';
+                let redirectTo = location.replace(window.location.origin, '');
 
                 router.replace(redirectTo);
-
             } else {
                 return config;
             }
