@@ -54,6 +54,8 @@ namespace Toucan.Server
 
             services.AddOptions();
             services.Configure<Config>(WebApp.Configuration); // root web configuration
+            services.AddMemoryCache();
+            
             var svcCFG = WebApp.Configuration.GetSection("service");
             services.Configure<Toucan.Service.Config>(WebApp.Configuration.GetSection("service")); // services configuration
 

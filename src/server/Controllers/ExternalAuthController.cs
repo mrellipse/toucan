@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Toucan.Contract;
 using Toucan.Service;
 using Toucan.Service.Model;
@@ -14,13 +15,23 @@ namespace Toucan.Server.Controllers
     [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
     public class ExternalAuthControllerController : Controller
     {
-        private static List<Nonce> IssuedNonces = new List<Nonce>();
+        private const string IssuedNoncesKey = "IssuedNonces";
         private readonly IExternalAuthenticationService externalAuthService;
         private readonly ITokenProviderService<Token> tokenService;
+        private readonly IMemoryCache cache;
 
-        public ExternalAuthControllerController(IExternalAuthenticationService externalAuthService, ITokenProviderService<Token> tokenService)
+        private List<Nonce> IssuedNonces
+        {
+            get
+            {
+                return this.cache.GetOrCreate(IssuedNoncesKey, entry => new List<Nonce>());
+            }
+        }
+
+        public ExternalAuthControllerController(IExternalAuthenticationService externalAuthService, IMemoryCache cache, ITokenProviderService<Token> tokenService)
         {
             this.externalAuthService = externalAuthService;
+            this.cache = cache;
             this.tokenService = tokenService;
         }
 
