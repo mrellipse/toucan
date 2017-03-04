@@ -31,7 +31,7 @@ namespace Toucan.Service
                 string data = Guid.NewGuid().ToString();
                 string hash = this.crypto.CreateKey(salt, data);
 
-                return new Nonce(salt, data, hash);
+                return new Nonce(hash);
             });
         }
 

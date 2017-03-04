@@ -15,14 +15,10 @@ namespace Toucan.Contract
     public struct Nonce
     {
         public readonly DateTime Created;
-        public readonly string Data;
         public readonly string Hash;
-        public readonly string Salt;
-        public Nonce(string salt, string data, string hash)
+        public Nonce(string hash)
         {
             this.Created = DateTime.Now;
-            this.Data = data;
-            this.Salt = salt;
             this.Hash = hash;
         }
     }
