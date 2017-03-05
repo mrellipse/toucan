@@ -7,6 +7,14 @@ export const GlobalConfig = {
         auth: baseUri + '/auth/',
         site: baseUri,
         services: baseUri + "/api/"
+    },
+    auth: {
+        accessTokenKey: 'AUTH-LOCAL',
+        externalProviderKey: 'AUTH-EXTERNAL'
+    },
+    xsrf: {
+        cookieName: 'XSRF-TOKEN',
+        headerName: 'X-XSRF-TOKEN'
     }
 };
 

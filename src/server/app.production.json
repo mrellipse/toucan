@@ -1,6 +1,15 @@
 {
-    "webroot": ".\\wwwroot",
     "data": {
         "connectionString": "Server=(localdb)\\mssqllocaldb;Database=Toucan;Trusted_Connection=True;"
+    },
+    "server": {
+        "webroot": ".\\wwwroot",
+        "areas": [
+            "admin"
+        ],
+        "antiForgery": {
+            "cookieName": "XSRF-COOKIE",
+            "headerName": "X-XSRF-TOKEN"
+        }
     }
 }

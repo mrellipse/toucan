@@ -1,14 +1,13 @@
 namespace Toucan.Server
 {
-    public class Config
+    public class AppConfig
     {
-        public Config()
+        public AppConfig()
         {
         }
 
-        public string Webroot { get; set; }
-        public string[] Areas { get; set; }
         public Toucan.Data.Config Data { get; set; }
+        public Toucan.Server.Config Server { get; set; }
         public Toucan.Service.Config Service { get; set; }
     }
 }

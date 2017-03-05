@@ -3,22 +3,31 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Toucan.Server
 {
     public static partial class Extensions
     {
-
-        public static void ConfigureMvc(this IServiceCollection services)
+        public static void ConfigureMvc(this IServiceCollection services, Config.AntiForgeryConfig xsrfConfig)
         {
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(Filters.GlobalExceptionFilter));
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
+
+            services.AddAntiforgery(options =>
+            {
+                options.CookieName = xsrfConfig.CookieName;
+                options.HeaderName = xsrfConfig.HeaderName;
+                options.RequireSsl = true;
             });
         }
 
@@ -45,6 +54,26 @@ namespace Toucan.Server
             });
         }
 
+        public static void UseAntiforgery(this IApplicationBuilder app, string cookieName)
+        {
+            app.Use(async (context, next) =>
+            {
+                string path = context.Request.Path.ToString();
+
+                if (path.EndsWith(".html") || path.EndsWith("/"))
+                {
+                    IAntiforgery antiforgeryService = context.RequestServices.GetRequiredService<IAntiforgery>();
+
+                    var tokenSet = antiforgeryService.GetAndStoreTokens(context);
+                    if (tokenSet.RequestToken != null)
+                    {
+                        context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken, new CookieOptions() { HttpOnly = false });
+                    }
+                }
+
+                await next.Invoke();
+            });
+        }
         private static async Task SendFileAsync(this HttpResponse response, FileInfo file)
         {
             HttpContext context = response.HttpContext;

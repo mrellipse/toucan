@@ -19,8 +19,8 @@ namespace Toucan.Server
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            Config cfg = app.ApplicationServices.GetRequiredService<IOptions<Config>>().Value;
-            string webRoot = new DirectoryInfo(cfg.Webroot).FullName;
+            var cfg = app.ApplicationServices.GetRequiredService<IOptions<AppConfig>>().Value;
+            string webRoot = new DirectoryInfo(cfg.Server.Webroot).FullName;
 
             loggerFactory.AddConsole(LogLevel.Debug);
             loggerFactory.AddDebug();
@@ -33,10 +33,11 @@ namespace Toucan.Server
             app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
             app.UseTokenBasedAuthentication(cfg.Service.TokenProvider);
+            app.UseAntiforgery(cfg.Server.AntiForgery.CookieName);
             app.UseStaticFiles(staticFileOptions);
             app.UseMvc();
-            app.UseHtml5HistoryMode(webRoot, cfg.Areas);
-            
+            app.UseHtml5HistoryMode(webRoot, cfg.Server.Areas);
+
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 using (var dbContext = serviceScope.ServiceProvider.GetService<ToucanContext>())
@@ -53,17 +54,14 @@ namespace Toucan.Server
             string connectionString = WebApp.Configuration.GetSection(Toucan.Data.Config.DbConnectionKey).Value;
 
             services.AddOptions();
-            services.Configure<Config>(WebApp.Configuration); // root web configuration
-            services.AddMemoryCache();
-            
-            var svcCFG = WebApp.Configuration.GetSection("service");
+            services.Configure<AppConfig>(WebApp.Configuration); // root web configuration
             services.Configure<Toucan.Service.Config>(WebApp.Configuration.GetSection("service")); // services configuration
-
-            var tokenCfg = WebApp.Configuration.GetSection("service:tokenProvider");
             services.Configure<Toucan.Service.TokenProviderConfig>(WebApp.Configuration.GetSection("service:tokenProvider")); // token provider configuration
             services.Configure<Toucan.Data.Config>(WebApp.Configuration.GetSection("data")); // configuration
-            services.ConfigureMvc();
+            services.Configure<Toucan.Server.Config>(WebApp.Configuration.GetSection("server"));
 
+            services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
+            services.AddMemoryCache();
             services.AddDbContext<ToucanContext>(options =>
             {
                 options.UseSqlServer(connectionString, s => s.MigrationsAssembly("Toucan.Data"));

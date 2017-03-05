@@ -1,40 +1,39 @@
 import jwtDecode = require('jwt-decode');
 import { IJwtToken, ILoginProvider, IUser } from '../model';
 import base64 = require('base-64');
-
-const ACCESS_TOKEN_KEY: string = 'loacckey';
-const PROVIDER_KEY = 'exprvkey';
+import GlobalConfig from '../config';
 
 export class TokenHelper {
 
     public static getAccessToken(): string {
 
-        return localStorage.getItem(ACCESS_TOKEN_KEY);
+        return localStorage.getItem(GlobalConfig.auth.accessTokenKey);
     }
 
     public static setAccessToken(token: string): void {
 
-        return localStorage.setItem(ACCESS_TOKEN_KEY, token);
+        return localStorage.setItem(GlobalConfig.auth.accessTokenKey, token);
     }
 
     public static removeAccessToken(): void {
 
-        return localStorage.removeItem(ACCESS_TOKEN_KEY);
+        return localStorage.removeItem(GlobalConfig.auth.accessTokenKey);
     }
 
     public static getProvider(): ILoginProvider {
-        let value = localStorage.getItem(PROVIDER_KEY);
+
+        let value = localStorage.getItem(GlobalConfig.auth.externalProviderKey);
         return value ? JSON.parse(base64.decode(value)) : null;
     }
 
     public static setProvider(provider: ILoginProvider): void {
 
-        localStorage.setItem(PROVIDER_KEY, base64.encode(JSON.stringify(provider)));
+        localStorage.setItem(GlobalConfig.auth.externalProviderKey, base64.encode(JSON.stringify(provider)));
     }
 
     public static removeProvider(): void {
 
-        localStorage.removeItem(PROVIDER_KEY);
+        localStorage.removeItem(GlobalConfig.auth.externalProviderKey);
     }
 
     public static parseUserToken(token: string): IUser {
@@ -64,10 +63,10 @@ export class TokenHelper {
 
     public static getBearerToken() {
 
-        let token = localStorage.getItem(ACCESS_TOKEN_KEY);
+        let token = localStorage.getItem(GlobalConfig.auth.accessTokenKey);
 
         return {
-            Authorization: token ? 'Bearer ' + localStorage.getItem(ACCESS_TOKEN_KEY) : null
+            Authorization: token ? 'Bearer ' + localStorage.getItem(GlobalConfig.auth.accessTokenKey) : null
         };
 
     }
@@ -82,7 +81,7 @@ export class TokenHelper {
             user = value;
         }
 
-        if(!user)
+        if (!user)
             return null;
         else
             return user.exp && user.exp > new Date();

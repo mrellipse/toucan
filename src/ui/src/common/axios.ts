@@ -1,6 +1,6 @@
 import { default as Axios } from 'axios';
 import VueRouter = require('vue-router');
-import { TokenHelper } from '../common';
+import { GlobalConfig, TokenHelper } from '../common';
 
 let initialized: boolean = false;
 
@@ -17,7 +17,7 @@ export function UseAxios(router: VueRouter) {
                     Object.assign(config.headers, bearerToken);
             }
 
-            if (!config.maxRedirects || config.maxRedirects === 5)  // ensure axios does not follow redirects, so response interceptor below can push to app login page
+            if (!config.maxRedirects || config.maxRedirects === 5)  // ensure axios does not follow redirects, so custom response interceptor below can push to app login page
                 config.maxRedirects = 0;
 
             return config;
