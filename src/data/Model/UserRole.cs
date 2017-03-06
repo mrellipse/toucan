@@ -12,7 +12,7 @@ namespace Toucan.Data.Model
 
         public string RoleId { get; set; }
 
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         public virtual Role Role { get; set; }
         

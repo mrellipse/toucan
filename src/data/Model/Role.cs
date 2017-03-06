@@ -11,7 +11,7 @@ namespace Toucan.Data.Model
         }
 
         public string RoleId { get; set; }
-        public int CreatedBy { get; set; }
+        public long CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public bool Enabled { get; set; }
         public string Name { get; set; }

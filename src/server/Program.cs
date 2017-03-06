@@ -9,7 +9,6 @@ namespace Toucan.Server
     {
         internal static IConfigurationRoot Configuration;
         internal static string ContentRoot;
-
         public static void Main(string[] args)
         {
             ContentRoot = Directory.GetCurrentDirectory();

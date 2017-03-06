@@ -32,6 +32,8 @@ typings install
 webpack -p --config webpack/development.js
 ```
 
+
+dotnet ef --startup-project ../server migrations add Initial -c MssqlContext
 The final step is to update the configuration file *./src/server/app.development.json*. Edit *data:connectionString* configuration key to point to a local (or remote) instance of SQL server.
 
 Entity Framework migrations code will then create and seed the database upon server startup.

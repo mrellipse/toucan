@@ -40,7 +40,7 @@ namespace Toucan.Server
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var dbContext = serviceScope.ServiceProvider.GetService<ToucanContext>())
+                using (var dbContext = serviceScope.ServiceProvider.GetService<DbContextBase>())
                 {
                     ICryptoService crypto = app.ApplicationServices.GetRequiredService<ICryptoService>();
                     dbContext.Database.Migrate();
@@ -51,7 +51,7 @@ namespace Toucan.Server
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            string connectionString = WebApp.Configuration.GetSection(Toucan.Data.Config.DbConnectionKey).Value;
+            var dataConfig = WebApp.Configuration.GetTypedSection<Toucan.Data.Config>("data");
 
             services.AddOptions();
             services.Configure<AppConfig>(WebApp.Configuration); // root web configuration
@@ -62,9 +62,15 @@ namespace Toucan.Server
 
             services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
             services.AddMemoryCache();
-            services.AddDbContext<ToucanContext>(options =>
+
+            // services.AddDbContext<NpgSqlContext>(options =>
+            // {
+            //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly("Toucan.Data"));
+            // });
+
+            services.AddDbContext<MsSqlContext>(options =>
             {
-                options.UseSqlServer(connectionString, s => s.MigrationsAssembly("Toucan.Data"));
+                options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly("Toucan.Data"));
             });
 
             var container = new Container(c =>

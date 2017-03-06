@@ -5,7 +5,7 @@ namespace Toucan.Contract
     {
         string Email { get; }
         bool Enabled { get; set; }
-        int UserId { get; }
+        long UserId { get; }
         string Username { get; }
     }
 }

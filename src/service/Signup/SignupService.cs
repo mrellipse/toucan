@@ -12,11 +12,11 @@ namespace Toucan.Service
 {
     public class SignupService : ISignupService
     {
-        private readonly ToucanContext db;
+        private readonly DbContextBase db;
         private readonly ICryptoService crypto;
         private readonly IVerificationProvider verificationProvider;
 
-        public SignupService(ToucanContext db, ICryptoService crypto, IVerificationProvider verificationProvider)
+        public SignupService(DbContextBase db, ICryptoService crypto, IVerificationProvider verificationProvider)
         {
             this.db = db;
             this.crypto = crypto;

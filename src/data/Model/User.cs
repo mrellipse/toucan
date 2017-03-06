@@ -13,7 +13,7 @@ namespace Toucan.Data.Model
             Verifications = new HashSet<Verification>();
         }
 
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public DateTime CreatedOn { get; set; }
         public string Username { get; set; }
         public bool Enabled { get; set; }

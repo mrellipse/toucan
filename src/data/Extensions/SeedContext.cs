@@ -9,7 +9,7 @@ namespace Toucan.Data
     {
         private const string AdminEmail = "webmaster@toucan.org";
 
-        public static void EnsureSeedData(this ToucanContext db, ICryptoService crypto)
+        public static void EnsureSeedData(this DbContextBase db, ICryptoService crypto)
         {
             EnsureLocalProvider(db);
             EnsureExternalProviders(db);
@@ -17,7 +17,7 @@ namespace Toucan.Data
             EnsureRoles(db);
         }
 
-        private static Provider EnsureExternalProviders(ToucanContext db)
+        private static Provider EnsureExternalProviders(DbContextBase db)
         {
             Provider provider = db.Provider.FirstOrDefault(o => o.ProviderId == ProviderTypes.Google);
 
@@ -38,7 +38,7 @@ namespace Toucan.Data
             return provider;
         }
 
-        private static Provider EnsureLocalProvider(ToucanContext db)
+        private static Provider EnsureLocalProvider(DbContextBase db)
         {
             Provider provider = db.Provider.FirstOrDefault(o => o.ProviderId == ProviderTypes.Local);
 
@@ -59,7 +59,7 @@ namespace Toucan.Data
             return provider;
         }
 
-        private static void EnsureRoles(ToucanContext db)
+        private static void EnsureRoles(DbContextBase db)
         {
             User adminUser = db.User.SingleOrDefault(o => o.Username == AdminEmail);
             Role userRole = db.Role.FirstOrDefault(o => o.RoleId == RoleTypes.User);
@@ -79,7 +79,7 @@ namespace Toucan.Data
 
         }
 
-        private static User EnsureAdmin(ToucanContext db, ICryptoService crypto)
+        private static User EnsureAdmin(DbContextBase db, ICryptoService crypto)
         {
             
 

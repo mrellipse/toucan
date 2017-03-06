@@ -12,10 +12,10 @@ namespace Toucan.Service
 {
     public class LocalAuthenticationService : ILocalAuthenticationService
     {
-        private ToucanContext db;
+        private DbContextBase db;
         private ICryptoService crypto;
 
-        public LocalAuthenticationService(ToucanContext db, ICryptoService crypto)
+        public LocalAuthenticationService(DbContextBase db, ICryptoService crypto)
         {
             this.db = db;
             this.crypto = crypto;

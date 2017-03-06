@@ -33,6 +33,8 @@
     "Microsoft.Extensions.Options": "1.1.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Microsoft.IdentityModel.Tokens": "5.1.0",
+    "Npgsql.EntityFrameworkCore.PostgreSQL": "1.1.0",
+    "Npgsql.EntityFrameworkCore.PostgreSQL.Design": "1.1.0",
     "StructureMap.Microsoft.DependencyInjection": "1.2.0",
     "System.IdentityModel.Tokens.Jwt": "5.1.0",
     "System.Reflection": "4.3.0",

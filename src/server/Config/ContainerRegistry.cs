@@ -2,6 +2,7 @@ using System;
 using StructureMap;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using Toucan.Data;
 
 namespace Toucan.Server
 {
@@ -15,6 +16,8 @@ namespace Toucan.Server
             };
 
             For<IConfiguration>().Use(WebApp.Configuration).Singleton();
+            // For<DbContextBase>().Use<NpgSqlContext>();
+            For<DbContextBase>().Use<MsSqlContext>();
             For<Filters.ApiResultFilter>();
             For<Filters.ApiExceptionFilter>().Use(() => new Filters.ApiExceptionFilter(targets));
             For<Filters.IdentityMappingFilter>();

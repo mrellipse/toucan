@@ -1,3 +1,4 @@
+
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -5,29 +6,18 @@ using Toucan.Data.Model;
 
 namespace Toucan.Data
 {
-    public class ToucanContext : DbContext
+    public sealed class MsSqlContext : DbContextBase
     {
-        public virtual DbSet<Provider> Provider { get; set; }
-        public virtual DbSet<Role> Role { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserProvider> UserProvider { get; set; }
-        public virtual DbSet<UserProviderLocal> LocalProvider { get; set; }
-        public virtual DbSet<UserRole> UserRole { get; set; }
-        public virtual DbSet<Verification> Verification { get; set; }
-
-        public ToucanContext() : base()
+        public MsSqlContext() : base()
         {
-
         }
 
-        public ToucanContext(DbContextOptions<ToucanContext> options) : base(options)
+        public MsSqlContext(DbContextOptions<MsSqlContext> options) : base(options)
         {
-
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected sealed override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Provider>(entity =>
             {
                 entity.Property(e => e.ProviderId).HasColumnType("varchar(64)");
@@ -62,7 +52,6 @@ namespace Toucan.Data
                     .WithMany()
                     .HasForeignKey(o => o.CreatedBy)
                     .IsRequired();
-
             });
 
             modelBuilder.Entity<User>(entity =>

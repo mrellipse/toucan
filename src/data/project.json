@@ -13,6 +13,8 @@
     },
     "Microsoft.Extensions.Configuration": "1.1.0",
     "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Npgsql.EntityFrameworkCore.PostgreSQL": "1.1.0",
+    "Npgsql.EntityFrameworkCore.PostgreSQL.Design": "1.1.0",
     "StructureMap.Microsoft.DependencyInjection": "1.2.0",
     "common": {
       "target": "project"

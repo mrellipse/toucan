@@ -12,11 +12,11 @@ namespace Toucan.Service
 {
     public class ExternalAuthenticationService : IExternalAuthenticationService
     {
-        private readonly ToucanContext db;
+        private readonly DbContextBase db;
         private readonly ICryptoService crypto;
         private readonly IEnumerable<IExternalAuthenticationProvider> providers;
 
-        public ExternalAuthenticationService(ToucanContext db, ICryptoService crypto, IList<IExternalAuthenticationProvider> providers)
+        public ExternalAuthenticationService(DbContextBase db, ICryptoService crypto, IList<IExternalAuthenticationProvider> providers)
         {
             this.db = db;
             this.crypto = crypto;
