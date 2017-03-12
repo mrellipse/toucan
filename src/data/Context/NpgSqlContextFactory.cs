@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.IO;
+using Toucan.Common.Extensions;
 
 namespace Toucan.Data
 {
@@ -20,12 +21,12 @@ namespace Toucan.Data
                 .Build();
 
             string connectionString = config.GetSection(Toucan.Data.Config.DbConnectionKey).Value;
-            string assemblyName = typeof(NpgSqlContext).AssemblyQualifiedName.Split(',')[1].Trim();
 
             var optionsBuilder = new DbContextOptionsBuilder<NpgSqlContext>();
 
-            optionsBuilder.UseSqlServer(connectionString, o =>
+            optionsBuilder.UseNpgsql(connectionString, o =>
             {
+                string assemblyName = typeof(NpgSqlContext).GetAssemblyName();
                 o.MigrationsAssembly(assemblyName);
             });
 

@@ -8,9 +8,9 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
+using Toucan.Common.Extensions;
 using Toucan.Contract;
 using Toucan.Data;
-using Toucan.Service;
 
 namespace Toucan.Server
 {
@@ -64,14 +64,16 @@ namespace Toucan.Server
             services.AddMemoryCache();
 
             // services.AddDbContext<NpgSqlContext>(options =>
-            // {
-            //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly("Toucan.Data"));
+            // {    
+            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+            //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
-            services.AddDbContext<MsSqlContext>(options =>
-            {
-                options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly("Toucan.Data"));
-            });
+            // services.AddDbContext<MsSqlContext>(options =>
+            // {
+            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+            //     options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            // });
 
             var container = new Container(c =>
             {
