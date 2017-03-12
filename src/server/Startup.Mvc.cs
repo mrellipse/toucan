@@ -29,6 +29,12 @@ namespace Toucan.Server
                 options.HeaderName = xsrfConfig.HeaderName;
                 options.RequireSsl = true;
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Policies.ManagerUserAccounts, p => p.RequireRole(Toucan.Data.RoleTypes.Admin));
+                options.AddPolicy(Policies.ManageSiteSettings, p => p.RequireRole(Toucan.Data.RoleTypes.Admin));
+            });
         }
 
         public static void UseHtml5HistoryMode(this IApplicationBuilder app, string webRoot, string[] areas)
