@@ -12,6 +12,7 @@ namespace Toucan.Server
         public string Webroot { get; set; }
         public class AntiForgeryConfig
         {
+            public string ClientName { get; set; }
             public string CookieName { get; set; }
             public string HeaderName { get; set; }
         }

@@ -151,7 +151,11 @@ Client-side routes are protected via [navigation guards](http://router.vuejs.org
 
 TLS is provided by using a self-signed X509 certificate (see _./src/server/resources_ )
 
-Support for [XSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) has been provided. Whenever an access token is issued by the server, an anti-forgery cookie is also returned at the same time. The Axios library automatically uses this cookie to append the anti-forgery token to outbound POST, PUT and DELETE requests.
+Support for [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) has been provided.
+
+> The site sets CSRF session cookies whenever an access token is issued
+
+The Axios library automatically uses this cookie to append the anti-forgery token to outbound POST, PUT and DELETE requests.
 
 ## Tests
 

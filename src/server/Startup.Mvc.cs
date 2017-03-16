@@ -60,23 +60,25 @@ namespace Toucan.Server
             });
         }
 
-        public static void UseAntiforgery(this IApplicationBuilder app, string cookieName)
+        public static void UseAntiforgery(this IApplicationBuilder app, string clientName)
         {
             app.Use(async (context, next) =>
             {
-                string path = context.Request.Path.ToString();
-
-                if (path.EndsWith(".html") || path.EndsWith("/"))
+                bool isAuthenticated = context.User.Identity.IsAuthenticated;
+                
+                if (isAuthenticated)
                 {
-                    IAntiforgery antiforgeryService = context.RequestServices.GetRequiredService<IAntiforgery>();
+                    string path = context.Request.Path.ToString();
 
-                    var tokenSet = antiforgeryService.GetAndStoreTokens(context);
+                    IAntiforgery antiForgeryService = context.RequestServices.GetRequiredService<IAntiforgery>();
+
+                    var tokenSet = antiForgeryService.GetAndStoreTokens(context);
+                    
                     if (tokenSet.RequestToken != null)
                     {
-                        context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken, new CookieOptions() { HttpOnly = false });
+                        context.Response.Cookies.Append(clientName, tokenSet.RequestToken, new CookieOptions() { HttpOnly = false, Secure = true });
                     }
                 }
-
                 await next.Invoke();
             });
         }

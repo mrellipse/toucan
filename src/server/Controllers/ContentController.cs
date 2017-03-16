@@ -10,7 +10,6 @@ namespace Toucan.Server.Controllers
 {
 
     [Route("api/[controller]/[action]")]
-
     public class ContentController : Controller
     {
         public ContentController()
@@ -18,8 +17,8 @@ namespace Toucan.Server.Controllers
 
         }
 
-        [HttpGet()]
         [Authorize()]
+        [HttpGet()]
         [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
         public async Task<object> RikerIpsum()
         {

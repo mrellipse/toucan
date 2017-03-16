@@ -10,6 +10,7 @@ const AUTH_URL = GlobalConfig.uri.auth;
 
 const AUTH_ISSUE_NONCE = AUTH_URL + 'external/issuenonce';
 const LOGIN_URL = AUTH_URL + 'token';
+const LOGOUT_URL = AUTH_URL + 'logout';
 const SIGNUP_URL = AUTH_URL + 'signup';
 const VALIDATE_USER_URL = AUTH_URL + 'validateuser';
 const REDEEM_ACCESS_TOKEN = AUTH_URL + 'external/redeemtoken';
@@ -73,19 +74,26 @@ export class AuthenticationService implements IClaimsHelper {
             .then(onSuccess);
     }
 
-    logout(): Promise<IUser> {
+    logout() {
 
-        let promise: Promise<IUser> = null;
+        let onSuccess = (res: AxiosResponse) => {
 
-        let user = { authenticated: false, email: null, name: null, username: null, roles: [], verified: false };
-        try {
-            TokenHelper.removeAccessToken();
-            promise = Promise.resolve(user);
-        } catch (e) {
-            promise = Promise.reject(e);
+            let payload: IPayload<IAccessToken> = res.data;
+
+            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+                let user: IUser = { authenticated: false, displayName: null, email: null, name: null, username: null, roles: [], verified: false };
+
+                TokenHelper.removeAccessToken();
+
+                return user;
+            } else {
+                throw new Error(payload.message.text);
+            }
         }
 
-        return promise;
+        // LOGOUT_URL
+        return Axios.put(LOGOUT_URL, null)
+            .then(onSuccess);
     }
 
     validateUser(userName: string) {

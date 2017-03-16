@@ -36,6 +36,7 @@ namespace Toucan.Server.Controllers
         }
 
         [HttpPost()]
+        [IgnoreAntiforgeryToken(Order = 1000)]
         public async Task<object> IssueNonce()
         {
             var nonce = await this.externalAuthService.CreateNonce();
@@ -47,6 +48,7 @@ namespace Toucan.Server.Controllers
 
 
         [HttpPost()]
+        [IgnoreAntiforgeryToken(Order = 1000)]
         public async Task<object> RedeemToken([FromBody]Service.Model.ExternalLogin options)
         {
             // check for server-generated nonce, and make sure it was issued recently
@@ -72,6 +74,7 @@ namespace Toucan.Server.Controllers
         }
 
         [HttpPost()]
+        [IgnoreAntiforgeryToken(Order = 1000)]
         public async Task<bool> ValidateToken([FromBody]ExternalToken token)
         {
             bool available = await this.externalAuthService.ValidateToken(token.ProviderId, token.AccessToken);

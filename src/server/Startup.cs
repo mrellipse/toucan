@@ -33,7 +33,7 @@ namespace Toucan.Server
             app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
             app.UseTokenBasedAuthentication(cfg.Service.TokenProvider);
-            app.UseAntiforgery(cfg.Server.AntiForgery.CookieName);
+            app.UseAntiforgery(cfg.Server.AntiForgery.ClientName);
             app.UseStaticFiles(staticFileOptions);
             app.UseMvc();
             app.UseHtml5HistoryMode(webRoot, cfg.Server.Areas);
@@ -69,11 +69,11 @@ namespace Toucan.Server
             //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
-            // services.AddDbContext<MsSqlContext>(options =>
-            // {
-            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
-            // });
+            services.AddDbContext<MsSqlContext>(options =>
+            {
+                string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+                options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            });
 
             var container = new Container(c =>
             {

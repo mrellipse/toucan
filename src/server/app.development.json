@@ -9,7 +9,8 @@
         ],
         "antiForgery": {
             "cookieName": "XSRF-COOKIE",
-            "headerName": "X-XSRF-TOKEN"
+            "headerName": "X-XSRF-TOKEN",
+            "clientName": "XSRF-TOKEN"
         }
     },
     "service": {

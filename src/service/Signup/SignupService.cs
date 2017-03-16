@@ -108,7 +108,7 @@ namespace Toucan.Service
 
         private async Task<Verification> GetPendingVerificationForUser(IUser user)
         {
-            return await (from v in this.db.Verification.Include(o => o.User)
+            return await (from v in this.db.Verification.Include(o => o.User).Include(o => o.User.Roles)
                           where v.UserId == user.UserId && v.RedeemedAt == null && v.IssuedAt >= DateTime.Now.AddMinutes(-30)
                           select v).FirstOrDefaultAsync();
         }
