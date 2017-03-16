@@ -60,7 +60,7 @@ export function RouteGuards(options: IRouteGuardOptions): NavigationGuard {
 
             next(sendTo);
 
-        } else if (to.matched.some(r => verifyCheck(user, r.meta))) {
+        } else if (to.name !== options.verifyRouteName && to.matched.some(r => verifyCheck(user, r.meta))) {
 
             let sendTo: RawLocation = {
                 name: options.verifyRouteName,

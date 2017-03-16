@@ -42,13 +42,15 @@ export class Verify extends Vue {
 
   redeemVerificationCode() {
 
-    let returnUrl: RawLocation = { name: 'home' };
+    let returnUrl: RawLocation = this.$route.query['returnUrl']
+    returnUrl = returnUrl || { name: 'home' };
 
     let onSuccess = (user: IUser) => {
 
       let payload: IStatusBarData = {
         text: this.$t('verify.codeAck'),
-        messageTypeId: PayloadMessageTypes.success
+        messageTypeId: PayloadMessageTypes.success,
+        timeout: 1500
       };
 
       this.$store.dispatch(StoreTypes.updateUser, user);
@@ -57,9 +59,9 @@ export class Verify extends Vue {
 
     let onStoreDispatch = (o) => {
 
-      window.setInterval(() => {
-        this.$router.push(returnUrl);
-      }, 1500);
+      window.setTimeout(() => {
+        this.$router.replace(returnUrl);
+      }, 2000);
     };
 
     this.auth.redeemVerificationCode(this.verifyCode)

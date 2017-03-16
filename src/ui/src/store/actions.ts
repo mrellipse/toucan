@@ -5,7 +5,7 @@ import { ICommonState } from './state';
 import { StoreTypes } from './types';
 
 function isStatusBarData(object: any): object is IStatusBarData {
-    return object === undefined ? null : 'uri' in object;
+    return object === undefined ? null : 'uri' in object || 'timeout' in object;
 }
 
 function isPayloadMessage(object: any): object is IPayloadMessage {
@@ -39,6 +39,7 @@ export const Actions: ActionTree<ICommonState, any> = {
             payload = {
                 messageTypeId: null,
                 text: null,
+                timeout: null,
                 title: null,
                 uri: null
             };
@@ -47,8 +48,9 @@ export const Actions: ActionTree<ICommonState, any> = {
 
             payload = {
                 messageTypeId: PayloadMessageTypes.error,
-                title: data.name,
                 text: data.message,
+                timeout: null,
+                title: data.name,
                 uri: null
             };
 
@@ -60,8 +62,9 @@ export const Actions: ActionTree<ICommonState, any> = {
 
             payload = {
                 messageTypeId: data.messageTypeId,
-                title: data.title,
                 text: data.text,
+                timeout: null,
+                title: data.title,
                 uri: null
             };
 

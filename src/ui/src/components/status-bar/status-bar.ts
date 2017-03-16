@@ -23,32 +23,36 @@ import './status-bar.scss';
 })
 export class StatusBar extends Vue {
 
-  private timeoutHandle: number = null;
-
   @State((state: { common: ICommonState }) => state.common.statusBar) status: IStatusBarData;
+
+  private static handle: number = null;
 
   created() {
 
     let resetAlert = (timeout: number) => {
+
       this.timeoutHandle = window.setTimeout(() => {
-        this.clearTimeoutHandle();
         this.$store.dispatch(StoreTypes.updateStatusBar, null);
+        this.clearTimeoutHandle();
+
       }, timeout);
     };
 
     this.$store.subscribe((mutation, state: { common: ICommonState }) => {
 
       if (mutation.type === StoreTypes.updateStatusBar) {
-        let timeout = this.alertTimeout;
 
-        if (state.common.statusBar.messageTypeId && timeout !== -1)
+        let timeout = state.common.statusBar.timeout || this.alertTimeout;
+
+        if (state.common.statusBar.messageTypeId && timeout !== -1 && !this.timeoutHandle) {
           resetAlert(timeout);
+        }
       }
     })
   }
 
   clearTimeoutHandle(): void {
-    
+
     if (this.timeoutHandle) {
       window.clearTimeout(this.timeoutHandle);
       this.timeoutHandle = null;
@@ -82,6 +86,14 @@ export class StatusBar extends Vue {
     let key = this.getLocaleKey(this.status.title);
 
     return this.$te(key) ? this.$t(key) : null;
+  }
+
+  public get timeoutHandle(): number {
+    return StatusBar.handle;
+  }
+
+  public set timeoutHandle(value: number) {
+    StatusBar.handle = value;
   }
 
   private getLocaleKey(value: string): string {

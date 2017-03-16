@@ -25,6 +25,11 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
                 name: RouteNames.dashboard,
                 path: ''
             },
+             {
+                component: AreaDashboard,
+                name: RouteNames.home,
+                path: ''
+            },
             {
                 component: SiteReports,
                 name: RouteNames.siteReports,

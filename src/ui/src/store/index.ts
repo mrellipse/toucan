@@ -23,7 +23,8 @@ export const CommonModule: Module<ICommonState, {}> = {
             messageTypeId: null,
             text: null,
             title: null,
-            uri: null
+            uri: null,
+            timeout: null
         }
     },
     mutations: Mutations,

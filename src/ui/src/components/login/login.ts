@@ -77,7 +77,6 @@ export class Login extends Vue {
         }
         else if (this.user.authenticated && hasValidToken && this.returnUrl) {
             // the access token is still valid, so redirect the user
-            console.info('redirecting authenticated user to \'' + this.returnUrl + '\'');
             this.$router.replace(this.returnUrl);
         }
         else if (this.returnUrl) {

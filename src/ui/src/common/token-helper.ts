@@ -38,7 +38,7 @@ export class TokenHelper {
 
     public static parseUserToken(token: string): IUser {
 
-        let user: IUser = { authenticated: false, email: null, name: null, username: null, roles: [], verified: false };
+        let user: IUser = { authenticated: false, displayName: null, email: null, name: null, username: null, roles: [], verified: false };
 
         if (token) {
 
