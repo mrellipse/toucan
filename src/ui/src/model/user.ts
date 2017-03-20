@@ -2,6 +2,7 @@ export interface IUser {
     authenticated: boolean;
     displayName?: string;
     email?: string;
+    enabled? : boolean;
     name?: string;
     roles: string[];
     username: string;

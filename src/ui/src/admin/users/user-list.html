@@ -1,0 +1,42 @@
+<main class="container-fluid">
+  <div class="col-sm-12 col-md-8 col-lg-6">
+    <fieldset>
+      <legend>{{$t('admin.navigation.users')}}</legend>
+      <div>
+        <table class="table table-striped .table-responsive">
+          <thead>
+            <tr>
+              <th>{{$t('dict.name')}}</th>
+              <th class="hidden-md-down">{{$t('dict.email')}}</th>
+              <th>{{$t('dict.enabled')}}</th>
+              <th>{{$t('dict.verified')}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(user,index) in users">
+              <td>
+                <router-link :to="{ name: 'manageUser', params: { id: user.userId }}"><span :title="user.email">{{user.displayName}}</span></router-link>
+              </td>
+              <td class="hidden-md-down">{{user.email}}</td>
+              <td>
+                <slide v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></slide>
+              </td>
+              <td>
+                <slide v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></slide>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot v-show="total">
+            <tr>
+              <td colspan="4">
+                <div v-if="page > 1" @click="navigate(false)" class="btn btn-primary"><i class="fa fa-arrow-left"></i></div>
+                <div class="paging-splice">{{start}}-{{end}} <span class="paging-of">{{$t('dict.of')}}</span> <span class="paging-total">{{total}}</span></div>
+                <div v-if="(end < total)" @click="navigate(true)" class="btn btn-primary"><i class="fa fa-arrow-right"></i></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+</main>

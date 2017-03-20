@@ -2,6 +2,8 @@ import VueRouter = require('vue-router');
 import { PageForbidden, Login, PageNotFound, Search, Verify } from '../../components';
 import { AreaLayout } from '../layout/layout';
 import { AreaDashboard } from '../dashboard/dashboard';
+import { ManageUser } from '../users/user';
+import { ManageUserList } from '../users/user-list';
 import { SiteSettings } from '../settings/settings';
 import { SiteReports } from '../reports/reports';
 import { UserRoles } from '../../model';
@@ -25,10 +27,30 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
                 name: RouteNames.dashboard,
                 path: ''
             },
-             {
+            {
                 component: AreaDashboard,
                 name: RouteNames.home,
                 path: ''
+            }, {
+                component: ManageUser,
+                name: RouteNames.manageUser,
+                path: 'users/:id',
+                props: true
+            },
+            {
+                component: ManageUserList,
+                name: RouteNames.manageUsers,
+                path: 'users',
+                props: function (route: VueRouter.Route) {
+
+                    let page = Number.parseInt(route.query['page']);
+                    let pageSize = Number.parseInt(route.query['pageSize']);
+
+                    return {
+                        page: isNaN(page) ? 1 : page,
+                        pageSize: isNaN(pageSize) ? 5 : pageSize
+                    }
+                }
             },
             {
                 component: SiteReports,
@@ -56,7 +78,7 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
                 path: '/verification'
             }
         ]
-    },   
+    },
     {
         component: PageForbidden,
         name: RouteNames.forbidden,

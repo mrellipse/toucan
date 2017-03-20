@@ -1,20 +1,32 @@
+import { admin } from '../admin/locales/fr';
+
 export const fr = {
+    admin: admin,
     dict: {
+        email: 'Email',
         errors: {
             unanticipated: 'Une erreur imprévue s\'est produite'
         },
+        enabled: 'Activée',
         header: 'Entête',
         heading: 'Titre',
         hello: 'Salut',
         label: 'Étiquette',
         link: 'Hyperlien',
+        name: 'Prénom',
+        no: 'Non',
         notImplemented: 'Pas mis en œuvre',
+        of: 'de',
         project: 'Projet',
         reports: 'Rapports',
+        role: 'Rôle',
         search: 'Chercher',
         secureContent: 'Affichage de contenu sécurisé uniquement pour les utilisateurs enregistrés',
         settings: 'Paramètres',
-        success: 'Succès'
+        success: 'Succès',
+        update: 'Mettre à jour',
+        verified: 'Vérifié',
+        yes: 'Oui'
     },
     forbidden: {
         title: 'Accès refusé',
@@ -101,6 +113,9 @@ export const fr = {
     },
     site: {
         copyright: '© Droits d\'auteur 2058, Toucan Société'
+    },
+    user: {
+        updated: 'Mise à jour de l\'utilisateur'
     },
     validation: {
         email: 'Doit être une adresse e-mail valide',

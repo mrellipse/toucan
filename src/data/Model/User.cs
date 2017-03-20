@@ -22,7 +22,6 @@ namespace Toucan.Data.Model
 
         public virtual ICollection<UserRole> Roles { get; set; }
         public virtual ICollection<UserProvider> Providers { get; set; }
-
         public virtual ICollection<Verification> Verifications { get; set; }
 
         public string Email

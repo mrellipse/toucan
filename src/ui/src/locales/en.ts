@@ -1,20 +1,31 @@
+import { admin } from '../admin/locales/en';
 export const en = {
+    admin: admin,
     dict: {
+        email: 'Email',
         errors: {
             unanticipated: 'An unanticipated error has occured'
         },
+        enabled: 'Enabled',
         header: 'Header',
         heading: 'Heading',
         hello: 'Hello',
         label: 'Label',
         link: 'Link',
+        name: 'Name',
+        no: 'No',
         notImplemented: 'Not Implemented',
+        of: 'of',
         project: 'Project',
         reports: 'Reports',
+        role: 'Role',
         search: 'Search',
         secureContent: 'Displaying secure content for registered users only',
         settings: 'Settings',
-        success: 'Success'
+        success: 'Success',
+        update: 'Update',
+        verified: 'Verified',
+        yes: 'Yes'
     },
     forbidden: {
         title: 'Access Denied',
@@ -102,6 +113,9 @@ export const en = {
     },
     site: {
         copyright: '© Copyright 2058, Toucan Corporation'
+    },
+    user: {
+        updated: 'User updated'
     },
     validation: {
         email: 'Must be a valid email address',
