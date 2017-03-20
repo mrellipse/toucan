@@ -33,10 +33,10 @@ namespace Toucan.Server
             app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
             app.UseTokenBasedAuthentication(cfg.Service.TokenProvider);
-            app.UseAntiforgery(cfg.Server.AntiForgery.ClientName);
+            app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
             app.UseStaticFiles(staticFileOptions);
             app.UseMvc();
-            app.UseHtml5HistoryMode(webRoot, cfg.Server.Areas);
+            app.UseHistoryModeMiddleware(webRoot, cfg.Server.Areas);
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
