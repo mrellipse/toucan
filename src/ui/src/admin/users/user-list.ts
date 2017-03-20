@@ -31,6 +31,7 @@ export class ManageUserList extends Vue {
 
   private search() {
     let onSuccess = (value: ISearchResult<IUser>) => {
+
       this.searchResults = value;
 
       let page = value.page;
@@ -42,7 +43,7 @@ export class ManageUserList extends Vue {
     };
 
     this.$store.dispatch(StoreTypes.loadingState, true)
-      .then(() => this.svc.search(this.page, this.pageSize))
+      .then(() => this.svc.search(this.currentPage, this.currentPageSize))
       .then(onSuccess)
       .then(() => this.$store.dispatch(StoreTypes.loadingState, false))
       .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
@@ -70,15 +71,15 @@ export class ManageUserList extends Vue {
   navigate(forward: boolean) {
 
     if (forward)
-      this.page++;
+      this.currentPage++;
     else
-      this.page--;
+      this.currentPage--;
 
     this.search();
   }
 
-  page: number;
-  pageSize: number;
+  currentPage:number = Object.assign((<any>this).page);
+  currentPageSize:number = Object.assign((<any>this).pageSize);
   start: number = 1;
   end: number = 5;
 

@@ -3,6 +3,7 @@ export interface IUser {
     displayName?: string;
     email?: string;
     enabled? : boolean;
+    locale?: string;
     name?: string;
     roles: string[];
     username: string;
