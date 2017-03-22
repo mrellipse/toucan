@@ -6,10 +6,12 @@ import Vuelidate = require('vuelidate');
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import { TokenHelper, UseAxios } from '../common';
 import { IUser } from '../model';
-import { RootStoreTypes } from './store';
 import { Loader, StatusBar } from '../components';
 import { Locales } from '../locales';
+import { UserOptionsPlugin, IPluginOptions } from '../plugins/user-options-plugin';
+import { GlobalConfig } from '../config';
 import { AreaNavigation } from './navigation/navigation';
+import { RootStoreTypes } from './store';
 import { AreaFooter } from './footer/footer';
 
 Vue.use(Vuex);
@@ -24,11 +26,7 @@ Object.keys(Locales).forEach((lang) => {
 })
 
 Vue.use(Vuelidate.default); // validation
-
-(<any>Vue).config.lang = 'en';
-
 Vue.use(VueRouter); // router
-
 const router = new VueRouter(RouterOptions);
 let options = {
   resolveUser: () => Store.state.common.user,
@@ -38,6 +36,12 @@ let options = {
 };
 router.beforeEach(RouteGuards(options));
 
+Vue.use<IPluginOptions>(UserOptionsPlugin, {
+  key: GlobalConfig.uopt,
+  default: { locale: 'en' },
+  store: <any>Store,
+  watchLocaleChanges: true
+});   // user settings
 UseAxios(router);
 
 Vue.component('status-bar', StatusBar);

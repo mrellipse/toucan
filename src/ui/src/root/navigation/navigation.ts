@@ -23,8 +23,10 @@ export class AreaNavigation extends Vue {
   changeLocale(lang: string, e: Event) {
 
     if (lang !== this.$lang) {
-      (<any>Vue.config).lang = lang;
-      this.$router.replace(this.$route.path);
+
+      this.$store.dispatch(RootStoreTypes.common.updateLocale, lang)
+        .then(() => this.$router.replace(this.$route.path))
+        .catch(e => this.$store.dispatch(RootStoreTypes.common.updateStatusBar, e));
     }
   }
 

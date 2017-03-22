@@ -1,6 +1,6 @@
 import { Store, ActionContext, ActionTree } from 'vuex';
 import { PayloadMessageTypes, TokenHelper } from '../common';
-import { IPayloadMessage, IStatusBarData, IUser } from '../model';
+import { IPayloadMessage, IStatusBarData, IUser, IUserOptions } from '../model';
 import { ICommonState } from './state';
 import { StoreTypes } from './types';
 
@@ -19,6 +19,11 @@ export const Actions: ActionTree<ICommonState, any> = {
         injectee.commit(StoreTypes.loadingState, loading);
     },
 
+    updateLocale: (injectee: ActionContext<ICommonState, any>, lang: string) => {
+
+        injectee.commit(StoreTypes.updateLocale, lang);
+    },
+
     updateUser: (injectee: ActionContext<ICommonState, any>, userData: string | IUser) => {
 
         let payload: IUser = null;
@@ -29,6 +34,11 @@ export const Actions: ActionTree<ICommonState, any> = {
             payload = userData
 
         injectee.commit(StoreTypes.updateUser, payload);
+    },
+
+    updateUserOptions: (injectee: ActionContext<ICommonState, any>, userOptions: IUserOptions) => {
+
+        injectee.commit(StoreTypes.updateUserOptions, userOptions);
     },
 
     updateStatusBar: (injectee: ActionContext<ICommonState, any>, data: Error | IStatusBarData | IPayloadMessage) => {

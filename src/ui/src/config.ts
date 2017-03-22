@@ -12,6 +12,7 @@ export const GlobalConfig = {
         accessTokenKey: 'AUTH-LOCAL',
         externalProviderKey: 'AUTH-EXTERNAL'
     },
+    uopt: 'UOPT',
     xsrf: {
         cookieName: 'XSRF-TOKEN',
         headerName: 'X-XSRF-TOKEN'

@@ -23,10 +23,11 @@ export class AreaNavigation extends Vue implements IRouterMixin {
   changeLocale(lang: string, e: Event) {
 
     if (lang !== this.$lang) {
-      (<any>Vue.config).lang = lang;
-      this.$router.replace(this.$route.path);
-    }
 
+      this.$store.dispatch(AdminStoreTypes.common.updateLocale, lang)
+        .then(() => this.$router.replace(this.$route.path))
+        .catch(e => this.$store.dispatch(AdminStoreTypes.common.updateStatusBar, e));
+    }
   }
 
   created() {

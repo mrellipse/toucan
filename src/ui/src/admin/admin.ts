@@ -5,10 +5,12 @@ import VueI18n = require('vue-i18n');
 import Vuelidate = require('vuelidate');
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import { TokenHelper, UseAxios } from '../common';
-import { AdminStoreTypes } from './store';
 import { Loader, StatusBar } from '../components';
 import { Locales } from '../locales';
+import { UserOptionsPlugin, IPluginOptions } from '../plugins/user-options-plugin';
+import { GlobalConfig } from '../config';
 import { AreaNavigation } from './navigation/navigation';
+import { AdminStoreTypes } from './store';
 import { AreaFooter } from './footer/footer';
 
 Vue.use(Vuex);
@@ -23,19 +25,22 @@ Object.keys(Locales).forEach((lang) => {
 })
 
 Vue.use(Vuelidate.default); // validation
-
-(<any>Vue).config.lang = 'en';
-
 Vue.use(VueRouter); // router
-
 const router = new VueRouter(RouterOptions);
-let options = {
+let routeOptions = {
   resolveUser: () => Store.state.common.user,
   forbiddenRouteName: RouteNames.forbidden,
   loginRouteName: RouteNames.login,
   verifyRouteName: RouteNames.verify
 };
-router.beforeEach(RouteGuards(options));
+router.beforeEach(RouteGuards(routeOptions));
+
+Vue.use<IPluginOptions>(UserOptionsPlugin, {
+  key: GlobalConfig.uopt,
+  default: { locale: 'en' },
+  store: <any>Store,
+  watchLocaleChanges: true
+});   // user settings
 
 UseAxios(router);
 
@@ -74,8 +79,8 @@ export const app = new Vue({
     let token = TokenHelper.getAccessToken();
 
     Store.dispatch(AdminStoreTypes.common.updateUser, token)
-      .then(value => Store.dispatch(AdminStoreTypes.common.loadingState, false))
-      .then(value => resumeExternalLogin());
+      .then(() => Store.dispatch(AdminStoreTypes.common.loadingState, false))
+      .then(() => resumeExternalLogin());
   },
 
   computed: {

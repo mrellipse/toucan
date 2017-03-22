@@ -19,6 +19,9 @@ export const CommonModule: Module<ICommonState, {}> = {
             verified: false,
             exp: null
         },
+        userOptions: {
+            locale: null
+        },
         statusBar: {
             messageTypeId: null,
             text: null,
