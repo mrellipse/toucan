@@ -33,6 +33,10 @@
 
 $fa-font-path: "//netdna.bootstrapcdn.com/font-awesome/4.7.0/fonts" !default;
 
+// globally available
+$vue-green: #41b883;
+$vue-green-dark: #309669;
+
 // Colors
 //
 // Grayscale and brand colors for use across Bootstrap.
@@ -43,13 +47,12 @@ $gray-light:                #818a91 !default;
 $gray-lighter:              #eceeef !default;
 $gray-lightest:             #f7f7f9 !default;
 
-$brand-primary:             #0275d8 !default;
-$brand-success:             #5cb85c !default;
+$brand-primary:             #2d4b65 !default;
+$brand-success:             #194c79 !default;
 $brand-info:                #5bc0de !default;
-$brand-warning:             #f0ad4e !default;
+$brand-warning:             #ea8e4f !default;
 $brand-danger:              #d9534f !default;
-$brand-inverse:             $gray-dark !default;
- 
+$brand-inverse:             $brand-primary !default;
 
 // Options
 //
@@ -578,16 +581,16 @@ $jumbotron-bg:                   $gray-lighter !default;
 //
 // Define colors for form feedback states and, by default, alerts.
 
-$state-success-text:             #3c763d !default;
-$state-success-bg:               #dff0d8 !default;
-$state-success-border:           darken($state-success-bg, 5%) !default;
+$state-success-text:             #dff0d8 !default;
+$state-success-bg:               lighten($brand-success, 21%) !default; 
+$state-success-border:           darken($state-success-bg, 7%) !default;
 
-$state-info-text:                #31708f !default;
-$state-info-bg:                  #d9edf7 !default;
+$state-info-text:                #f6f6f6 !default;
+$state-info-bg:                  lighten($brand-success, 21%) !default; 
 $state-info-border:              darken($state-info-bg, 7%) !default;
 
-$state-warning-text:             #8a6d3b !default;
-$state-warning-bg:               #fcf8e3 !default;
+$state-warning-text:             #f6f6f6 !default;
+$state-warning-bg:               $brand-warning !default;
 $mark-bg:                        $state-warning-bg !default;
 $state-warning-border:           darken($state-warning-bg, 5%) !default;
 
@@ -849,7 +852,4 @@ $pre-bg:                      #f7f7f9 !default;
 $pre-color:                   $gray-dark !default;
 $pre-border-color:            #ccc !default;
 $pre-scrollable-max-height:   340px !default;
-
-// globally available
-$vue-green: #41b883;
-$vue-green-dark: #309669;
+$bg-faded-color:      lighten($brand-primary, 50%) !important;

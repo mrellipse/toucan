@@ -16,16 +16,27 @@
  * Sidebar
  */
 
+$sm-map: map-get($grid-breakpoints, 'sm');
+$md-map: map-get($grid-breakpoints, 'md');
+
 .sidebar {
   position: fixed;
-  top: 51px;
+  top: 56px;
   bottom: 0;
-  left: 0;
   z-index: 1000;
-  padding: 20px;
+  padding: 12px;
   overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  overflow-y: auto;
   border-right: 1px solid #eee;
+
+  @media(max-width:$sm-map) {
+    display: none !important;
+  }
+
+  @media(min-width:$sm-map) and (max-width: $md-map) {
+    left:0;
+  }
+
 }
 
 /* Sidebar navigation */

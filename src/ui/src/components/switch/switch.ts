@@ -4,16 +4,16 @@ import './switch.scss';
 
 @Component({
     props: ['enabled', 'value', 'onText', 'offText'],
-    template: `<label v-show="show" class="switch switch-slide">
-        <input class="switch-input" type="checkbox"
+    template: `<label v-show="show" class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" 
             :value="value"
             :checked="value"
             @change="onChange($event.target)" />
-        <span class="switch-label" :data-on="onText" :data-off="offText"></span> 
-        <span class="switch-handle"></span>
+        <span class="custom-control-indicator"></span> 
+        <span class="custom-control-description">{{displayText}}</span>
     </label>`
 })
-export class SwitchSlide extends Vue {
+export class Switch extends Vue {
 
     enabled: boolean = this.enabled;
     onText: string = this.onText;
@@ -22,12 +22,16 @@ export class SwitchSlide extends Vue {
     get show() {
         return this.enabled === null || this.enabled === undefined || this.enabled;
     }
-    
+
     value: string = this.value;
 
     onChange(target: HTMLInputElement) {
         this.$emit('input', target.checked);
     }
+
+    get displayText(): string {
+        return this.value ? this.onText : this.offText;
+    }
 }
 
-export default SwitchSlide;
+export default Switch;

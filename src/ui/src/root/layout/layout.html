@@ -1,5 +1,7 @@
-<div class="container-fluid">
+<div class="container">
   <status-bar :clear-after="5" locale-prefix="dict"></status-bar>
-  <area-sidebar></area-sidebar>
-  <router-view></router-view>
+  <div class="row">
+    <area-sidebar></area-sidebar>
+    <router-view></router-view>
+  </div>
 </div>

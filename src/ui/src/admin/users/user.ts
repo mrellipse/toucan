@@ -9,7 +9,7 @@ import { IRouteMixinData } from '../../mixins/mixin-router';
 import { PayloadMessageTypes, TokenHelper } from '../../common';
 import { IKeyValueList, ISearchResult, IStatusBarData, IUser } from '../../model';
 import { StoreTypes } from '../../store';
-import { DropDownSelect, SwitchSlide } from '../../components';
+import { DropDownSelect, Switch } from '../../components';
 
 import './users.scss';
 
@@ -28,7 +28,7 @@ let validations = {
 @Component({
   components: {
     dropDown: DropDownSelect,
-    slide: SwitchSlide
+    check: Switch
   },
   mixins: [validationMixin],
   props: ['id'],

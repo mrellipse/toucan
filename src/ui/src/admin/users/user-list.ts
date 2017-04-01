@@ -6,14 +6,14 @@ import { ManageUserService } from './user-service';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { ISearchResult, IStatusBarData, IUser } from '../../model';
 import { StoreTypes } from '../../store';
-import { SwitchSlide } from '../../components';
+import { Switch } from '../../components';
 
 import './users.scss';
 
 @Component({
   template: require('./user-list.html'),
   components: {
-    slide: SwitchSlide
+    check: Switch
   },
   props: ['page', 'pageSize']
 })

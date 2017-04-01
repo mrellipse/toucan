@@ -1,15 +1,13 @@
-<nav class="navbar navbar-toggleable-sm fixed-top navbar-inverse bg-inverse">
+<nav class="navbar navbar-inverse bg-inverse navbar-toggleable-sm fixed-top">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
-
-    <router-link class="navbar-brand" to="/">
-      <img alt="Brand" src="~assets/images/logo.png" height="40">
-    </router-link>
-
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <span class="fa fa-lg fa-cloud"></span>
+    </a>
     <div class="collapse navbar-collapse" id="navbarMenu">
-
       <ul class="nav navbar-nav">
         <router-link class="nav-item" tag="li" to="/" exact>
           <a class="nav-link">{{$t('navigation.home')}}</a>
@@ -44,4 +42,5 @@
         </li>
       </ul>
     </div>
+  </div>
 </nav>

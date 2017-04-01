@@ -23,23 +23,7 @@ html {
 }
 
 body {
-  padding-top: 5em;
-}
-
-.btn-primary {
-  background-color: $vue-green;
-  border-color: $vue-green;
-  color: $gray-lightest;
-}
-
-.btn-primary:disabled {
-  background-color: $vue-green;
-  border-color: $vue-green;
-}
-
-.btn-primary:hover {
-  background-color: $vue-green-dark;
-  border-color: $vue-green;
+  padding-top: 4em;
 }
 
 .card-title {
@@ -53,3 +37,84 @@ body {
 .table thead tr th {
   border-bottom: 0px;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  color: $brand-primary;
+  font-variant: small-caps;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+}
+
+fieldset legend {
+  color: $brand-primary;
+  font-variant: small-caps;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+}
+
+$grid-md-break : map-get($grid-breakpoints, 'md');
+$grid-sm-break : map-get($grid-breakpoints, 'sm');
+
+#app > .container {
+  @media(max-width:$grid-md-break) {
+    margin-left: 0;
+    margin-right: 0;
+    width: auto;
+  }
+}
+
+.border-top-md-down {
+  @media(max-width:$grid-md-break) {
+    border-top: 1px;
+    border-top-color: $brand-primary;
+    border-top-style: dotted;
+    margin-top: .5em;
+    padding-top: .5em;
+  }
+}
+
+.navbar-toggler {
+  padding: 0px !important;
+}
+
+.navbar-toggleable-sm > .container {
+  @media (max-width: 767px) {      
+    margin-left: 0 !important;
+  }
+}
+
+.navbar-nav .nav-link {
+  font-variant: small-caps;
+}
+
+.navbar-inverse, .navbar-inverse .navbar-nav .nav-link {
+    color: hsla(0,0%,100%,.8) !important;
+}
+
+.navbar-brand {
+    display: inline-block;
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+
+    > span {
+      font-size: 1.66666em;
+    }
+}
+
+.col-form-like-label {
+  padding-top: calc(.5rem - 1px * 2);
+  padding-bottom: calc(.5rem - 1px * 2);
+  margin-bottom: 0;
+}
+
+.bg-faded {
+  background-color: $bg-faded-color 
+}
+
+.caps-low {
+  font-variant: small-caps;
+  text-transform: lowercase;
+}
+

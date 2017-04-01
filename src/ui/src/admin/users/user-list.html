@@ -1,4 +1,4 @@
-<main class="container-fluid">
+<main class="container">
   <div class="col-sm-12">
     <fieldset>
       <legend>{{$t('admin.navigation.users')}}</legend>
@@ -14,15 +14,15 @@
           </thead>
           <tbody>
             <tr v-for="(user,index) in users">
-              <td>
+              <td class="caps-low">
                 <router-link :to="{ name: 'manageUser', params: { id: user.userId }}"><span :title="user.email">{{user.displayName}}</span></router-link>
               </td>
               <td class="hidden-md-down">{{user.email}}</td>
               <td>
-                <slide v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></slide>
+                <check v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
               </td>
               <td>
-                <slide v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></slide>
+                <check v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
               </td>
             </tr>
           </tbody>
