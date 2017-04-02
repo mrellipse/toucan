@@ -32,7 +32,7 @@ namespace Toucan.Server
 
             app.UseDeveloperExceptionPage();
             app.UseDefaultFiles();
-            app.UseTokenBasedAuthentication(cfg.Service.TokenProvider);
+            app.UseTokenBasedAuthentication(cfg.Service.TokenProvider, cfg.Server.Areas);
             app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
             app.UseStaticFiles(staticFileOptions);
             app.UseMvc();
