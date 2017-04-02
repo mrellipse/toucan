@@ -8,7 +8,7 @@ import { TokenHelper, UseAxios } from '../common';
 import { IUser } from '../model';
 import { Loader, StatusBar } from '../components';
 import { Locales } from '../locales';
-import { UserOptionsPlugin, IPluginOptions } from '../plugins/user-options-plugin';
+import * as Plugins from '../plugins';
 import { GlobalConfig } from '../config';
 import { AreaNavigation } from './navigation/navigation';
 import { RootStoreTypes } from './store';
@@ -36,12 +36,17 @@ let options = {
 };
 router.beforeEach(RouteGuards(options));
 
-Vue.use<IPluginOptions>(UserOptionsPlugin, {
+Vue.use(Plugins.CommonsPlugin, {
+  store: <never>Store,
+}); 
+
+Vue.use(Plugins.UserOptionsPlugin, {
   key: GlobalConfig.uopt,
   default: { locale: 'en' },
-  store: <any>Store,
+  store: <never>Store,
   watchLocaleChanges: true
 });   // user settings
+
 UseAxios(router);
 
 Vue.component('status-bar', StatusBar);

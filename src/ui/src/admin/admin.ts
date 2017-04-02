@@ -7,7 +7,7 @@ import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import { TokenHelper, UseAxios } from '../common';
 import { Loader, StatusBar } from '../components';
 import { Locales } from '../locales';
-import { UserOptionsPlugin, IPluginOptions } from '../plugins/user-options-plugin';
+import * as Plugins from '../plugins';
 import { GlobalConfig } from '../config';
 import { AreaNavigation } from './navigation/navigation';
 import { AdminStoreTypes } from './store';
@@ -35,10 +35,14 @@ let routeOptions = {
 };
 router.beforeEach(RouteGuards(routeOptions));
 
-Vue.use<IPluginOptions>(UserOptionsPlugin, {
+Vue.use(Plugins.CommonsPlugin, {
+  store: <never>Store,
+}); 
+
+Vue.use(Plugins.UserOptionsPlugin, {
   key: GlobalConfig.uopt,
   default: { locale: 'en' },
-  store: <any>Store,
+  store: <never>Store,
   watchLocaleChanges: true
 });   // user settings
 

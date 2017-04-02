@@ -4,6 +4,7 @@ import Component from 'vue-class-component';
 import { Formatter } from 'vue-i18n';
 import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { State } from 'vuex-class';
+import { ICommonOptions } from '../../plugins';
 import { AuthenticationService, IClaimsHelper } from '../../services';
 import { GlobalConfig } from '../../common';
 import { IPayload } from '../../model';
@@ -48,14 +49,15 @@ export class Home extends Vue {
           .then(value => this.init = true);
       }
 
-      this.$store.dispatch(RootStoreTypes.common.loadingState, true)
-        .then(value => Axios.get(RIKER_IPSUM))
+      this.$common.exec(Axios.get(RIKER_IPSUM), false)
         .then(onSuccess)
         .catch(onError);
     }
   }
 
   init: Boolean = false;
+
+  $common: ICommonOptions;
 
   $store: Store<IRootStoreState>;
 

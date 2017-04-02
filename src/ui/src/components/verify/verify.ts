@@ -4,6 +4,7 @@ import { RawLocation } from 'vue-router';
 import Component from 'vue-class-component';
 import { Formatter } from 'vue-i18n';
 import { required } from 'vuelidate/lib/validators';
+import { ICommonOptions } from '../../plugins';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { IStatusBarData, IUser } from '../../model';
 import { PayloadMessageTypes } from '../../common';
@@ -36,7 +37,7 @@ export class Verify extends Vue {
       this.$store.dispatch(StoreTypes.updateStatusBar, payload)
     };
 
-    this.auth.verify()
+    this.$common.exec(this.auth.verify())
       .then(onSuccess);
   }
 
@@ -64,7 +65,7 @@ export class Verify extends Vue {
       }, 2000);
     };
 
-    this.auth.redeemVerificationCode(this.verifyCode)
+    this.$common.exec(this.auth.redeemVerificationCode(this.verifyCode))
       .then(onSuccess)
       .then(onStoreDispatch)
       ;
@@ -73,6 +74,8 @@ export class Verify extends Vue {
   verifyCodeIssued: boolean = false;
 
   verifyCode: string = null;
+
+  $common: ICommonOptions;
 
   $route: IRouteMixinData;
 

@@ -7,7 +7,7 @@ import { IOptionsService, OptionsService } from './user-options-service';
 import { ICommonState, StoreTypes } from '../store';
 import { IUserOptions } from '../model';
 
-export interface IPluginOptions {
+interface IPluginOptions {
     key: string;
     default: IUserOptions;
     store: Store<{ common: ICommonState }>,

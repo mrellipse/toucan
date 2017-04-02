@@ -5,6 +5,7 @@ import { State } from 'vuex-class';
 import Component from 'vue-class-component';
 import { Formatter, KeypathChecker } from 'vue-i18n';
 import { required, minLength, email } from 'vuelidate/lib/validators';
+import { ICommonOptions } from '../../plugins';
 import { PayloadMessageTypes, TokenHelper } from '../../common';
 import { AuthenticationService, GoogleClient } from '../../services';
 import { ICredential, ILoginProvider, ILoginClient, IPayload, IPayloadMessage, IUser } from '../../model';
@@ -100,11 +101,10 @@ export class Login extends Vue {
 
         let returnUrl: RawLocation = this.returnUrl || { name: 'home' };
 
-        this.auth.login(credentials)
-            .then((value: IUser) => this.$store.dispatch(StoreTypes.updateUser, value))
-            .then((value: any[]) => this.$store.dispatch(StoreTypes.updateStatusBar, null))
-            .then((value: any[]) => this.$router.push(returnUrl))
-            .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
+        this.$common.exec(this.auth.login(credentials))
+            .then((value) => this.$store.dispatch(StoreTypes.updateUser, value))
+            .then(() => this.$store.dispatch(StoreTypes.updateStatusBar, null))
+            .then(() => this.$router.push(returnUrl))
     }
 
     loginExternal(providerId: string): void {
@@ -126,7 +126,7 @@ export class Login extends Vue {
                 this.provider.uri = client.getUri(Object.assign({}, this.provider));
             };
 
-            let nonce = this.auth.getAuthorizationNonce()
+            this.$common.exec(this.auth.getAuthorizationNonce())
                 .then(onSuccess);
         }
     }
@@ -150,9 +150,8 @@ export class Login extends Vue {
                 this.$router.push(returnUrl);
             };
 
-            this.auth.redeemAccessToken(provider)
+            this.$common.exec(this.auth.redeemAccessToken(provider))
                 .then(onSuccess)
-                .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
         }
     }
 
@@ -176,6 +175,8 @@ export class Login extends Vue {
     }
 
     username: string = 'webmaster@toucan.org';
+
+    $common: ICommonOptions;
 
     $route: IRouteMixinData;
 

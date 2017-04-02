@@ -4,6 +4,7 @@ import Component from 'vue-class-component';
 import { Formatter } from 'vue-i18n';
 import { ManageUserService } from './user-service';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
+import { ICommonOptions } from '../../plugins';
 import { ISearchResult, IStatusBarData, IUser } from '../../model';
 import { StoreTypes } from '../../store';
 import { Switch } from '../../components';
@@ -42,11 +43,8 @@ export class ManageUserList extends Vue {
       this.end = (page * pageSize) >= total ? total : (page * pageSize);
     };
 
-    this.$store.dispatch(StoreTypes.loadingState, true)
-      .then(() => this.svc.search(this.currentPage, this.currentPageSize))
-      .then(onSuccess)
-      .then(() => this.$store.dispatch(StoreTypes.loadingState, false))
-      .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
+    this.$common.exec(this.svc.search(this.currentPage, this.currentPageSize))
+      .then(onSuccess);
   }
 
   updateUserStatus(user: IUser) {
@@ -56,8 +54,7 @@ export class ManageUserList extends Vue {
       verified: user.verified
     };
 
-    this.svc.updateUserStatus(data)
-      .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
+    this.$common.exec(this.svc.updateUserStatus(data));
   }
 
   public get onText() {
@@ -78,8 +75,8 @@ export class ManageUserList extends Vue {
     this.search();
   }
 
-  currentPage:number = Object.assign((<any>this).page);
-  currentPageSize:number = Object.assign((<any>this).pageSize);
+  currentPage: number = Object.assign((<any>this).page);
+  currentPageSize: number = Object.assign((<any>this).pageSize);
   start: number = 1;
   end: number = 5;
 
@@ -90,7 +87,7 @@ export class ManageUserList extends Vue {
   public get users(): IUser[] {
     return this.searchResults ? this.searchResults.items : [];
   }
-
+  $common: ICommonOptions;
   $route: IRouteMixinData;
   $router: IRouterMixinData;
   $store: Store<{}>;

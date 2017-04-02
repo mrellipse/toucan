@@ -5,6 +5,7 @@ import { Formatter } from 'vue-i18n';
 import { Vuelidate, validationMixin } from 'vuelidate';
 import { required, minLength } from 'vuelidate/lib/validators';
 import { ManageUserService } from './user-service';
+import { ICommonOptions } from '../../plugins';
 import { IRouteMixinData } from '../../mixins/mixin-router';
 import { PayloadMessageTypes, TokenHelper } from '../../common';
 import { IKeyValueList, ISearchResult, IStatusBarData, IUser } from '../../model';
@@ -42,14 +43,11 @@ export class ManageUser extends Vue {
 
     if (this.id) {
 
-      this.$store.dispatch(StoreTypes.loadingState, true)
-        .then(() => this.svc.getUser(this.id))
+      this.$common.exec(this.svc.getUser(this.id))
         .then((value) => {
           this.user = value.user
           this.availableRoles = value.availableRoles;
-        })
-        .then(() => this.$store.dispatch(StoreTypes.loadingState, false))
-        .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
+        });
     }
   }
 
@@ -69,9 +67,8 @@ export class ManageUser extends Vue {
       this.$store.dispatch(StoreTypes.updateStatusBar, msg);
     };
 
-    this.svc.updateUser(this.user)
-      .then(onSuccess)
-      .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
+    this.$common.exec(this.svc.updateUser(this.user))
+      .then(onSuccess);
   }
 
   availableRoles: IKeyValueList<string, string> = [];
@@ -100,10 +97,10 @@ export class ManageUser extends Vue {
       verified: user.verified
     };
 
-    this.svc.updateUserStatus(data)
-      .catch(e => this.$store.dispatch(StoreTypes.updateStatusBar, e));
+    this.$common.exec(this.svc.updateUserStatus(data));
   }
 
+  $common: ICommonOptions;
   $route: IRouteMixinData;
   $store: Store<{}>;
   $t: Formatter;

@@ -2,6 +2,7 @@ import Vue = require('vue');
 import { Store } from 'vuex';
 import Component from 'vue-class-component';
 import { IVuelidate, ValidationRuleset, Vuelidate, validationMixin } from 'vuelidate';
+import { ICommonOptions } from '../../plugins';
 import { AuthenticationService } from '../../services';
 import { ISignupOptions, IUser } from '../../model';
 import { IRouterMixinData } from '../../mixins/mixin-router';
@@ -46,9 +47,9 @@ export class Signup extends Vue {
                 this.$router.push({ name: 'home' });
             };
 
-            this.auth.signup(signup)
+            this.$common.exec(this.auth.signup(signup))
                 .then(onSignup)
-                .then(onStoreDispatch);
+                .then(onStoreDispatch);    
         }
     }
 
@@ -58,6 +59,8 @@ export class Signup extends Vue {
         userName: null,
         password: 'P@ssw0rd'
     };
+
+    $common: ICommonOptions;
 
     $router: IRouterMixinData;
 
