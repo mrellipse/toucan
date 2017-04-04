@@ -8,7 +8,17 @@ var webpackBase = require('./webpack.base.js');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 module.exports = merge(webpackBase, {
+  
   devtool: '#eval-source-map',
+
+  output: {
+    path: path.resolve(__dirname, '../../server/wwwroot'),
+    publicPath: '/',
+    filename: '[name].[hash].js',
+    sourceMapFilename: '[name].[hash].js.map',
+    chunkFilename: '[id].chunk.js',
+  },
+
   plugins: [
 
     new webpack.DefinePlugin({
@@ -32,8 +42,11 @@ module.exports = merge(webpackBase, {
     }),
 
     new WebpackCleanupPlugin(),
+
     new webpack.optimize.OccurenceOrderPlugin(),
+
     new webpack.HotModuleReplacementPlugin(),
+
     new webpack.NoErrorsPlugin()
   ]
 });

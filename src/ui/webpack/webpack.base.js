@@ -15,18 +15,10 @@ module.exports = {
     ]
   },
 
-  output: {
-    path: path.resolve(__dirname, '../../server/wwwroot'),
-    publicPath: '/',
-    filename: '[name].[hash].js',
-    sourceMapFilename: '[name].[hash].js.map',
-    chunkFilename: '[id].chunk.js',
-  },
-
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
-      minChunks: 3
+      minChunks: 2
     })
   ],
 

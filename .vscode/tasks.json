@@ -42,6 +42,30 @@
             "isBuildCommand": true
         },
         {
+            "taskName": "publish",
+            "args": [
+                "dotnet",
+                "publish",
+                "${workspaceRoot}/src/server/project.json",
+                "-o",
+                "${workspaceRoot}/dist",
+                "--configuration",
+                "release"
+            ],
+            "isBuildCommand": false,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "publish ui",
+            "args": [
+                "webpack",
+                "-p",
+                "--config",
+                "webpack/production.js"
+            ],
+            "isBuildCommand": true
+        },
+        {
             "taskName": "watch",
             "args": [
                 "node",

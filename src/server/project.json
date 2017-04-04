@@ -62,6 +62,11 @@
       "imports": "dnxcore50"
     }
   },
+  "publishOptions": {
+    "include": [
+      "app.production.json"
+    ]
+  },
   "tools": {
     "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4-final"
   }
