@@ -35,6 +35,22 @@ namespace Toucan.Data
                 db.SaveChanges();
             }
 
+            provider = db.Provider.FirstOrDefault(o => o.ProviderId == ProviderTypes.Microsoft);
+
+            if (provider == null)
+            {
+                provider = new Provider()
+                {
+                    ProviderId = ProviderTypes.Microsoft,
+                    Name = "Microsoft",
+                    Description = "Logon using your microsoft account",
+                    Enabled = true
+                };
+
+                db.Provider.Add(provider);
+                db.SaveChanges();
+            }
+
             return provider;
         }
 
@@ -81,8 +97,6 @@ namespace Toucan.Data
 
         private static User EnsureAdmin(DbContextBase db, ICryptoService crypto)
         {
-            
-
             User adminUser = db.User.SingleOrDefault(o => o.Username == AdminEmail);
 
             if (adminUser == null)

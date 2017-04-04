@@ -38,7 +38,7 @@ router.beforeEach(RouteGuards(options));
 
 Vue.use(Plugins.CommonsPlugin, {
   store: <never>Store,
-}); 
+});
 
 Vue.use(Plugins.UserOptionsPlugin, {
   key: GlobalConfig.uopt,
@@ -68,11 +68,11 @@ export const app = new Vue({
     // check if location hash has state/nonce value ...
     let resumeExternalLogin = () => {
 
-      if (location.hash && location.hash.indexOf("state") != -1) {
+      if (location.hash) {
 
         let hash = location.hash.substring(1);
 
-        if (hash.indexOf("access_token") != -1 || hash.indexOf("error") != -1) {
+        if (hash.indexOf("error") != -1 || hash.indexOf("state") != -1 || hash.indexOf("token") != -1) {
           router.push({
             name: RouteNames.login.home,
             query: { hash: hash }

@@ -1,13 +1,15 @@
 @import "../../styles/variables";
 
+$grid-lg-break : map-get($grid-breakpoints, 'lg');
+
 .login-provider {
 
     .btn {
-        min-width: 8em;
+        min-width: 4em;
     }
 
     .card {
-        @media (max-width: 768px)  {
+        @media (max-width: $grid-lg-break)  {
             margin-top: 0.5em;
         }
     }

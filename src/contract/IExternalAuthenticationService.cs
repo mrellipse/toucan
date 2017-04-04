@@ -34,14 +34,11 @@ namespace Toucan.Contract
 
     public interface IExternalTokenData
     {
-        string access_type { get; }
         string aud { get; }
-        string azp { get; }
         string email { get; }
         bool email_verified { get; }
         int exp { get; }
-        int expires_in { get; }
-        string scope { get; }
+        string name { get; }
         string sub { get; }
     }
 

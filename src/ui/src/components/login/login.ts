@@ -7,7 +7,7 @@ import { Formatter, KeypathChecker } from 'vue-i18n';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { ICommonOptions } from '../../plugins';
 import { PayloadMessageTypes, TokenHelper } from '../../common';
-import { AuthenticationService, GoogleClient } from '../../services';
+import { AuthenticationService, GoogleClient, MicrosoftClient } from '../../services';
 import { ICredential, ILoginProvider, ILoginClient, IPayload, IPayloadMessage, IUser } from '../../model';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { ICommonState, StoreTypes } from '../../store';
@@ -30,7 +30,11 @@ import './login.scss';
 export class Login extends Vue {
 
     private auth: AuthenticationService = new AuthenticationService();
-    public externalProviders: ILoginClient[] = [new GoogleClient()];
+
+    public externalProviders: ILoginClient[] = [
+        new GoogleClient(),
+        new MicrosoftClient()
+    ];
 
     @State((state: { common: ICommonState }) => state.common.user) user: IUser;
 
@@ -135,9 +139,17 @@ export class Login extends Vue {
 
         let provider: ILoginProvider = this.provider;
 
+        let token: string = null;
+
         let client: ILoginClient = this.externalProviders.find((value) => value.providerId === provider.providerId);
 
-        let token = client ? client.getAccessToken(this.$route) : null;
+        try {
+            token = client ? client.getAccessToken(this.$route) : null;
+        } catch (e) {
+            this.$store.dispatch(StoreTypes.loadingState, false).then(() => {
+                this.$store.dispatch(StoreTypes.updateStatusBar, e);
+            });
+        }
 
         if (client && token) {
 
