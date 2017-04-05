@@ -1,9 +1,19 @@
 {
   "name": "toucan.ui",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "UI project for Toucan template",
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "vuejs2",
+    "vuex2",
+    "vue-router2",
+    "typescript2",
+    "dotnetcore",
+    "c-sharp",
+    "structuremap",
+    "oauth2-client",
+    "axios"
+  ],
+  "author": "mrellipse",
   "license": "MIT",
   "config": {
     "port": 3000
