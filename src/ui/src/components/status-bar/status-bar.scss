@@ -22,7 +22,7 @@
         font-weight: bold;
     }
 
-    .status-text {
+    .status-text[data-has-title] {
         margin-left: 0.5em;
     }
 }

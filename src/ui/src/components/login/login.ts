@@ -186,6 +186,10 @@ export class Login extends Vue {
         return returnUrl ? returnUrl.replace(window.location.origin, '') : null;
     }
 
+    public get hasExternalProviders(): boolean {
+        return this.externalProviders && this.externalProviders.length > 1;
+    }
+
     username: string = 'webmaster@toucan.org';
 
     $common: ICommonOptions;

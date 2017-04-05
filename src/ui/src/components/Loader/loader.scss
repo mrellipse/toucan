@@ -1,4 +1,4 @@
-$vue-green: #41b883;
+@import "../../styles/variables";
 
 .loader {
   font-size: 10px;
@@ -7,10 +7,10 @@ $vue-green: #41b883;
   left: 50%;
   margin: -20px 0 0 -20px;
   text-indent: -9999em;
-  border-top: 5px solid lighten($vue-green, 35%);
-  border-right: 5px solid lighten($vue-green, 35%);
-  border-bottom: 5px solid lighten($vue-green, 35%);
-  border-left: 5px solid $vue-green;
+  border-top: 5px solid lighten($brand-primary, 35%);
+  border-right: 5px solid lighten($brand-primary, 35%);
+  border-bottom: 5px solid lighten($brand-primary, 35%);
+  border-left: 5px solid $brand-primary;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);

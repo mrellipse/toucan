@@ -1,7 +1,5 @@
 @import "../../styles/variables";
 
-$grid-lg-break : map-get($grid-breakpoints, 'lg');
-
 .login-provider {
 
     .btn {
@@ -9,9 +7,15 @@ $grid-lg-break : map-get($grid-breakpoints, 'lg');
     }
 
     .card {
-        @media (max-width: $grid-lg-break)  {
-            margin-top: 0.5em;
-        }
+        margin-top: 0.5em;
+    }
+
+    .external-provider-text {
+        color: $brand-primary;
+        margin-left: 0.5em;
+        text-transform: lowercase;
+        font-variant: small-caps;
+        font-size: 1.4em;
     }
 }
 

@@ -68,7 +68,8 @@ export const en = {
         provider: {
             local: 'local',
             google: 'google',
-            microsoft: 'microsoft'
+            microsoft: 'microsoft',
+            external: 'external',
         },
         placeholder: {
             email: 'Enter your email',

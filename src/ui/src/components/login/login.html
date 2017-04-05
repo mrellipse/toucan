@@ -6,18 +6,7 @@
   </div>
 
   <div class="row">
-    <div v-for="(provider,index) in externalProviders" class="col-sm-12 col-md-6 col-lg-4 login-provider">
-      <div class="card">
-        <div class="card-block">
-          <h3 class="card-title">{{$t(provider.localeKeys.name)}}</h3>
-          <div class="form-group">
-            <button class="btn btn-primary" @click.prevent="loginExternal(provider.providerId)"><i class="fa fa-lg" v-bind:class="[externalProviders[index].iconClass]" aria-hidden="true"></button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-12 col-md-6 col-lg-4 login-provider">
+    <div class="col-sm-8 login-provider">
       <div class="card">
         <div class="card-block">
           <h3 class="card-title">{{$t('login.provider.local')}}</h3>
@@ -39,6 +28,17 @@
           </div>
           <div class="form-group">
             <button class="btn btn-primary" @click.prevent="login()"><i class="fa fa-lg fa-desktop" aria-hidden="true"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="hasExternalProviders" class="col-sm-8 login-provider">
+      <div class="card">
+        <div class="card-block">
+          <h3 class="card-title">{{$t('login.provider.external')}}</h3>
+          <div v-for="(provider,index) in externalProviders" class="form-group">
+            <button class="btn btn-primary" @click.prevent="loginExternal(provider.providerId)"><i class="fa fa-lg" v-bind:class="[externalProviders[index].iconClass]" aria-hidden="true"></button>
+            <span class="external-provider-text">{{$t(provider.localeKeys.name)}}</span>
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ import './status-bar.scss';
   template: `
     <transition name="fade">
       <div v-if="status.messageTypeId" @click.prevent="onStatusBarClick()" class="status-bar" :class="alertClass" role="alert">
-         <span class="status-title">{{statusTitle}}</span><span class="status-text">{{statusText}}</span>
+         <span class="status-title">{{statusTitle}}</span><span v-bind:data-has-title="hasTitle" class="status-text">{{statusText}}</span>
       </div>
     </transition>`,
   props: {
@@ -73,6 +73,10 @@ export class StatusBar extends Vue {
 
   clearAfter: number = this.clearAfter;
   localePrefix: string = this.localePrefix;
+
+  public get hasTitle(): boolean {
+    return this.statusTitle? true : false;
+  }
 
   public get statusText(): string {
 
