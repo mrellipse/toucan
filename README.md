@@ -75,12 +75,14 @@ It also enables users to login via an external authentication provider, using th
 The project currently provides support for
 
 - [X] [Google](https://developers.google.com/identity/protocols/OAuth2UserAgent)
-- [ ] [Microsoft](https://msdn.microsoft.com/en-us/library/hh243647.aspx)
+- [X] [Microsoft](https://msdn.microsoft.com/en-us/library/hh243647.aspx)
 
-To configure the google provider
+To configure the
 
-* Google Provider - edit `const GOOGLE_CLIENT_ID` key in *google-provider.ts* file
-* Microsoft Provider - TBC
+* Google Provider - edit `const GOOGLE_CLIENT_ID` key in *google-provider.ts* file, and `clientId` in *app.development.json*
+* Microsoft Provider - edit `const MICROSOFT_CLIENT_ID` key in *microsoft-provider.ts* file, and `clientId` in *app.development.json*
+
+To remove a provider from appearing the UI, edit `externalProviders` class property in *login.ts*
 
 ##### Startup
 Run the following command
