@@ -1,5 +1,5 @@
 {
     "data": {
-        "connectionString": "Host=localhost;Port=5432;Database=ToucanTest;Username=npguser;Password=P@ssw0rd"
+        "connectionString": "Host=XXX;Port=5432;Database=YYY;Username=ZZZ;Password=P@ssw0rd"
     }
 }

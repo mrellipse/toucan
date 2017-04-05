@@ -1,5 +1,5 @@
 {
     "data": {
-        "connectionString": "Server=(localdb)\\mssqllocaldb;Database=ToucanTest;Trusted_Connection=True;"
+        "connectionString": "Server=.;Database=ToucanTest;Trusted_Connection=True;"
     }
 }
