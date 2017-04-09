@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "allowJs": false,
         "baseUrl": "node_modules",
         "lib": [
             "dom",
@@ -9,7 +11,7 @@
         "listEmittedFiles": false,
         "module": "commonjs",
         "moduleResolution": "Node",
-        "target": "es5",
+        "target": "es2015",
         "traceResolution": true
     },
     "include": [

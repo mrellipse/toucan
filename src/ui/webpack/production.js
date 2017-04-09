@@ -39,11 +39,10 @@ module.exports = merge(webpackBase, {
 
     new WebpackCleanupPlugin(),
 
-    new webpack.optimize.OccurenceOrderPlugin(),
-
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
-        warnings: false
+        warnings: false,
+        sourcemap: true
       }
     }),
   ]

@@ -1,8 +1,8 @@
-import Vue = require('vue');
-import Vuex = require('vuex');
-import VueRouter = require('vue-router');
-import VueI18n = require('vue-i18n');
-import Vuelidate = require('vuelidate');
+import * as Vue from 'vue';
+import { default as Vuex } from 'vuex';
+import { default as VueRouter } from 'vue-router';
+import * as VueI18n from 'vue-i18n';
+import { default as Vuelidate } from 'vuelidate';
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import { TokenHelper, UseAxios } from '../common';
 import { Loader, StatusBar } from '../components';
@@ -24,7 +24,7 @@ Object.keys(Locales).forEach((lang) => {
   (<any>Vue).locale(lang, Locales[lang]);
 })
 
-Vue.use(Vuelidate.default); // validation
+Vue.use(Vuelidate); // validation
 Vue.use(VueRouter); // router
 const router = new VueRouter(RouterOptions);
 let routeOptions = {
@@ -37,7 +37,7 @@ router.beforeEach(RouteGuards(routeOptions));
 
 Vue.use(Plugins.CommonsPlugin, {
   store: <never>Store,
-}); 
+});
 
 Vue.use(Plugins.UserOptionsPlugin, {
   key: GlobalConfig.uopt,

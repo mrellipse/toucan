@@ -43,10 +43,6 @@ module.exports = merge(webpackBase, {
 
     new WebpackCleanupPlugin(),
 
-    new webpack.optimize.OccurenceOrderPlugin(),
-
-    new webpack.HotModuleReplacementPlugin(),
-
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ]
 });
