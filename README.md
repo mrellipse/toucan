@@ -18,7 +18,7 @@ These instructions will get a copy of the project up and running on your local m
 
 ### Prerequisites
 
-* [.NET Core SDK](https://www.microsoft.com/net/core/#windowscmd)
+* [.NET Core SDK 1.0.1](https://www.microsoft.com/net/core/#windowscmd)
 * [Visual Studio Code](https://code.visualstudio.com/download/) (or a similar text-based editor like Sublime)
 * [TypeScript](https://www.typescriptlang.org/)
 * [Node.js](https://nodejs.org/en/)
@@ -27,11 +27,11 @@ These instructions will get a copy of the project up and running on your local m
 ### Installing
 
 #### Project Dependencies
-Update and build the .NET Core projects by switching to the root directory of the solution and running
+Update and build the .NET Core projects by switching to to ./src/server and running
 
 ```DOS
-dotnet restore ./src
-dotnet build ./src/server/project.json
+dotnet restore
+dotnet build
 ```
 
 Update and build the TypeScript UI project by switching to ./src/ui and running
@@ -58,6 +58,7 @@ dotnet ef --startup-project ../server migrations add Initial -c NpgSqlContext
 ```
 
 ##### For SQL Server
+
 * update <data:connectionString>* configuration key inside *./src/server/app.development.json*
 * update the `ConfigureServices()` method in *./src/server/startup.cs*, and uncomment the code block starting `services.AddDbContext<MsSqlContext>`
 * add the same connection string details to *./src/data/mssql.json* (required for EF tooling)
@@ -85,9 +86,10 @@ To configure the
 To remove a provider from appearing the UI, edit `externalProviders` class property in *login.ts*
 
 ##### Startup
-Run the following command
+Run the project by switching to ./src/server and running
+
 ```DOS
-dotnet run -p ./src/server/project.json -c Development
+dotnet run -p server.csproj -c Development
 ```
 You should now be able to load the site at [https://localhost:5000/](https://localhost:5000/) 
 

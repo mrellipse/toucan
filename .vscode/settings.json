@@ -12,5 +12,6 @@
         "**/obj": true,
         "**/*.Designer.cs": true,
         "**/*.lock.json": true
-    }
+    },
+    "terminal.integrated.setLocaleVariables": true
 }

@@ -31,6 +31,6 @@
     }
   },
   "tools": {
-    "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4-final"
+    "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0"
   }
 }

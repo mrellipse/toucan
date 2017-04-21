@@ -1,79 +1,63 @@
 {
     "version": "0.1.0",
-    "command": "cmd",
-    "isShellCommand": true,
-    "args": [
-        "/C"
-    ],
-    "options": {
-        "cwd": "${workspaceRoot}/src/ui"
-    },
-    "showOutput": "always",
-    "suppressTaskName": true,
     "tasks": [
         {
             "taskName": "dev build",
+            "command": "cmd",
+            "isShellCommand": true,
             "args": [
+                "/C",
                 "dotnet",
                 "build",
-                "${workspaceRoot}/src/server/project.json"
+                "${workspaceRoot}/src/server/server.csproj"
             ],
             "isBuildCommand": false,
             "problemMatcher": "$msCompile"
         },
         {
             "taskName": "test",
+            "command": "cmd",
+            "isShellCommand": true,
             "args": [
+                "/C",
                 "dotnet",
                 "test",
-                "${workspaceRoot}/test/common.tests"
+                "${workspaceRoot}/test/test-common/test-common.csproj"
             ],
             "isTestCommand": true,
             "problemMatcher": "$msCompile"
         },
         {
             "taskName": "dev build ui",
+            "command": "webpack",
+            "isShellCommand": true,
             "args": [
-                "webpack",
                 "-p",
                 "--config",
                 "webpack/development.js"
             ],
+            "showOutput": "always",
+            "options": {
+                "cwd": "${workspaceRoot}/src/ui"
+            },
             "isBuildCommand": true
         },
         {
             "taskName": "publish",
+            "command": "cmd",
+            "isShellCommand": true,
             "args": [
-                "dotnet",
-                "publish",
-                "${workspaceRoot}/src/server/project.json",
-                "-o",
-                "${workspaceRoot}/dist",
-                "--configuration",
-                "release"
+                "/C",
+                "powershell",
+                "Set-ExecutionPolicy -ExecutionPolicy Bypass",
+                "|",
+                "powershell",
+                "${workspaceRoot}/build/production.ps1"
             ],
-            "isBuildCommand": false,
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "taskName": "publish ui",
-            "args": [
-                "webpack",
-                "-p",
-                "--config",
-                "webpack/production.js"
-            ],
-            "isBuildCommand": true
-        },
-        {
-            "taskName": "watch",
-            "args": [
-                "node",
-                "node_modules/webpack-build/lib/bin/webpack-build.js",
-                "--c",
-                "./webpack/watch.js",
-                "--watch"
-            ]
+            "options": {
+                "cwd": "${workspaceRoot}/src/ui"
+            },
+            "isBuildCommand": false
         }
     ]
 }

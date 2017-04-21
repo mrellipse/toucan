@@ -41,9 +41,9 @@ module.exports = merge(webpackBase, {
 
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
-        warnings: false,
-        sourcemap: true
-      }
+        warnings: false
+      },
+      sourceMap: true
     }),
   ]
 });
