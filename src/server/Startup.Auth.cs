@@ -20,38 +20,6 @@ namespace Toucan.Server
         {
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(cfg.TokenSecurityKey));
 
-            Func<JwtBearerChallengeContext, Task> onChallenge = (JwtBearerChallengeContext context) =>
-            {
-                if (context.Response.StatusCode == 302)
-                {
-                    Uri location = context.Response.GetTypedHeaders().Location;
-                    string referrer = context.Request.Headers[HeaderNames.Referer];
-
-                    if (location != null && !string.IsNullOrEmpty(referrer))
-                    {
-                        string locationUri = new UriBuilder(location.Scheme, location.Host, location.Port, "Login").ToString();
-                        string returnUrl = CreateReturnUrl(referrer, areas);
-
-                        context.Response.Headers.Remove(HeaderNames.Location);
-
-                        locationUri = QueryHelpers.AddQueryString(locationUri, "returnUrl", returnUrl);
-
-                        if (!string.IsNullOrEmpty(context.Error))
-                            locationUri = QueryHelpers.AddQueryString(locationUri, "errorCode", context.Error);
-
-                        if (!string.IsNullOrEmpty(context.ErrorDescription))
-                            locationUri = QueryHelpers.AddQueryString(locationUri, "errorDesc", context.ErrorDescription);
-
-                        context.Response.Headers.Append(HeaderNames.Location, locationUri);
-                        context.Response.StatusCode = 200;
-                    }
-                }
-
-                context.Response.Headers.Append(HeaderNames.WWWAuthenticate, context.Options.Challenge);
-
-                return Task.Factory.StartNew(() => context.HandleResponse());
-            };
-
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true, // The signing key must match!
@@ -72,26 +40,74 @@ namespace Toucan.Server
                 TokenValidationParameters = tokenValidationParameters,
                 Events = new JwtBearerEvents
                 {
-                    OnChallenge = onChallenge
+                    OnChallenge = (context) =>
+                    {
+                        return OnChallenge(context, areas);
+                    }
                 }
             });
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
+                AutomaticChallenge = false,
                 AuthenticationScheme = "Cookie",
                 CookieName = "access_token",
                 TicketDataFormat = new Model.TokenDataFormat(cfg.TokenSecurityAlgorithm, "Cookie", tokenValidationParameters)
             });
         }
 
-        private static string CreateReturnUrl(string referrer, string[] areas)
+        private static Task OnChallenge(JwtBearerChallengeContext context, string[] areas)
+        {
+            if (context.AuthenticateFailure != null)
+            {
+                string location = CreateReturnLocation(context, areas);
+
+                context.Response.Headers.Append(HeaderNames.Location, location);
+                context.Response.Headers.Append(HeaderNames.WWWAuthenticate, context.Options.Challenge);
+
+                if (context.Request.AcceptsJsonResponse())
+                {
+                    return Task.Factory.StartNew(() =>
+                    {
+                        context.Response.StatusCode = 401;
+                        context.HandleResponse();
+                    });
+                }
+            }
+
+            return Task.Factory.StartNew(() => context.HandleResponse());
+        }
+
+        private static string CreateReturnLocation(JwtBearerChallengeContext context, string[] areas)
+        {
+            string locationHeader = context.Request.Headers[HeaderNames.Location];
+
+            Uri referrer = new Uri(context.Request.Headers[HeaderNames.Referer]);
+            Uri location = new Uri(locationHeader ?? referrer.ToString());
+
+            string locationUri = new UriBuilder(location.Scheme, location.Host, location.Port, "Login").ToString();
+
+            string returnUrl = CreateReturnUrl(referrer, areas);
+
+            locationUri = QueryHelpers.AddQueryString(locationUri, "returnUrl", returnUrl);
+
+            if (!string.IsNullOrEmpty(context.Error))
+                locationUri = QueryHelpers.AddQueryString(locationUri, "errorCode", context.Error);
+
+            if (!string.IsNullOrEmpty(context.AuthenticateFailure.Message))
+                locationUri = QueryHelpers.AddQueryString(locationUri, "errorDesc", context.ErrorDescription);
+
+            return locationUri;
+        }
+
+        private static string CreateReturnUrl(Uri referrer, string[] areas)
         {
             string areaPattern = string.Join(string.Empty, areas.Select(o => "/" + o));
-            string pattern = $"({areaPattern})";
-            Regex rex = new Regex(pattern);
-            return rex.Replace(referrer, string.Empty, 1);
+
+            Regex regex = new Regex($"({areaPattern})");
+
+            return regex.Replace(referrer.ToString(), string.Empty, 1);
         }
     }
 }

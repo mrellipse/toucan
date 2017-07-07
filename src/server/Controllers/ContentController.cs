@@ -8,7 +8,6 @@ using Toucan.Server.Model;
 
 namespace Toucan.Server.Controllers
 {
-
     [Route("api/[controller]/[action]")]
     public class ContentController : Controller
     {

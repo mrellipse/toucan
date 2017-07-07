@@ -1,4 +1,4 @@
-import { default as Axios } from 'axios';
+import { default as Axios, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import VueRouter = require('vue-router');
 import { GlobalConfig, TokenHelper } from '../common';
 
@@ -8,7 +8,7 @@ export function UseAxios(router: VueRouter) {
 
     if (!initialized) {
 
-        Axios.interceptors.request.use((config) => {
+        Axios.interceptors.request.use((config: AxiosRequestConfig) => {
 
             if (!config.headers['Authorization']) {   // append authorization header
                 let bearerToken = TokenHelper.getBearerToken();
@@ -23,19 +23,20 @@ export function UseAxios(router: VueRouter) {
             return config;
         });
 
-        Axios.interceptors.response.use((config) => {
+        Axios.interceptors.response.use(undefined, (config: AxiosError) => {
 
-            // if the server returns 200 OK + location header, this is the equivalent of a 302 redirection command 
-            let location: string = config.headers['location'];
+            let response: AxiosResponse = config.response;
 
-            if (config.status === 200 && location) {
+            if (response.status === 401) {
+                let location: string = response.headers['location'] || response.headers['Location'];
 
-                let redirectTo = location.replace(window.location.origin, '');
-
-                router.replace(redirectTo);
-            } else {
-                return config;
+                if (location) {
+                    let redirectTo = location.replace(window.location.origin, '');
+                    window.setTimeout(() => router.replace(redirectTo), 200);
+                }
             }
+
+            return config;
         });
 
         initialized = true;
