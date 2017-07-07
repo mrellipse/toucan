@@ -9,14 +9,12 @@ This method is responsible for converting the user model into a [ClaimsIdentity]
 
 The following customizations have been made
 
-### Authentication Challenges (302)
-Normally, if an authorization check on the web server fails, a challenge is issued to the client browser. This results in a 302 redirect, but this behaviour has been modified using custom middleware in *./src/server/Startup.Auth.cs*.
+### Authentication Challenges
+If an authorization check on the web server fails, a challenge is issued to the client browser. Normally this results in a 302 redirect, but this behaviour has been modified using custom middleware.
 
-This middleware will instead
-- return a 200 OK response
-- set the Location header with a value that should be passed to the client-side SPA router
+The server instead returns a 401 Unauthorized response whilst setting Response header _Location=XXX_.
 
-It then relies on the client SPA to interpret this response correctly, which should either prompt the user to login, or display 'you do not have required permissions' message
+The client SPA must interpret this response correctly, and decide whether to prompt the user to login again, or display a simple 'you do not have required permissions' message
 
 ### Client & Server Side Routing
 Custom middleware is used to help with scenarios when the browser is requesting a page, and the path may translate into a _meaningful route on the client side_ - but its not known to the web server.
