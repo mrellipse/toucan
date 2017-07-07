@@ -1,0 +1,52 @@
+<main class="container">
+  <div class="col-sm-12">
+    <fieldset v-if="init && user">
+      <legend>{{user.displayName}}</legend>
+      <div>
+        <div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="email">{{$t('dict.email')}}</label>
+            <div class="col-sm-6 col-lg-4">
+              <div id="email" class="form-control-static">{{user.email}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="displayName">{{$t('dict.name')}}</label>
+          <div class="col-sm-6 col-lg-4">
+            <input id="displayName" class="form-control" v-model="user.displayName" type="text" @input="$v.user.displayName.$touch()">
+            <span v-show="$v.user.displayName.$dirty">
+            <span class="alert-danger" v-if="!$v.user.displayName.required">{{$t('validation.required')}}</span>
+            <span class="alert-danger" v-if="!$v.user.displayName.minLength">{{$t('validation.minLength', 2)}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="roles">{{$t('dict.role')}}</label>
+          <div class="col-sm-6 col-lg-4">
+            <drop-down id="roles" class="form-control" v-model="user.roles" :items="availableRoles" @input="$v.user.roles.$touch()" />
+            <span v-show="$v.user.roles.$dirty">
+              <span class="alert-danger" v-if="!$v.user.roles.required">{{$t('validation.required')}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="enabled">{{$t('dict.enabled')}}</label>
+          <div class="col-sm-2 col-form-like-label">
+            <check id="enabled" v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
+          </div>
+          <label class="col-sm-2 col-form-label" for="verified">{{$t('dict.verified')}}</label>
+          <div class="col-sm-2 col-form-like-label">
+            <check id="verified" v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-2">
+            <button class="btn btn-primary" @click.prevent="submit()" v-bind:disabled="!allowSubmit">{{$t('dict.update')}}</button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</main>

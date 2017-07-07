@@ -29,7 +29,7 @@
             }
         ],
         "tokenProvider": {
-            "tokenExpiration": "5",
+            "tokenExpiration": "2",
             "tokenSecurityKey": "heartyingsquawkingisrequiredofaparrotmateys",
             "tokenSecurityAlgorithm": "HS256",
             "tokenIssuer": "localhost",

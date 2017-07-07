@@ -34,7 +34,7 @@
             "args": [
                 "-p",
                 "--config",
-                "webpack/development.js"
+                "webpack.config.js"
             ],
             "showOutput": "always",
             "options": {

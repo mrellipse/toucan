@@ -1,20 +1,22 @@
 {
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "allowJs": false,
-        "baseUrl": "node_modules",
-        "lib": [
-            "dom",
-            "es2015"
-        ],
-        "experimentalDecorators": true,
-        "listEmittedFiles": false,
-        "module": "commonjs",
-        "moduleResolution": "Node",
-        "target": "es2015",
-        "traceResolution": true
-    },
-    "include": [
-        "src/*.ts"
-    ]
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowJs": false,
+    "baseUrl": "node_modules",
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "listEmittedFiles": false,
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "target": "es2015",
+    "traceResolution": true,
+    "types": ["node"]
+  },
+  "exclude": [
+    "bin",
+    "node_modules"
+  ]
 }

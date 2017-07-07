@@ -2,6 +2,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Node (Webpack)",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceRoot}/src/ui",
+            "runtimeExecutable": "npm",
+            "windows": {
+                "runtimeExecutable": "npm.cmd"
+            },
+            "runtimeArgs": [
+                "run-script",
+                "debug"
+            ],
+            "port": 5858
+        },
+        {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",

@@ -27,6 +27,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Https" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="1.1.1" />
@@ -63,7 +64,6 @@
   </Target>
 
   <Target Name="SyncFiles" AfterTargets="AfterPublish" Condition="'$(Configuration)' == 'Release'">
-    <Delete Files="$(PublishDir)app.staging.json"/> 
     <Delete Files="$(PublishDir)app.development.json"/>
     <Delete Files="$(PublishDir)hosting.json"/>
     <Delete Files="$(PublishDir)project.json"/>

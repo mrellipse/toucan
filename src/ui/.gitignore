@@ -1,8 +1,1 @@
 node_modules
-typings
-build
-*.log
-.webpack_build_cache
-src/**/*.js
-!node_modules/vue/types/*.d.ts
-!node_modules/vue-router/types/*.d.ts

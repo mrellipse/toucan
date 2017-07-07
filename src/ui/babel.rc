@@ -1,0 +1,16 @@
+{
+    plugins: [
+        'transform-runtime'
+    ],
+    presets: [
+        'env',
+        [
+            'es2015',
+            {
+                loose: true,
+                modules: false
+            }
+        ],
+        'es2016'
+    ]
+}

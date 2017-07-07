@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -16,7 +17,6 @@ namespace Toucan.Server
 {
     public partial class Startup
     {
-
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var cfg = app.ApplicationServices.GetRequiredService<IOptions<AppConfig>>().Value;
@@ -24,17 +24,25 @@ namespace Toucan.Server
 
             loggerFactory.AddConsole(LogLevel.Debug);
             loggerFactory.AddDebug();
-
-            StaticFileOptions staticFileOptions = new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(webRoot)
-            };
-
+            
             app.UseDeveloperExceptionPage();
+
+            app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
+            {
+                HotModuleReplacement = true,
+                ProjectPath = Path.Combine(WebApp.ContentRoot, @"..\ui")
+            });
+            
+
             app.UseDefaultFiles();
             app.UseTokenBasedAuthentication(cfg.Service.TokenProvider, cfg.Server.Areas);
             app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
-            app.UseStaticFiles(staticFileOptions);
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(webRoot)
+            });
+
             app.UseMvc();
             app.UseHistoryModeMiddleware(webRoot, cfg.Server.Areas);
 
@@ -98,16 +106,6 @@ namespace Toucan.Server
         }
 
         public void ConfigureProductionServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
-        }
-
-        public void ConfigureStaging(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            this.Configure(app, env, loggerFactory);
-        }
-
-        public void ConfigureStagingServices(IServiceCollection services)
         {
             this.ConfigureServices(services);
         }
