@@ -22,17 +22,20 @@ namespace Toucan.Server
             var cfg = app.ApplicationServices.GetRequiredService<IOptions<AppConfig>>().Value;
             string webRoot = new DirectoryInfo(cfg.Server.Webroot).FullName;
 
-            loggerFactory.AddConsole(LogLevel.Debug);
             loggerFactory.AddDebug();
-            
-            app.UseDeveloperExceptionPage();
 
-            app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
+            if (env.IsDevelopment())
             {
-                HotModuleReplacement = true,
-                ProjectPath = Path.Combine(WebApp.ContentRoot, @"..\ui")
-            });
-            
+                loggerFactory.AddConsole(LogLevel.Debug);
+
+                app.UseDeveloperExceptionPage();
+
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
+                {
+                    HotModuleReplacement = true,
+                    ProjectPath = Path.Combine(WebApp.ContentRoot, @"..\ui")
+                });
+            }
 
             app.UseDefaultFiles();
             app.UseTokenBasedAuthentication(cfg.Service.TokenProvider, cfg.Server.Areas);
@@ -97,17 +100,6 @@ namespace Toucan.Server
             });
 
             return container.GetInstance<IServiceProvider>();
-        }
-
-        public void ConfigureProduction(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            app.UseStaticFiles();
-            app.UseExceptionHandler("/error.html");
-        }
-
-        public void ConfigureProductionServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
         }
     }
 }

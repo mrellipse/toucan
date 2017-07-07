@@ -17,7 +17,7 @@
     <ProjectReference Include="..\data\data.csproj" />
     <ProjectReference Include="..\service\service.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
@@ -55,6 +55,10 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resources\**\*" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
   <Target Name="SyncFolders" AfterTargets="AfterPublish" Condition="'$(Configuration)' == 'Release'">

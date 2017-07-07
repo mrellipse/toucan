@@ -11,7 +11,9 @@
         "**/bin": true,
         "**/obj": true,
         "**/*.Designer.cs": true,
-        "**/*.lock.json": true
+        "**/*.lock.json": true,
+        "dist/*.dll": true,
+        "dist/*.pdb": true
     },
     "terminal.integrated.setLocaleVariables": true
 }
