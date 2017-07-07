@@ -11,6 +11,7 @@ The main objective is to provide scaffolding for an SPA web application, that in
 * multiple optimized entry points
 * token-based authentication
 * support for local or external authentication providers
+* HMR support for development
 
 ## Getting Started
 
