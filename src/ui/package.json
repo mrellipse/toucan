@@ -1,6 +1,6 @@
 {
   "name": "toucan.ui",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "UI project for Toucan template",
   "keywords": [
     "vuejs",
@@ -29,7 +29,7 @@
     "bootstrap": "^4.0.0-alpha.6",
     "client-oauth2": "^4.1.0",
     "font-awesome": "^4.7.0",
-    "typescript": "^2.3.4",
+    "typescript": "2.3.4",
     "vue": "^2.3.3",
     "vue-class-component": "5.0.1",
     "vue-i18n": "^7.0.1",
