@@ -1,6 +1,6 @@
 # Toucan
 
-This is an opinionated multi-project solution template, combining .Net Core and Vuejs.
+This is an opinionated multi-project solution template, combining .NET Core and VueJs.
 
 The main objective is to provide scaffolding for an SPA web application, that incorporates SOLID design principles.
 
@@ -12,6 +12,9 @@ The main objective is to provide scaffolding for an SPA web application, that in
 * token-based authentication
 * support for local or external authentication providers
 * HMR support for development
+
+## Preview
+![Screenshot](screen.png)
 
 ## Getting Started
 
@@ -40,7 +43,7 @@ or using [setup](SETUP.md) instructions
 
 Be sure to check out [README](src/server/README.md) for details on MVC middleware and filters being used in the pipeline.
 
-### .Net Core
+### .NET Core
 See the readme files for each project
 * [contract](src/contract/README.md)
 * [common](src/common/README.md)
@@ -48,7 +51,7 @@ See the readme files for each project
 * [service](src/service/README.md)
 * [server](src/server/README.md)
 
-### Vuejs & Webpack
+### VueJs & Webpack
 See the readme file below
 * [ui](src/ui/README.md)
 
@@ -106,7 +109,7 @@ The Axios library automatically uses this cookie to append the anti-forgery toke
 
 ## Tests
 
-For .Net Core, a sample XUnit test is provided as a starting point */test/* directory
+For .NET Core, a sample XUnit test is provided as a starting point */test/* directory
 
 ## Built With
 

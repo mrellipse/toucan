@@ -24,7 +24,7 @@ Other components will be found in specific sub-areas (such as 'root' or 'admin')
 
 ### Areas * Webpack
 
-There are multiple areas defined in the client Vuejs application ... 
+There are multiple areas defined in the client VueJs application ... 
 
 * ./ui/app/root/root.ts => https://localhost:5000
 * ./ui/app/admin/admin.ts  => https://localhost:5000/admin

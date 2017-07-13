@@ -6,4 +6,4 @@ Since Entity Framework Core is being used as the ORM, this assembly contains all
 - Data migrations
 - Seeding routines
 
-See [Getting started with ASP.NET Core MVC and Entity Framework Core using Visual Studio](https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/intro) for an introduction
+See [Getting started with Asp.NET Core MVC and Entity Framework Core using Visual Studio](https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/intro) for an introduction
