@@ -22,6 +22,7 @@ module.exports = (outputPath, srcPath) => {
         new webpackHtml({
             chunksSortMode: 'dependency',
             excludeChunks: ['admin'],
+            favicon: path.resolve(srcPath, './root/favicon.ico'),
             filename: 'index.html',
             inject: 'body',
             template: path.resolve(srcPath, './root/root.html')
@@ -29,6 +30,7 @@ module.exports = (outputPath, srcPath) => {
         new webpackHtml({
             chunksSortMode: 'dependency',
             excludeChunks: ['app'],
+            favicon: path.resolve(srcPath, './admin/favicon.ico'),
             filename: 'admin.html',
             inject: 'body',
             template: path.resolve(srcPath, './admin/admin.html')
