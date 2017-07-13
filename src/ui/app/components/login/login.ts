@@ -110,6 +110,7 @@ export class Login extends Vue {
             .then((value) => this.$store.dispatch(StoreTypes.updateUser, value))
             .then(() => this.$store.dispatch(StoreTypes.updateStatusBar, null))
             .then(() => this.$router.push(returnUrl))
+            .catch(() => { });
     }
 
     loginExternal(providerId: string): void {
@@ -119,7 +120,7 @@ export class Login extends Vue {
         if (!client) {
 
             let msg: IPayloadMessage = {
-                text:  'Unknown authentication provider \'' + providerId +'\'',
+                text: 'Unknown authentication provider \'' + providerId + '\'',
                 messageTypeId: PayloadMessageTypes.warning
             }
 

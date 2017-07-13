@@ -53,21 +53,18 @@ export class AuthenticationService extends StoreService implements IClaimsHelper
 
     login(credentials: ICredential) {
 
-        let onSuccess = (payload: IPayload<IAccessToken>) => {
+        let onSuccess = (token: IAccessToken) => {
+            
+            if (token) {
 
-            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+                TokenHelper.setAccessToken(token.access_token);
 
-                let token = payload.data.access_token;
-
-                TokenHelper.setAccessToken(token);
-
-                return TokenHelper.parseUserToken(token);
-            } else {
-                throw new Error(payload.message.text);
+                return TokenHelper.parseUserToken(token.access_token);
             }
         }
 
         return this.exec(Axios.post(LOGIN_URL, credentials))
+            .then(value => this.processPayload(value))
             .then(onSuccess);
     }
 
@@ -94,18 +91,14 @@ export class AuthenticationService extends StoreService implements IClaimsHelper
 
     redeemAccessToken(provider: ILoginProvider) {
 
-        let onSuccess = (payload: IPayload<IAccessToken>) => {
+        let onSuccess = (token: IAccessToken) => {
 
-            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+            if (token) {
 
-                let token = payload.data.access_token;
-
-                TokenHelper.setAccessToken(token);
+                TokenHelper.setAccessToken(token.access_token);
                 TokenHelper.removeProvider();
 
-                return TokenHelper.parseUserToken(token);
-            } else {
-                throw new Error(payload.message.text);
+                return TokenHelper.parseUserToken(token.access_token);
             }
         };
 
@@ -116,23 +109,19 @@ export class AuthenticationService extends StoreService implements IClaimsHelper
         }
 
         return this.exec(Axios.post(REDEEM_ACCESS_TOKEN, data))
+            .then(value => this.processPayload(value))
             .then(onSuccess);
     }
 
     redeemVerificationCode(code: string) {
 
-        let onSuccess = (payload: IPayload<IAccessToken>) => {
+        let onSuccess = (token: IAccessToken) => {
 
-            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+            if (token) {
 
-                let token = payload.data.access_token;
+                TokenHelper.setAccessToken(token.access_token);
 
-                TokenHelper.setAccessToken(token);
-
-                return TokenHelper.parseUserToken(token);
-
-            } else {
-                throw new Error(payload.message.text);
+                return TokenHelper.parseUserToken(token.access_token);
             }
         };
 
@@ -141,42 +130,29 @@ export class AuthenticationService extends StoreService implements IClaimsHelper
         };
 
         return this.exec(Axios.put(REDEEM_VERIFICATION_CODE, null, config))
+            .then(value => this.processPayload(value))
             .then(onSuccess);
     }
 
     signup(signup: ISignupOptions) {
 
-        let onSuccess = (payload: IPayload<IAccessToken>) => {
+        let onSuccess = (token: IAccessToken) => {
 
-            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
+            if (token) {
 
-                let token = payload.data.access_token;
+                TokenHelper.setAccessToken(token.access_token);
 
-                TokenHelper.setAccessToken(token);
-
-                return TokenHelper.parseUserToken(token);
-            } else {
-                throw new Error(payload.message.text);
+                return TokenHelper.parseUserToken(token.access_token);
             }
         }
 
         return this.exec(Axios.post(SIGNUP_URL, signup))
+            .then(value => this.processPayload(value))
             .then(onSuccess);
     }
 
     verify() {
-        let onSuccess = (res: AxiosResponse) => {
-
-            let payload: IPayload<string> = res.data;
-
-            if (payload.message.messageTypeId === PayloadMessageTypes.success) {
-                return payload.data;
-            } else {
-                throw new Error(payload.message.text);
-            }
-        }
-
-        return Axios.get(VERIFICATION_CODE_URL)
-            .then(onSuccess);
+        return this.exec(Axios.get(VERIFICATION_CODE_URL))
+            .then(value => this.processPayload<string>(<any>value))
     }
 }

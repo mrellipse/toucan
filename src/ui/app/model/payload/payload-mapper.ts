@@ -50,20 +50,19 @@ export class PayloadMapper {
                     text: null
                 }
             };
-
         return value;
     }
 
     public fromObject<T>(o: any): IPayload<T> {
-
-        if (isAxiosResponse(o))
-            return this.fromAxiosResponse<T>(o);
 
         if (isAxiosError(o))
             return this.fromAxiosError<T>(o);
 
         if (o instanceof Error)
             return this.fromError<T>(o);
+
+        if (isAxiosResponse(o))
+            return this.fromAxiosResponse<T>(o);
 
         return null;
     }

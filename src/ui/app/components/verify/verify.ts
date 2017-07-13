@@ -30,6 +30,7 @@ export class Verify extends Vue {
   issueVerificationCode() {
 
     let onSuccess = (code: string) => {
+
       console.info(`${code}`);
       this.verifyCodeIssued = true;
 
@@ -42,7 +43,8 @@ export class Verify extends Vue {
     };
 
     this.auth.verify()
-      .then(onSuccess);
+      .then(onSuccess)
+      .catch(() => { });
   }
 
   redeemVerificationCode() {
@@ -71,7 +73,8 @@ export class Verify extends Vue {
 
     this.auth.redeemVerificationCode(this.verifyCode)
       .then(onSuccess)
-      .then(onStoreDispatch);
+      .then(onStoreDispatch)
+      .catch(() => { });
   }
 
   verifyCodeIssued: boolean = false;

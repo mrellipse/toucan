@@ -13,7 +13,8 @@ export interface IStoreService {
 
 interface IProcessPayloadOptions<T> {
     timeout?: number,
-    uri?: string
+    uri?: string,
+    messageTypeIds?: string[]
 }
 
 export abstract class StoreService implements IStoreService {
@@ -22,10 +23,10 @@ export abstract class StoreService implements IStoreService {
 
     }
 
-    handleFulfilled<T>(value: T) {
+    handleFulfilled<T>(reason: T) {
 
         return this.store.dispatch(StoreTypes.loadingState, false)
-            .then(() => new PayloadMapper().fromObject(value));
+            .then(() => new PayloadMapper().fromObject(reason));
     }
 
     handleRejection<T>(reason: any) {
@@ -39,8 +40,11 @@ export abstract class StoreService implements IStoreService {
 
         let message = payload.message;
         options = options || {};
+        let messageTypeIds = options.messageTypeIds || [PayloadMessageTypes.error, PayloadMessageTypes.failure];
 
-        if (message.messageTypeId === PayloadMessageTypes.error) {
+        let messageTypeId = messageTypeIds.find(o => o === message.messageTypeId);
+
+        if (messageTypeId) {
 
             options.timeout = options.timeout || 1500;
 
@@ -53,8 +57,8 @@ export abstract class StoreService implements IStoreService {
             };
 
             return this.store.dispatch(StoreTypes.updateStatusBar, statusBarData)
-                .then(() => Promise.resolve(null));
-                
+                .then(() => Promise.reject(null));
+
         } else {
             return Promise.resolve(payload.data);
         }
