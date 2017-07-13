@@ -11,14 +11,10 @@
     }
 
     .external-provider-text {
-        color: $brand-primary;
+        font-family: $font-family-fancy;
         margin-left: 0.5em;
         text-transform: lowercase;
-        font-variant: small-caps;
-        font-size: 1.4em;
+        font-variant: normal;
+        font-size: 1.2em;
     }
 }
-
-
-
-

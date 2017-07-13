@@ -3,7 +3,7 @@ declare module "vuelidate" {
     import _Vue = require("vue");
 
     /**
-     * @module augmentation to ComponentOptions defined by Vuejs
+     * @module augmentation to ComponentOptions defined by VueJs
     */
     module "vue/types/options" {
 
