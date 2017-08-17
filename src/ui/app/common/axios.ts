@@ -31,7 +31,7 @@ export function UseAxios(router: VueRouter) {
                 let location: string = response.headers['location'] || response.headers['Location'];
 
                 if (location) {
-                    let redirectTo = location.replace(window.location.origin, '');
+                    let redirectTo = '/' + location;
                     window.setTimeout(() => router.replace(redirectTo), 200);
                 }
             }

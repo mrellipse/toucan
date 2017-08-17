@@ -19,7 +19,7 @@ namespace Toucan.Server
             {
                 options.CookieName = xsrfConfig.CookieName;
                 options.HeaderName = xsrfConfig.HeaderName;
-                options.RequireSsl = true;
+                options.RequireSsl = xsrfConfig.RequireSsl;
             });
 
             services.AddAuthorization(options =>

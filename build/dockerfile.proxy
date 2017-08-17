@@ -1,0 +1,24 @@
+FROM haproxy:1.7 AS build-proxy
+
+# Install utilities
+RUN apt-get update && apt-get install openssl
+
+# Generate SSL certificate
+RUN openssl genrsa -out /etc/ssl/private/server.key 2048
+RUN mkdir /etc/ssl/csr
+RUN openssl req -new -subj '/CN=toucan.net/O=Toucan Inc./C=AU/ST=NSW' -key /etc/ssl/private/server.key -out /etc/ssl/csr/server.csr
+RUN openssl x509 -req -days 365 -in /etc/ssl/csr/server.csr -signkey /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt
+RUN cat /etc/ssl/certs/server.crt /etc/ssl/private/server.key > /etc/ssl/certs/server.bundle.pem
+
+# Add user account for proxy service
+RUN adduser --system --group haproxy
+RUN adduser haproxy root
+
+# Copy configuration files
+RUN mkdir -p /var/lib/toucan/haproxy
+COPY ./config/haproxy.cfg /var/lib/toucan/haproxy/haproxy.cfg
+RUN chown -R haproxy /var/lib/toucan/haproxy
+COPY ./config/wait-for-it.sh ./wait-for-it.sh
+VOLUME /var/lib/toucan/haproxy
+EXPOSE 70 443 5432
+CMD ["./wait-for-it.sh", "db01:5432", "--", "haproxy", "-d", "-f", "/var/lib/toucan/haproxy/haproxy.cfg"]

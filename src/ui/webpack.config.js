@@ -5,7 +5,7 @@ const autoprefixer = require('autoprefixer');
 const webpackHtml = require('html-webpack-plugin');
 const webpackBase = require('./webpack-base');
 
-module.exports = () => {
+module.exports = (env) => {
 
     const outputPath = path.join(__dirname, '../server/wwwroot');
 
@@ -14,7 +14,7 @@ module.exports = () => {
     const config = webpackBase(outputPath, srcPath);
 
     const definePlugin = new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"development"'
+        'process.env.NODE_ENV': "'development'"
     });
 
     config.plugins.splice(0, 0, definePlugin);

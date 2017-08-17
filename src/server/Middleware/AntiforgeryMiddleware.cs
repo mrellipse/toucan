@@ -36,6 +36,5 @@ namespace Toucan.Server
                 await next.Invoke();
             });
         }
-
     }
 }

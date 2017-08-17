@@ -8,18 +8,6 @@ namespace Toucan.Server
 {
     public static partial class Extensions
     {
-        public static IConfigurationBuilder AddToucan(this IConfigurationBuilder builder)
-        {
-            builder.AddEnvironmentVariables("ASPNETCORE_")
-                .AddJsonFile("hosting.json");
-
-            var env = builder.Build().GetSection(WebHostDefaults.EnvironmentKey).Value;
-
-            builder.AddJsonFile($"app.{env}.json", optional: false);
-
-            return builder;
-        }
-
         public static T GetTypedSection<T>(this IConfigurationRoot root, string sectionKey) where T : class, new() {
 
             T section = new T();

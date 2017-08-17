@@ -1,39 +1,47 @@
 {
     "data": {
-        "connectionString": ""
+        "connectionString": "",
+        "hostKey": "TOUCAN_DBHOST",
+        "hostPattern": "(?<=Host=)([^;]+)"
     },
     "server": {
-        "webroot": ".\\wwwroot",
+        "antiForgery": {
+            "cookieName": "XSRF-COOKIE",
+            "clientName": "XSRF-TOKEN",
+            "headerName": "X-XSRF-TOKEN",
+            "requireSsl": false
+        },
+        "applicationName": "Toucan",
         "areas": [
             "admin"
         ],
-        "antiForgery": {
-            "cookieName": "XSRF-COOKIE",
-            "headerName": "X-XSRF-TOKEN",
-            "clientName": "XSRF-TOKEN"
-        }
+        "certificate": {
+            "path": "",
+            "password": ""
+        },
+        "webroot": "./wwwroot"
     },
     "service": {
         "authenticationProviders": [
             {
-                "clientId": "",
+                "clientId": "1012191853724-f9u0dcapj679ggokk5mblma4fbd77jmv.apps.googleusercontent.com",
                 "profileUri": "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token={0}",
                 "providerId": "GOOGLE",
                 "revokeUri": "https://accounts.google.com/o/oauth2/revoke?token={0}"
             },
             {
-                "clientId": "",
+                "clientId": "56d7559c-2488-4ee2-9f4d-5bb2aa8b3b58",
                 "profileUri": "",
                 "providerId": "MICROSOFT",
                 "revokeUri": ""
             }
         ],
         "tokenProvider": {
-            "tokenExpiration": "5",
-            "tokenSecurityKey": "",
+            "tokenExpiration": "2",
+            "tokenSecurityKey": "heartyingsquawkingisrequiredofaparrotmateys",
             "tokenSecurityAlgorithm": "HS256",
-            "tokenIssuer": "",
-            "tokenAudience": ""
+            "tokenIssuer": "toucan",
+            "tokenAudience": "toucanapp"
         }
     },
     "Logging": {

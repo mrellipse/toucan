@@ -5,17 +5,20 @@ const autoprefixer = require('autoprefixer');
 const webpackHtml = require('html-webpack-plugin');
 const webpackBase = require('./webpack-base');
 
-module.exports = () => {
+module.exports = (env) => {
 
-    const outputPath = path.join(__dirname, '../../dist/wwwroot');
+    const outputPath = path.resolve(__dirname, env.outputPath || '../../dist/wwwroot');
 
-    const srcPath = path.resolve(__dirname, './app');
+    const srcPath = path.resolve(__dirname, env.srcPath || './app');
+
+    const api = "'" + env.api + "'";
 
     const config = webpackBase(outputPath, srcPath);
 
     const definePlugin = new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"production"'
+        'process.env.NODE_ENV': "'production'"
     });
+
     config.plugins.splice(0, 0, definePlugin);
     
     const uglifyJsPlugin = new webpack.optimize.UglifyJsPlugin({

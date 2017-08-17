@@ -9,13 +9,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Toucan.Server
 {
     public static partial class Extensions
     {
+        private static ILogger logger = null;
+
         public static void UseHistoryModeMiddleware(this IApplicationBuilder app, string webRoot, string[] areas)
         {
+            if(logger == null)
+                logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger("HistoryMiddleware");
+
             app.Use(async (context, next) =>
             {
                 string path = context.Request.Path.ToString();
@@ -23,12 +29,18 @@ namespace Toucan.Server
                 if (!path.EndsWith(".ico"))
                 {
                     string area = path.ToString().Split('/')[1];
-                    string fileName = fileName = $"{webRoot}\\index.html";
+                    string fileName = fileName = $"{webRoot}//index.html";
+
+                    logger.LogInformation($"History mode fallback. Checking to see if '{path.ToString()}' maps to any existing areas");
 
                     if (!string.IsNullOrEmpty(area) && areas.Any(o => string.Equals(o, area, StringComparison.CurrentCultureIgnoreCase)))
-                        fileName = $"{webRoot}\\{area.ToLower()}.html";
+                        fileName = $"{webRoot}//{area.ToLower()}.html";
 
-                    await context.Response.SendFileAsync(new FileInfo(fileName));
+                    var file = new FileInfo(fileName);
+
+                    logger.LogInformation($"Sending file '{file.FullName}'");
+
+                    await context.Response.SendFileAsync(file);
                 }
                 else
                 {

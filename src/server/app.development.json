@@ -1,17 +1,25 @@
 {
     "data": {
-        "connectionString": "Server=.;Database=ToucanTest;Trusted_Connection=True;"
+        "connectionString": "",
+        "hostKey": "TOUCAN_DBHOST",
+        "hostPattern": "(?<=Host=)([^;]+)"
     },
     "server": {
-        "webroot": ".\\wwwroot",
+        "antiForgery": {
+            "cookieName": "XSRF-COOKIE",
+            "clientName": "XSRF-TOKEN",
+            "headerName": "X-XSRF-TOKEN",
+            "requireSsl": false
+        },
+        "applicationName": "Toucan",
         "areas": [
             "admin"
         ],
-        "antiForgery": {
-            "cookieName": "XSRF-COOKIE",
-            "headerName": "X-XSRF-TOKEN",
-            "clientName": "XSRF-TOKEN"
-        }
+        "certificate": {
+            "path": "",
+            "password": ""
+        },
+        "webroot": "./wwwroot"
     },
     "service": {
         "authenticationProviders": [

@@ -1,0 +1,7 @@
+FROM microsoft/aspnetcore:1.1
+WORKDIR /app
+COPY ./config/wait-for-it.sh ./wait-for-it.sh
+ENV ASPNETCORE_ENVIRONMENT=Production TOUCAN_DBHOST=db TOUCAN_URLS=http://0.0.0.0:80
+EXPOSE 80
+VOLUME ['/var/lib/toucan/web']
+CMD ["./wait-for-it.sh", "db:5432", "--",  "dotnet", "/var/lib/toucan/web/Toucan.UI.dll"]

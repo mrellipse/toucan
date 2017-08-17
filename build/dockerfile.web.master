@@ -1,0 +1,30 @@
+FROM microsoft/aspnetcore-build:1.1 AS build-env
+
+WORKDIR /tmp
+
+# Install utilities
+RUN apt-get update && apt-get install curl
+
+# Copy pre-built webpack distribution files
+COPY dist ./dist/
+
+# Compile .Net Core project on this platform
+COPY src ./src/
+WORKDIR src/server
+RUN dotnet restore &&\
+ dotnet publish -f netcoreapp1.1 -c Release -o ../../dist &&\
+ rm -rf /src
+
+# build runtime image
+FROM microsoft/aspnetcore:1.1
+WORKDIR /app
+RUN mkdir -p /var/lib/toucan/web
+COPY --from=build-env /tmp/dist/ /var/lib/toucan/web/
+COPY --from=build-env /tmp/dist/wwwroot /var/lib/toucan/web/wwwroot/
+COPY ./config/wait-for-it.sh ./wait-for-it.sh
+
+# set runtime environment defaults for container instances based on build inputs
+ENV ASPNETCORE_ENVIRONMENT=Production TOUCAN_DBHOST=db TOUCAN_URLS=http://0.0.0.0:80 TOUCAN_DBMIGRATE=true
+EXPOSE 80
+VOLUME ['/var/lib/toucan/web']
+CMD ["./wait-for-it.sh", "db:5432", "--", "dotnet", "/var/lib/toucan/web/Toucan.UI.dll"]

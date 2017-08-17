@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -12,6 +13,8 @@ using StructureMap;
 using Toucan.Common.Extensions;
 using Toucan.Contract;
 using Toucan.Data;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace Toucan.Server
 {
@@ -20,7 +23,7 @@ namespace Toucan.Server
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var cfg = app.ApplicationServices.GetRequiredService<IOptions<AppConfig>>().Value;
-            string webRoot = new DirectoryInfo(cfg.Server.Webroot).FullName;
+            string webRoot = WebApp.ResolvePath(cfg.Server.Webroot);
 
             loggerFactory.AddDebug();
 
@@ -33,8 +36,15 @@ namespace Toucan.Server
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
                 {
                     HotModuleReplacement = true,
-                    ProjectPath = Path.Combine(WebApp.ContentRoot, @"..\ui")
+                    ProjectPath = WebApp.ResolvePath(@"..\ui"),
+                    EnvironmentVariables = new Dictionary<string, string>(){
+                        { "api", WebApp.GetUrlsFromEnv().FirstOrDefault() }
+                    }
                 });
+            }
+            else
+            {
+                loggerFactory.AddConsole(LogLevel.Warning);
             }
 
             app.UseDefaultFiles();
@@ -49,20 +59,22 @@ namespace Toucan.Server
             app.UseMvc();
             app.UseHistoryModeMiddleware(webRoot, cfg.Server.Areas);
 
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            bool migrate = false;
+            bool.TryParse(Environment.GetEnvironmentVariable("TOUCAN_DBMIGRATE"), out migrate);
+
+            Console.WriteLine($"Migrations Enabled : { migrate.ToString()}");
+
+            if (migrate)
             {
-                using (var dbContext = serviceScope.ServiceProvider.GetService<DbContextBase>())
-                {
-                    ICryptoService crypto = app.ApplicationServices.GetRequiredService<ICryptoService>();
-                    dbContext.Database.Migrate();
-                    dbContext.EnsureSeedData(crypto);
-                }
+                app.ApplyMigrations();
+                Console.WriteLine($"Success: Executed migration code against database ");
             }
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var dataConfig = WebApp.Configuration.GetTypedSection<Toucan.Data.Config>("data");
+            var serverConfig = WebApp.Configuration.GetTypedSection<Toucan.Server.Config>("server");
 
             services.AddOptions();
             services.Configure<AppConfig>(WebApp.Configuration); // root web configuration
@@ -73,18 +85,36 @@ namespace Toucan.Server
 
             services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
             services.AddMemoryCache();
+            services.ConfigureDataProtection(serverConfig);
 
-            // services.AddDbContext<NpgSqlContext>(options =>
-            // {    
+            Func<Toucan.Data.Config, string> resolveConnection = (config) =>
+            {
+                string value = config.ConnectionString;
+
+                if (!string.IsNullOrWhiteSpace(config.HostKey) && !string.IsNullOrWhiteSpace(config.HostKey))
+                {
+                    string host = Environment.GetEnvironmentVariable(config.HostKey);
+
+                    if (!string.IsNullOrWhiteSpace(host))
+                        value = new Regex(config.HostPattern).Replace(value, host);
+                }
+
+                return value;
+            };
+
+            // services.AddDbContext<MsSqlContext>(options =>
+            // {
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            //     string connectionString = resolveConnection(dataConfig);
+            //     options.UseSqlServer(connectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
-            services.AddDbContext<MsSqlContext>(options =>
-            {
-                string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-                options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
-            });
+            // services.AddDbContext<NpgSqlContext>(options =>
+            // {
+            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+            //     string connectionString = resolveConnection(dataConfig);
+            //     options.UseNpgsql(connectionString, s => s.MigrationsAssembly(assemblyName));
+            // });
 
             var container = new Container(c =>
             {

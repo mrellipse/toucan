@@ -1,0 +1,57 @@
+version: '2'
+services:
+  web01:
+    build:
+      context: ../
+      dockerfile: ./build/dockerfile.web.master
+    environment:
+     - TOUCAN_DBMIGRATE=true
+    image: toucan-web-master
+    volumes:
+     - web:/var/lib/toucan/web
+  web02:
+    build:
+      context: ../
+      dockerfile: ./build/dockerfile.web
+    environment:
+     - TOUCAN_DBMIGRATE=false
+    image: toucan-web
+    volumes:
+     - web:/var/lib/toucan/web
+  proxy:
+    build:
+      context: ../
+      dockerfile: ./build/dockerfile.proxy
+    image: toucan-proxy
+    links:
+     - db01
+    ports:
+     - "5432:5432"
+     - "443:443"
+     - "70:70"
+    volumes:
+     - proxy:/var/lib/toucan/haproxy
+  db01:
+    build:
+      args:
+       - PGDATADIR=master
+      context: ../
+      dockerfile: ./build/dockerfile.db.master
+    image: toucan-db-master
+    networks:
+      default:
+        aliases:
+         - db
+    ports:
+     - "5432"
+    volumes:
+     - db-master:/var/lib/toucan
+networks:
+  default:
+    ipam:
+      config:
+       - subnet: 172.18.0.0/24
+volumes:
+  db-master:
+  web:
+  proxy:

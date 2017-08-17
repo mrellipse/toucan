@@ -8,6 +8,7 @@
     <PackageId>server</PackageId>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
+    <RuntimeIdentifiers>debian.8-x64</RuntimeIdentifiers>
     <RootNamespace>Toucan.UI</RootNamespace>
   </PropertyGroup>
 
@@ -63,13 +64,10 @@
 
   <Target Name="SyncFolders" AfterTargets="AfterPublish" Condition="'$(Configuration)' == 'Release'">
     <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
-    <MakeDir Directories="$(PublishUrl)Logs" Condition="!Exists('$(PublishUrl)Logs')" />
-    <RemoveDir Directories="$(PublishDir)wwwroot" Condition="Exists('$(PublishDir)wwwroot')" />
   </Target>
 
   <Target Name="SyncFiles" AfterTargets="AfterPublish" Condition="'$(Configuration)' == 'Release'">
     <Delete Files="$(PublishDir)app.development.json"/>
-    <Delete Files="$(PublishDir)hosting.json"/>
     <Delete Files="$(PublishDir)project.json"/>
     <Delete Files="$(PublishDir)project.lock.json"/>
   </Target>

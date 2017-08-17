@@ -28,6 +28,19 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "taskName": "prod build",
+            "command": "powershell",
+            "isShellCommand": true,
+            "echoCommand": true,
+            "args": [
+                "./production.ps1"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "isTestCommand": false
+        },
+        {
             "taskName": "dev build ui",
             "command": "webpack",
             "isShellCommand": true,
@@ -41,23 +54,6 @@
                 "cwd": "${workspaceRoot}/src/ui"
             },
             "isBuildCommand": true
-        },
-        {
-            "taskName": "publish",
-            "command": "cmd",
-            "isShellCommand": true,
-            "args": [
-                "/C",
-                "powershell",
-                "Set-ExecutionPolicy -ExecutionPolicy Bypass",
-                "|",
-                "powershell",
-                "${workspaceRoot}/build/production.ps1"
-            ],
-            "options": {
-                "cwd": "${workspaceRoot}/src/ui"
-            },
-            "isBuildCommand": false
         }
     ]
 }

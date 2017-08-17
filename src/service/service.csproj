@@ -6,6 +6,7 @@
     <AssemblyName>Toucan.Service</AssemblyName>
     <PackageId>service</PackageId>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <RuntimeIdentifiers>debian.8-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>

@@ -38,6 +38,7 @@ namespace Toucan.Server
                 AutomaticChallenge = true,
                 SaveToken = true,
                 TokenValidationParameters = tokenValidationParameters,
+                RequireHttpsMetadata = false,
                 Events = new JwtBearerEvents
                 {
                     OnChallenge = (context) =>
@@ -86,7 +87,7 @@ namespace Toucan.Server
             Uri referrer = new Uri(context.Request.Headers[HeaderNames.Referer]);
             Uri location = new Uri(locationHeader ?? referrer.ToString());
 
-            string locationUri = new UriBuilder(location.Scheme, location.Host, location.Port, "Login").ToString();
+            string locationUri = "Login"; //new UriBuilder(location.Scheme, location.Host, location.Port, "Login").ToString();
 
             string returnUrl = CreateReturnUrl(referrer, areas);
 

@@ -17,13 +17,37 @@
             "port": 5858
         },
         {
-            "name": ".NET Core Launch (console)",
+            "name": ".NET Core Launch (Debug)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dev build",
             "program": "${workspaceRoot}/src/server/bin/Debug/netcoreapp1.1/Toucan.UI.dll",
             "args": [],
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "development",
+                "TOUCAN_DBHOST": "localhost",
+                "TOUCAN_URLS": "http://toucan:5000",
+                "TOUCAN_DBMIGRATE": "true",
+            },
             "cwd": "${workspaceRoot}/src/server",
+            "externalConsole": false,
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": ".NET Core Launch (Production)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "prod build",
+            "program": "${workspaceRoot}/dist/Toucan.UI.dll",
+            "args": [],
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Production",
+                "TOUCAN_DBHOST": "localhost",
+                "TOUCAN_URLS": "http://toucan:80",
+                "TOUCAN_DBMIGRATE": "true"
+            },
+            "cwd": "${workspaceRoot}/dist",
             "externalConsole": false,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

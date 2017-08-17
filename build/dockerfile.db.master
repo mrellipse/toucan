@@ -1,0 +1,10 @@
+FROM postgres:9.6 AS build-db
+ARG PGDATADIR
+
+RUN mkdir -p /var/lib/toucan/pgdata/$PGDATADIR
+
+# setup file for pg & haproxy
+COPY ./config/pg-init-master.sh /docker-entrypoint-initdb.d/pg-init-${PGDATADIR}.sh
+
+ENV POSTGRES_USER=postgres POSTGRES_PASSWORD=P@ssw0rd PGDATA=/var/lib/toucan/pgdata/$PGDATADIR
+VOLUME /var/lib/toucan
