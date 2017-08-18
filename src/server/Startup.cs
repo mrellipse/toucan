@@ -109,12 +109,12 @@ namespace Toucan.Server
             //     options.UseSqlServer(connectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
-            // services.AddDbContext<NpgSqlContext>(options =>
-            // {
-            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     string connectionString = resolveConnection(dataConfig);
-            //     options.UseNpgsql(connectionString, s => s.MigrationsAssembly(assemblyName));
-            // });
+            services.AddDbContext<NpgSqlContext>(options =>
+            {
+                string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+                string connectionString = resolveConnection(dataConfig);
+                options.UseNpgsql(connectionString, s => s.MigrationsAssembly(assemblyName));
+            });
 
             var container = new Container(c =>
             {
