@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* [.NET Core SDK 1.0.1](https://www.microsoft.com/net/core/#windowscmd)
+* [.NET Core SDK 2.0.0](https://www.microsoft.com/net/core/#windowscmd)
 * [Visual Studio Code](https://code.visualstudio.com/download/) (or a similar text-based editor like Sublime)
 * [TypeScript](https://www.typescriptlang.org/)
 * [Node.js](https://nodejs.org/en/)
@@ -25,7 +25,6 @@ The alternative is to Git clone the project to a local folder and then follow st
 Update and build the .NET Core projects by switching to to ./src/server and running
 
 ```DOS
-dotnet restore
 dotnet build
 ```
 
@@ -36,7 +35,7 @@ npm install
 npm install webpack -g
 npm install typings -g
 typings install
-webpack -p --config webpack/development.js
+webpack -p --config webpack.config.js
 ```
 
 ### Configuration
@@ -69,6 +68,8 @@ The system by default enables users to create a local login account using a sign
 
 It also enables users to login via an external authentication provider, using the [OAuth 2.0 Implicit](https://tools.ietf.org/html/rfc6749#section-1.3.2) grant workflow.
 
+Most external providers will required https support. This is covered off fairly well by [Setting up HTTPS for development in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/security/https)
+
 The project currently provides support for
 
 - [X] [Google](https://developers.google.com/identity/protocols/OAuth2UserAgent)
@@ -87,4 +88,4 @@ Run the project by switching to ./src/server and running
 ```DOS
 dotnet run -p server.csproj -c Development
 ```
-You should now be able to load the site at [https://localhost:5000/](https://localhost:5000/) 
+You should now be able to load the site at [http://localhost:5000/](http://localhost:5000/) 

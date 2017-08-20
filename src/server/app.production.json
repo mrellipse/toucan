@@ -2,6 +2,14 @@
     "data": {
         "connectionString": ""
     },
+    "kestrel": {
+        "endpoints": {
+            "localhost": {
+                "address": "localhost",
+                "port": 80
+            }
+        }
+    },
     "server": {
         "webroot": ".\\wwwroot",
         "areas": [

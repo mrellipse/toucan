@@ -1,6 +1,14 @@
 {
     "data": {
-        "connectionString": "Server=.;Database=ToucanTest;Trusted_Connection=True;"
+        "connectionString": ""
+    },
+    "kestrel": {
+        "endpoints": {
+            "localhost": {
+                "address": "localhost",
+                "port": 5000
+            }
+        }
     },
     "server": {
         "webroot": ".\\wwwroot",

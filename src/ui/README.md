@@ -6,7 +6,7 @@
 * _components_ - store global components in this folder
 * _locales_ - language resource files
 * _model_ - models used by multiple areas
-* _routes_ - vuejs router navigation guards
+* _routes_ - vue.js router navigation guards
 * _services_ - helper/domain classes
 * _store_ - vuex store used by global components
 * _styles_ - global SASS styles
@@ -24,7 +24,7 @@ Other components will be found in specific sub-areas (such as 'root' or 'admin')
 
 ### Areas * Webpack
 
-There are multiple areas defined in the client VueJs application ... 
+There are multiple areas defined in the client Vue.js application ... 
 
 * ./ui/app/root/root.ts => https://localhost:5000
 * ./ui/app/admin/admin.ts  => https://localhost:5000/admin

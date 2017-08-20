@@ -33,12 +33,12 @@ namespace Toucan.Server
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
                 {
                     HotModuleReplacement = true,
-                    ProjectPath = Path.Combine(WebApp.ContentRoot, @"..\ui")
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\ui")
                 });
             }
 
             app.UseDefaultFiles();
-            app.UseTokenBasedAuthentication(cfg.Service.TokenProvider, cfg.Server.Areas);
+            app.UseAuthentication();
             app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
 
             app.UseStaticFiles(new StaticFileOptions()
@@ -63,6 +63,8 @@ namespace Toucan.Server
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var dataConfig = WebApp.Configuration.GetTypedSection<Toucan.Data.Config>("data");
+            var serverConfig = WebApp.Configuration.GetTypedSection<Toucan.Server.Config>("server");
+            var tokenProvider = WebApp.Configuration.GetTypedSection<Toucan.Service.TokenProviderConfig>("service:tokenProvider");
 
             services.AddOptions();
             services.Configure<AppConfig>(WebApp.Configuration); // root web configuration
@@ -74,17 +76,20 @@ namespace Toucan.Server
             services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
             services.AddMemoryCache();
 
+
+            services.ConfigureAuthentication(tokenProvider, new string[] { "admin" });
+
             // services.AddDbContext<NpgSqlContext>(options =>
             // {    
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
             //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
-            services.AddDbContext<MsSqlContext>(options =>
-            {
-                string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-                options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
-            });
+            // services.AddDbContext<MsSqlContext>(options =>
+            // {
+            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+            //     options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            // });
 
             var container = new Container(c =>
             {

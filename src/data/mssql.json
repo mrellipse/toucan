@@ -1,5 +1,5 @@
 {
     "data": {
-        "connectionString": "Server=.;Database=ToucanTest;Trusted_Connection=True;"
+        "connectionString": "Server=.;Database=XXXX;Trusted_Connection=True;"
     }
 }
