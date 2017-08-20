@@ -1,13 +1,27 @@
 
-const baseUri = 'https://localhost:5000';
+interface IUriConfig {
+    auth?: string;
+    site?: string;
+    services?: string;
+}
 
-export default {
+const uri : IUriConfig = {};
 
-    uri: {
-        auth: baseUri + '/auth/',
-        site: baseUri,
-        services: baseUri + "/api/"
-    },
+const addProp = (obj, propName, value) => {
+    Object.defineProperty(obj, propName, {
+        enumerable: false,
+        get: () => {
+            return window.location.protocol + '//' + window.location.host + value;
+        }
+    });
+};
+
+addProp(uri, 'auth', '/auth/');
+addProp(uri, 'site', '');
+addProp(uri, 'services', '/api/');
+
+const config = {
+    uri: uri,
     auth: {
         accessTokenKey: 'AUTH-LOCAL',
         externalProviderKey: 'AUTH-EXTERNAL'
@@ -18,3 +32,5 @@ export default {
         headerName: 'X-XSRF-TOKEN'
     }
 };
+
+export default config;

@@ -57,7 +57,7 @@ namespace Toucan.Server.Model
             }
 
             // Validation passed. Return a valid AuthenticationTicket:
-            return new AuthenticationTicket(principal, new AuthenticationProperties(), this.scheme);
+            return new AuthenticationTicket(principal, new Microsoft.AspNetCore.Authentication.AuthenticationProperties(), this.scheme);
         }
 
         // This ISecureDataFormat implementation is decode-only

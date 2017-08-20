@@ -10,8 +10,7 @@ namespace Toucan.Server
     {
         public static IConfigurationBuilder AddToucan(this IConfigurationBuilder builder)
         {
-            builder.AddEnvironmentVariables("ASPNETCORE_")
-                .AddJsonFile("hosting.json");
+            builder.AddEnvironmentVariables("ASPNETCORE_");
 
             var env = builder.Build().GetSection(WebHostDefaults.EnvironmentKey).Value;
 
