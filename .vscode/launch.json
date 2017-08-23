@@ -21,7 +21,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dev build",
-            "program": "${workspaceRoot}/src/server/bin/Debug/netcoreapp1.1/Toucan.UI.dll",
+            "program": "${workspaceRoot}/src/server/bin/Debug/netcoreapp2.0/Toucan.UI.dll",
             "args": [],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "development",
@@ -43,8 +43,8 @@
             "args": [],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Production",
+                "ASPNETCORE_URLS": "http://toucan:80",
                 "TOUCAN_DBHOST": "localhost",
-                "TOUCAN_URLS": "http://toucan:80",
                 "TOUCAN_DBMIGRATE": "true"
             },
             "cwd": "${workspaceRoot}/dist",

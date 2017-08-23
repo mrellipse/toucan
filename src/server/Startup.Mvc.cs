@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,9 +18,9 @@ namespace Toucan.Server
 
             services.AddAntiforgery(options =>
             {
-                options.CookieName = xsrfConfig.CookieName;
+                options.Cookie.Name = xsrfConfig.CookieName;
                 options.HeaderName = xsrfConfig.HeaderName;
-                options.RequireSsl = xsrfConfig.RequireSsl;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
             });
 
             services.AddAuthorization(options =>

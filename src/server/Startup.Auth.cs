@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Toucan.Service;
@@ -16,7 +18,7 @@ namespace Toucan.Server
 {
     public static partial class Extensions
     {
-        public static void UseTokenBasedAuthentication(this IApplicationBuilder app, TokenProviderConfig cfg, string[] areas)
+        public static void ConfigureAuthentication(this IServiceCollection services, TokenProviderConfig cfg, string[] areas)
         {
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(cfg.TokenSecurityKey));
 
@@ -32,29 +34,27 @@ namespace Toucan.Server
                 ClockSkew = TimeSpan.Zero // If you want to allow a certain amount of clock drift, set that here:
             };
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            services.AddAuthentication(options =>
             {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                SaveToken = true,
-                TokenValidationParameters = tokenValidationParameters,
-                RequireHttpsMetadata = false,
-                Events = new JwtBearerEvents
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.Events = new JwtBearerEvents
                 {
                     OnChallenge = (context) =>
                     {
                         return OnChallenge(context, areas);
                     }
-                }
-            });
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+                };
+                options.SaveToken = true;
+                options.TokenValidationParameters = tokenValidationParameters;
+            })
+            .AddCookie(options =>
             {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = false,
-                AuthenticationScheme = "Cookie",
-                CookieName = "access_token",
-                TicketDataFormat = new Model.TokenDataFormat(cfg.TokenSecurityAlgorithm, "Cookie", tokenValidationParameters)
+                options.Cookie.Name = "access_token";
+                options.TicketDataFormat = new Model.TokenDataFormat(cfg.TokenSecurityAlgorithm, CookieAuthenticationDefaults.AuthenticationScheme, tokenValidationParameters);
             });
         }
 
@@ -87,11 +87,9 @@ namespace Toucan.Server
             Uri referrer = new Uri(context.Request.Headers[HeaderNames.Referer]);
             Uri location = new Uri(locationHeader ?? referrer.ToString());
 
-            string locationUri = "Login"; //new UriBuilder(location.Scheme, location.Host, location.Port, "Login").ToString();
-
             string returnUrl = CreateReturnUrl(referrer, areas);
 
-            locationUri = QueryHelpers.AddQueryString(locationUri, "returnUrl", returnUrl);
+            string locationUri = QueryHelpers.AddQueryString("Login", "returnUrl", returnUrl);
 
             if (!string.IsNullOrEmpty(context.Error))
                 locationUri = QueryHelpers.AddQueryString(locationUri, "errorCode", context.Error);

@@ -39,7 +39,7 @@ namespace Toucan.Server
                     ProjectPath = WebApp.ResolvePath(@"..\ui"),
                     EnvironmentVariables = new Dictionary<string, string>(){
                         { "api", WebApp.GetUrlsFromEnv().FirstOrDefault() }
-                    }
+                    } // TBC: needs actioning bitches
                 });
             }
             else
@@ -48,7 +48,7 @@ namespace Toucan.Server
             }
 
             app.UseDefaultFiles();
-            app.UseTokenBasedAuthentication(cfg.Service.TokenProvider, cfg.Server.Areas);
+            app.UseAuthentication();
             app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
 
             app.UseStaticFiles(new StaticFileOptions()
@@ -75,6 +75,7 @@ namespace Toucan.Server
         {
             var dataConfig = WebApp.Configuration.GetTypedSection<Toucan.Data.Config>("data");
             var serverConfig = WebApp.Configuration.GetTypedSection<Toucan.Server.Config>("server");
+            var tokenProvider = WebApp.Configuration.GetTypedSection<Toucan.Service.TokenProviderConfig>("service:tokenProvider");
 
             services.AddOptions();
             services.Configure<AppConfig>(WebApp.Configuration); // root web configuration

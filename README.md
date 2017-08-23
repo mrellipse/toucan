@@ -1,6 +1,6 @@
 # Toucan
 
-This is an opinionated multi-project solution template, combining .NET Core and VueJs.
+This is an opinionated multi-project solution template, combining .NET Core and Vue.js.
 
 The main objective is to provide scaffolding for an SPA web application, that incorporates SOLID design principles.
 
@@ -22,7 +22,7 @@ These instructions will get a copy of the project up and running on your local m
 
 ### Prerequisites
 
-* [.NET Core SDK 1.0.1](https://www.microsoft.com/net/core/#windowscmd)
+* [.NET Core SDK 2.0.0](https://www.microsoft.com/net/core/#windowscmd)
 * [Visual Studio Code](https://code.visualstudio.com/download/) (or a similar text-based editor like Sublime)
 * [TypeScript](https://www.typescriptlang.org/)
 * [Node.js](https://nodejs.org/en/)
@@ -51,7 +51,7 @@ See the readme files for each project
 * [service](src/service/README.md)
 * [server](src/server/README.md)
 
-### VueJs & Webpack
+### Vue.js & Webpack
 See the readme file below
 * [ui](src/ui/README.md)
 
@@ -72,8 +72,8 @@ This is performed using a variation on the [implicit workflow](https://tools.iet
 
 * browser obtains a one-use nonce from local server (which must be redeemed/used before it expires)
 * the browser is redirected to external provider, and authenticated
-* external provider issues a redirect, and returns the nonce and access token details via uri (ie. _http://localhost:5142/#state=XYZ&access_token=4/P7q7W91&token_type=Bearer&expires_in=3600_)
-* the vuejs application is bootstrapped, and checks the uri hash for nonce and access_token
+* external provider issues a redirect, and returns the nonce and access token details via uri (ie. _http://localhost:5000/#state=XYZ&access_token=4/P7q7W91&token_type=Bearer&expires_in=3600_)
+* the Vue.js application is bootstrapped, and checks the uri hash for nonce and access_token
 * if present, these are passed to the local server
 * the local server validates the nonce and access token, and if satisfied, issues the client with a local token (the external access token is also revoked)
 
@@ -98,8 +98,6 @@ Client-side routes are protected via [navigation guards](http://router.vuejs.org
 > If an authorization check on the web server fails, a challenge is issued to the client browser. Normally this results in a 302 redirect, but this behaviour has been modified using custom middleware in *./src/server/Startup.Auth.cs*. This middleware instead returns a 401 Unauthorized response whilst setting Response header _Location=XXX_. The client-side Axios library then handles this appropriately, by way of a global http response interceptor.
 
 ### Security
-
-TLS is provided by using a self-signed X509 certificate (see _./src/server/resources_ )
 
 Support for [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) has been provided.
 

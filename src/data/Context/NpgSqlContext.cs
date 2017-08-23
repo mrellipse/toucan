@@ -1,12 +1,16 @@
 
 using System;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using Toucan.Common.Extensions;
 using Toucan.Data.Model;
 
 namespace Toucan.Data
 {
-    public sealed class NpgSqlContext : DbContextBase
+    public sealed class NpgSqlContext : DbContextBase, IDesignTimeDbContextFactory<NpgSqlContext>
     {
         public NpgSqlContext() : base()
         {
@@ -14,6 +18,31 @@ namespace Toucan.Data
 
         public NpgSqlContext(DbContextOptions<NpgSqlContext> options) : base(options)
         {
+        }
+
+        public NpgSqlContext CreateDbContext(string[] args)
+        {
+            DirectoryInfo info = new DirectoryInfo(AppContext.BaseDirectory);
+            Console.WriteLine($"AppContext.BaseDirectory='{info.FullName}'");
+            DirectoryInfo dataProjectRoot = info.Parent.Parent.Parent.Parent;
+            string basePath = Path.Combine(dataProjectRoot.FullName, "data");
+
+            IConfigurationRoot config = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("npgsql.json")
+                .Build();
+
+            string connectionString = config.GetSection(Toucan.Data.Config.DbConnectionKey).Value;
+
+            var optionsBuilder = new DbContextOptionsBuilder<NpgSqlContext>();
+
+            optionsBuilder.UseNpgsql(connectionString, o =>
+            {
+                string assemblyName = typeof(NpgSqlContext).GetAssemblyName();
+                o.MigrationsAssembly(assemblyName);
+            });
+
+            return new NpgSqlContext(optionsBuilder.Options);
         }
 
         protected sealed override void OnModelCreating(ModelBuilder modelBuilder)
@@ -65,7 +94,7 @@ namespace Toucan.Data
             {
                 entity.Property(e => e.UserId)
                     .IsRequired()
-                    .ForSqlServerHasDefaultValueSql("nextval('\"user_seq\"')");
+                    .HasDefaultValueSql("nextval('\"user_seq\"')");
 
                 entity.Property(e => e.CreatedOn)
                     .IsRequired()
