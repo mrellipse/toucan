@@ -73,14 +73,12 @@ namespace Toucan.Server
             services.Configure<Toucan.Data.Config>(WebApp.Configuration.GetSection("data")); // configuration
             services.Configure<Toucan.Server.Config>(WebApp.Configuration.GetSection("server"));
 
-            services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
             services.AddMemoryCache();
-
-
+            services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
             services.ConfigureAuthentication(tokenProvider, new string[] { "admin" });
 
             // services.AddDbContext<NpgSqlContext>(options =>
-            // {    
+            // {   
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
             //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });

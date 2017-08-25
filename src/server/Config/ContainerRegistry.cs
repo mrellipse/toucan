@@ -16,8 +16,8 @@ namespace Toucan.Server
             };
 
             For<IConfiguration>().Use(WebApp.Configuration).Singleton();
-            // For<DbContextBase>().Use<NpgSqlContext>();
-            For<DbContextBase>().Use<MsSqlContext>();
+            //For<DbContextBase>().Use<NpgSqlContext>();
+            //For<DbContextBase>().Use<MsSqlContext>();
             For<Filters.ApiResultFilter>();
             For<Filters.ApiExceptionFilter>().Use(() => new Filters.ApiExceptionFilter(targets));
             For<Filters.IdentityMappingFilter>();

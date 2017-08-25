@@ -18,7 +18,8 @@
         "antiForgery": {
             "cookieName": "XSRF-COOKIE",
             "headerName": "X-XSRF-TOKEN",
-            "clientName": "XSRF-TOKEN"
+            "clientName": "XSRF-TOKEN",
+            "requireSsl": true
         }
     },
     "service": {

@@ -15,6 +15,7 @@ namespace Toucan.Server
             public string ClientName { get; set; }
             public string CookieName { get; set; }
             public string HeaderName { get; set; }
+            public bool RequireSsl { get; set; }
         }
     }
 
