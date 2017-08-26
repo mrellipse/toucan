@@ -24,7 +24,7 @@ COPY --from=build-env /tmp/dist/wwwroot /var/lib/toucan/web/wwwroot/
 COPY ./config/wait-for-it.sh ./wait-for-it.sh
 
 # set runtime environment defaults for container instances based on build inputs
-ENV ASPNETCORE_ENVIRONMENT=Production TOUCAN_DBHOST=db TOUCAN_URLS=http://0.0.0.0:80 TOUCAN_DBMIGRATE=true
+ENV ASPNETCORE_ENVIRONMENT=Production ASPNETCORE_URLS=http://0.0.0.0:80 EFCORE_MIGRATIONS=true
 EXPOSE 80
 VOLUME ['/var/lib/toucan/web']
 CMD ["./wait-for-it.sh", "db:5432", "--", "dotnet", "/var/lib/toucan/web/Toucan.UI.dll"]

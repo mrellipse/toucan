@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel;
 using Microsoft.Extensions.Configuration;
 
 namespace Toucan.Server
@@ -16,45 +14,23 @@ namespace Toucan.Server
 
         public static void Main(string[] args)
         {
-            string[] urls = GetUrlsFromEnv();
-            var kestrel = Bootstrap();
-
-            var host = new WebHostBuilder()
-                .UseConfiguration(Configuration)
-                .UseKestrel(kestrel)
-                .UseUrls(urls)
-                .UseContentRoot(BasePath)
-                .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
-        }
-
-        private static Action<KestrelServerOptions> Bootstrap()
-        {
-            string path = ResolvePath($"app.{CurrentEnvironmentName.ToLower()}.json");
-
-            Console.WriteLine($"Loading configuration file {path}");
+            string path = ResolvePath($"app.{WebApp.CurrentEnvironmentName.ToLower()}.json");
 
             Configuration = new ConfigurationBuilder()
-                .SetBasePath(BasePath)
+                .SetBasePath(WebApp.BasePath)
                 .AddEnvironmentVariables("ASPNETCORE_")
                 .AddEnvironmentVariables("TOUCAN_")
                 .AddJsonFile(path, optional: false)
                 .Build();
 
-            var certificate = Configuration.GetTypedSection<Server.Config.CertificateConfig>("server:certificate");
+            var host = new WebHostBuilder()
+                .UseConfiguration(Configuration)
+                .UseKestrel()
+                .UseContentRoot(WebApp.BasePath)
+                .UseStartup<Startup>()
+                .Build();
 
-            return (options) =>
-            {
-                if (certificate != null && !string.IsNullOrWhiteSpace(certificate.Path))
-                {
-                    string fileName = ResolvePath(certificate.Path);
-
-                    if (File.Exists(fileName))
-                        options.UseHttps(new X509Certificate2(fileName, certificate.Password));
-                }
-            };
+            host.Run();
         }
 
         private static string basePath;
@@ -78,15 +54,15 @@ namespace Toucan.Server
             }
         }
 
-        private static string currentEnvironmentName;
+        private static string environmentName;
         internal static string CurrentEnvironmentName
         {
             get
             {
-                if (currentEnvironmentName == null)
-                    currentEnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                if (environmentName == null)
+                    environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-                return currentEnvironmentName;
+                return environmentName;
             }
         }
 
@@ -94,16 +70,17 @@ namespace Toucan.Server
         {
             return Path.Combine(BasePath, relativePath);
         }
-        public static string[] GetUrlsFromEnv()
+
+        public static string ResolveApiUrl()
         {
             List<string> urls = new List<string>();
 
-            string value = Environment.GetEnvironmentVariable("TOUCAN_URLS");
+            string value = Environment.GetEnvironmentVariable("ASPNETCORE_URLS");
 
             if (value != null)
                 urls.AddRange(value.Split(';'));
 
-            return urls.ToArray();
+            return urls.FirstOrDefault();
         }
     }
 }

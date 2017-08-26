@@ -25,9 +25,8 @@
             "args": [],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "development",
-                "TOUCAN_DBHOST": "localhost",
-                "TOUCAN_URLS": "http://toucan:5000",
-                "TOUCAN_DBMIGRATE": "true",
+                "ASPNETCORE_URLS": "http://toucan:5000",
+                "EFCORE_MIGRATIONS": "true"
             },
             "cwd": "${workspaceRoot}/src/server",
             "externalConsole": false,
@@ -44,8 +43,7 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Production",
                 "ASPNETCORE_URLS": "http://toucan:80",
-                "TOUCAN_DBHOST": "localhost",
-                "TOUCAN_DBMIGRATE": "true"
+                "EFCORE_MIGRATIONS": "true"
             },
             "cwd": "${workspaceRoot}/dist",
             "externalConsole": false,

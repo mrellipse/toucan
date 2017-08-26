@@ -8,7 +8,6 @@ namespace Toucan.Server
         public AntiForgeryConfig AntiForgery { get; set; }
         public string ApplicationName { get; set; }
         public string[] Areas { get; set; }
-        public CertificateConfig Certificate { get; set; }
         public string Webroot { get; set; }
         public class AntiForgeryConfig
         {
@@ -17,11 +16,5 @@ namespace Toucan.Server
             public string HeaderName { get; set; }
             public bool RequireSsl { get; set; }
         }
-        public class CertificateConfig
-        {
-            public string Path { get; set; }
-            public string Password { get; set; }
-        }
     }
-
 }

@@ -33,13 +33,15 @@ namespace Toucan.Server
 
                 app.UseDeveloperExceptionPage();
 
+                Environment.GetEnvironmentVariable("ASPNETCORE_URLS").Split(';').FirstOrDefault();
+
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
                 {
                     HotModuleReplacement = true,
                     ProjectPath = WebApp.ResolvePath(@"..\ui"),
                     EnvironmentVariables = new Dictionary<string, string>(){
-                        { "api", WebApp.GetUrlsFromEnv().FirstOrDefault() }
-                    } // TBC: needs actioning bitches
+                        { "api", WebApp.ResolveApiUrl() }
+                    }
                 });
             }
             else
@@ -60,7 +62,7 @@ namespace Toucan.Server
             app.UseHistoryModeMiddleware(webRoot, cfg.Server.Areas);
 
             bool migrate = false;
-            bool.TryParse(Environment.GetEnvironmentVariable("TOUCAN_DBMIGRATE"), out migrate);
+            bool.TryParse(Environment.GetEnvironmentVariable("EFCORE_MIGRATIONS"), out migrate);
 
             Console.WriteLine($"Migrations Enabled : { migrate.ToString()}");
 
@@ -86,34 +88,20 @@ namespace Toucan.Server
 
             services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
             services.AddMemoryCache();
+            services.ConfigureAuthentication(tokenProvider, new string[] { "admin" });
             services.ConfigureDataProtection(serverConfig);
-
-            Func<Toucan.Data.Config, string> resolveConnection = (config) =>
-            {
-                string value = config.ConnectionString;
-
-                if (!string.IsNullOrWhiteSpace(config.HostKey) && !string.IsNullOrWhiteSpace(config.HostKey))
-                {
-                    string host = Environment.GetEnvironmentVariable(config.HostKey);
-
-                    if (!string.IsNullOrWhiteSpace(host))
-                        value = new Regex(config.HostPattern).Replace(value, host);
-                }
-
-                return value;
-            };
 
             // services.AddDbContext<MsSqlContext>(options =>
             // {
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     string connectionString = resolveConnection(dataConfig);
+            //     string connectionString = dataConfig.ConnectionString;
             //     options.UseSqlServer(connectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
             services.AddDbContext<NpgSqlContext>(options =>
             {
                 string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-                string connectionString = resolveConnection(dataConfig);
+                string connectionString = dataConfig.ConnectionString;
                 options.UseNpgsql(connectionString, s => s.MigrationsAssembly(assemblyName));
             });
 

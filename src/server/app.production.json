@@ -1,19 +1,19 @@
 {
     "data": {
-        "connectionString": "Host=localhost;Port=5432;Database=Toucan;Username=postgres;Password=P@ssw0rd",
-        "hostKey": "TOUCAN_DBHOST",
-        "hostPattern": "(?<=Host=)([^;]+)"
+        "connectionString": "Host=localhost;Port=5432;Database=Toucan;Username=postgres;Password=P@ssw0rd"
     },
     "server": {
-        "webroot": ".\\wwwroot",
+        "antiForgery": {
+            "cookieName": "XSRF-COOKIE",
+            "clientName": "XSRF-TOKEN",
+            "headerName": "X-XSRF-TOKEN",
+            "requireSsl": true
+        },
+        "applicationName": "Toucan",
         "areas": [
             "admin"
         ],
-        "antiForgery": {
-            "cookieName": "XSRF-COOKIE",
-            "headerName": "X-XSRF-TOKEN",
-            "clientName": "XSRF-TOKEN"
-        }
+        "webroot": "./wwwroot"
     },
     "service": {
         "authenticationProviders": [

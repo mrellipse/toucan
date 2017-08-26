@@ -5,7 +5,7 @@ services:
       context: ../
       dockerfile: ./build/dockerfile.web.master
     environment:
-     - TOUCAN_DBMIGRATE=true
+     - EFCORE_MIGRATIONS=true
     image: toucan-web-master
     volumes:
      - web:/var/lib/toucan/web
@@ -14,7 +14,7 @@ services:
       context: ../
       dockerfile: ./build/dockerfile.web
     environment:
-     - TOUCAN_DBMIGRATE=false
+     - EFCORE_MIGRATIONS=false
     image: toucan-web
     volumes:
      - web:/var/lib/toucan/web

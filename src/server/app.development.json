@@ -1,8 +1,6 @@
 {
     "data": {
-        "connectionString": "Host=localhost;Port=5432;Database=Toucan;Username=postgres;Password=P@ssw0rd",
-        "hostKey": "TOUCAN_DBHOST",
-        "hostPattern": "(?<=Host=)([^;]+)"
+        "connectionString": "Host=localhost;Port=5432;Database=Toucan;Username=postgres;Password=P@ssw0rd"
     },
     "server": {
         "antiForgery": {
@@ -15,10 +13,6 @@
         "areas": [
             "admin"
         ],
-        "certificate": {
-            "path": "",
-            "password": ""
-        },
         "webroot": "./wwwroot"
     },
     "service": {
