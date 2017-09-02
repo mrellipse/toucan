@@ -12,7 +12,7 @@ import './status-bar.scss';
   name: 'StatusBar',
   template: `
     <transition name="fade">
-      <div v-if="status.messageTypeId" @click.prevent="onStatusBarClick()" class="status-bar" :class="alertClass" role="alert">
+      <div v-if="status.messageTypeId" @click.prevent="onStatusBarClick()" class="status-bar container" :class="alertClass" role="alert">
          <span class="status-title">{{statusTitle}}</span><span v-bind:data-has-title="hasTitle" class="status-text">{{statusText}}</span>
       </div>
     </transition>`,

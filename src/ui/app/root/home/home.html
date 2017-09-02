@@ -1,12 +1,12 @@
-<main class="container">
+<main class="col">
   <div v-if="!authenticated">
-    <h1 class="mb-2"><img src="~assets/images/tukan.png" style="max-height: 5rem; max-width: 5rem;margin-right:0.3em;" />{{$t('home.title.begin')}} {{$t('home.title.end')}}</h1>
+    <h1 class="mb-2"><img src="~assets/images/tukan.png" style="max-width: 4rem;margin-right:0.3em;" />{{$t('home.title.begin')}} {{$t('home.title.end')}}</h1>
     <div v-html="$t('home.body[0]')"></div>
     <div v-html="$t('home.body[1]')"></div>
     <div v-html="$t('home.body[2]')"></div>
   </div>
   <div v-if="authenticated && init">
-    <h1 class="mb-2"><img src="~assets/images/tukan.png" style="max-height: 5rem; max-width: 5rem;margin-right:0.3em;" /> {{$t('dict.hello')}} {{displayName}}</h1>
+    <h1 class="mb-2"><img src="~assets/images/tukan.png" style="max-width: 4rem;margin-right:0.3em;" /> {{$t('dict.hello')}} {{displayName}}</h1>
     <p v-if="secureContent">
       {{secureContent}}
     </p>

@@ -13,7 +13,8 @@
         "**/*.Designer.cs": true,
         "**/*.lock.json": true,
         "dist/*.dll": true,
-        "dist/*.pdb": true
+        "dist/*.pdb": true,
+        "src/server/wwwroot/**/*" : true
     },
     "terminal.integrated.setLocaleVariables": true
 }

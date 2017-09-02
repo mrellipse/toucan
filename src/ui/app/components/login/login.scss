@@ -7,11 +7,13 @@
     }
 
     .card {
-        margin-top: 0.5em;
+        border: 0;
+        border-radius: 0;
     }
 
     .external-provider-text {
-        font-family: $font-family-fancy;
+        font-family: $headings-font-family;
+        color: theme-color("secondary");
         margin-left: 0.5em;
         text-transform: lowercase;
         font-variant: normal;

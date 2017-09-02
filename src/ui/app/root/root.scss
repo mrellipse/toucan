@@ -1,11 +1,10 @@
-@import "../styles/variables";
-
-// npm depencies
-@import "~bootstrap/scss/bootstrap";
+// vendor depencies
+$fa-font-path: "../../node_modules/font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
 // Project specific
 @import "../styles/global";
+@import "../styles/bootstrap/bootstrap";
 @import "../styles/components";
 
 // Area specific

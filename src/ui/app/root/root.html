@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vue.js Starter</title>
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="container-fluid">
         <navigation></navigation>
         <loader v-show="isLoading"></loader>
         <router-view></router-view>

@@ -7,18 +7,23 @@ const webpackHtml = require('html-webpack-plugin');
 module.exports = (outputPath, srcPath) => {
 
     const plugins = [
+
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
-            Tether: 'tether'
+            'window.jQuery': 'jquery',
+            Popper: ['popper.js', 'default']
         }),
+
         new webpack.LoaderOptionsPlugin({
             options: { postcss: [autoprefixer] }
         }),
+
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
             minChunks: 2
         }),
+
         new webpackHtml({
             chunksSortMode: 'dependency',
             excludeChunks: ['admin'],
@@ -27,6 +32,7 @@ module.exports = (outputPath, srcPath) => {
             inject: 'body',
             template: path.resolve(srcPath, './root/root.html')
         }),
+
         new webpackHtml({
             chunksSortMode: 'dependency',
             excludeChunks: ['app'],
@@ -41,8 +47,8 @@ module.exports = (outputPath, srcPath) => {
         devtool: '#eval-source-map',
         entry: {
             vendor: [
-                path.resolve(__dirname, './node_modules/jquery/dist/jquery.slim.js'),
-                path.resolve(__dirname, './node_modules/tether/dist/js/tether.js'),
+                path.resolve(__dirname, './node_modules/popper.js/dist/popper.js'),
+                path.resolve(__dirname, './node_modules/jquery/dist/jquery.js'),
                 path.resolve(__dirname, './node_modules/bootstrap/dist/js/bootstrap.js'),
                 path.resolve(__dirname, './node_modules/jwt-decode/lib/index.js')
             ],
@@ -66,35 +72,57 @@ module.exports = (outputPath, srcPath) => {
                         loader: 'url-loader',
                         options: {
                             prefix: 'img',
-                            limit: 5000
+                            limit: 10000
                         }
                     }
                 },
                 {
                     test: /\.scss$/,
                     exclude: /node_modules/,
-                    use: [{
-                        loader: "style-loader" // creates style nodes from JS strings
-                    }, {
-                        loader: "css-loader" // translates CSS into CommonJS
-                    }, {
-                        loader: "sass-loader" // compiles Sass to CSS
-                    }]
+                    use: [
+                        { loader: "style-loader" },
+                        { loader: "css-loader" },
+                        { loader: "sass-loader" }
+                    ]
                 },
                 {
-                    test: /\.(ttf|eot|svg)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                    exclude: /node_modules/,
-                    use: [{ loader: 'file-loader' }]
-                },
-                {
-                    test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                    exclude: /node_modules/,
+                    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
                     use: {
-                        loader: 'url',
+                        loader: "file-loader",
+                        options: {
+                            name: '[name].[ext]',
+                            publicPath: '/assets/fonts'
+                        }
+                    }
+                },
+                {
+                    test: /\.(woff|woff2)$/,
+                    use: {
+                        loader: 'url-loader',
                         options: {
                             prefix: 'font',
-                            limit: 5000,
-                            mimetype: 'application/font-woff'
+                            limit: 10000
+                        }
+                    }
+                },
+                {
+                    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                    use: {
+                        loader: 'url-loader',
+                        options: {
+                            prefix: 'font',
+                            limit: 10000,
+                            mimetype: 'application/octet-stream'
+                        }
+                    }
+                },
+                {
+                    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                    use: {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000,
+                            mimetype: 'image/svg+xml'
                         }
                     }
                 }

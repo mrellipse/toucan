@@ -1,11 +1,10 @@
-@import "../styles/variables";
-
-// npm depencies
-@import "~bootstrap/scss/bootstrap";
+// vendor depencies
+$fa-font-path: "../../node_modules/font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
 // Project specific
 @import "../styles/global";
+@import "../styles/bootstrap/bootstrap";
 @import "../styles/components";
 
 // Area specific
@@ -13,30 +12,31 @@
 @import "./footer/footer";
 
 /*
- * Typography
- */
-
-h1 {
-  margin-bottom: 20px;
-  padding-bottom: 9px;
-  border-bottom: 1px solid #eee;
-}
-
-/*
  * Sidebar
  */
 
-.sidebar {
-  position: fixed;
-  top: 51px;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  padding: 20px;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  border-right: 1px solid #eee;
-}
+ $sm-map: map-get($grid-breakpoints, 'sm');
+ $md-map: map-get($grid-breakpoints, 'md');
+ 
+ .sidebar {
+   position: fixed;
+   top: 56px;
+   bottom: 0;
+   z-index: 1000;
+   padding: 12px;
+   overflow-x: hidden;
+   overflow-y: auto;
+   border-right: 1px solid #eee;
+ 
+   @media(max-width:$sm-map) {
+     display: none !important;
+   }
+ 
+   @media(min-width:$sm-map) and (max-width: $md-map) {
+     left:0;
+   }
+ 
+ }
 
 /* Sidebar navigation */
 .sidebar {
@@ -66,7 +66,6 @@ h1 {
   border-radius: 0;
   color: $navbar-light-hover-color;
 }
-
 
 /*
  * Dashboard
