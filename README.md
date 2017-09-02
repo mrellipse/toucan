@@ -51,7 +51,7 @@ See the readme files for each project
 * [service](src/service/README.md)
 * [server](src/server/README.md)
 
-### Vue.js & Webpack
+### Vue.js, Webpack & Bootstrap
 See the readme file below
 * [ui](src/ui/README.md)
 
@@ -112,13 +112,14 @@ For .NET Core, a sample XUnit test is provided as a starting point */test/* dire
 ## Built With
 
 * [.NET Core](https://www.microsoft.com/net/core) - .NET Core is a general purpose development platform maintained by Microsoft and the .NET community on GitHub.
-* [Axios](https://github.com/mzabriskie/axios) - Promise based HTTP client for the browser and node.js
-* [Bootstrap](http://getbootstrap.com/) - Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.
-* [StructureMap](http://structuremap.github.io/) - IOC/DI container
-* [TypeScript](https://www.TypeScriptlang.org/) - TypeScript is a typed superset of 
-Javascript that compiles to plain JavaScript
+* [TypeScript](https://www.TypeScriptlang.org/) - TypeScript is a typed superset of Javascript that compiles to plain JavaScript
 * [Vue.js](https://vuejs.org/v2/guide/) - Simple yet powerful library for building modern web interfaces
-* [xUnit.net](https://xunit.github.io/) - xUnit.net is a free, open source, community-focused unit testing tool for the .NET Framework.
+* [Bootstrap](http://getbootstrap.com/) - Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Built With](vendors.png)
+
+* [Axios](https://github.com/mzabriskie/axios) - Promise based HTTP client for the browser and node.js
+* [StructureMap](http://structuremap.github.io/) - IOC/DI container
 
 ## Contributing
 

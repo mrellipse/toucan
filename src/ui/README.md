@@ -40,3 +40,7 @@ To support multiple entry points as described above, the webpack build process i
 * vendor.js - contains core third-party dependencies
 * common.js - contains code used by all areas/subsites (using [commons-chunk-plugin](http://webpack.github.io/docs/examples.html#commons-chunk-plugin))
 * [area].js - contains area-specific code and resources
+
+### Bootstrap
+
+Bootstrap colour theme has been customized. Bootstrap javascript files are sourced from /node_modules folder, but bootstrap CSS files are generated based on SASS files ./ui/app/styles/bootstrap
