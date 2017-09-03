@@ -45,12 +45,9 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.3em;
 }
 
-legend,fieldset { 
+fieldset legend {
   font-family: $headings-font-family;
   color: theme-color("primary");
-}
-
-fieldset legend {
   font-variant: small-caps;
   letter-spacing: 1px;
   text-transform: capitalize;
