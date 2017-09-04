@@ -3,14 +3,12 @@
         'transform-runtime'
     ],
     presets: [
-        'env',
-        [
-            'es2015',
-            {
+        [env, {
+            targets: {
+                browsers: ['last 2 versions'],
                 loose: true,
                 modules: false
             }
-        ],
-        'es2016'
+        }]
     ]
 }
