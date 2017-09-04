@@ -8,7 +8,7 @@ import { StoreTypes } from '../store';
 import { IPayload, IPayloadMessage, IStatusBarData, PayloadMapper, PayloadMessageTypes } from '../model';
 
 export interface IStoreService {
-    exec: <T>(cb: Promise<T>) => Promise<T>
+    exec: <T>(cb: Promise<{}>) => Promise<IPayload<T>>
 }
 
 interface IProcessPayloadOptions<T> {
@@ -23,17 +23,17 @@ export abstract class StoreService implements IStoreService {
 
     }
 
-    handleFulfilled<T>(reason: T) {
+    handleFulfilled<T>(data: T) {
 
         return this.store.dispatch(StoreTypes.loadingState, false)
-            .then(() => new PayloadMapper().fromObject(reason));
+            .then(() => new PayloadMapper().fromObject<T>(data));
     }
 
     handleRejection<T>(reason: any) {
 
         return this.store.dispatch(StoreTypes.loadingState, false)
             .then(() => this.store.dispatch(StoreTypes.updateStatusBar, reason))
-            .then(() => new PayloadMapper().fromObject(reason));
+            .then(() => new PayloadMapper().fromObject<T>(reason));
     }
 
     processPayload<T>(payload: IPayload<T>, options?: IProcessPayloadOptions<T>): Promise<T> {
@@ -66,8 +66,8 @@ export abstract class StoreService implements IStoreService {
 
     exec<T>(cb: Promise<{}>): Promise<IPayload<T>> {
 
-        let onFulfilled = (value) => this.handleFulfilled(value);
-        let onRejection = (value) => this.handleRejection(value)
+        let onFulfilled = (value) => this.handleFulfilled<T>(value);
+        let onRejection = (reason) => this.handleRejection<T>(reason);
 
         return this.store.dispatch(StoreTypes.loadingState, true)
             .then(() => cb)
