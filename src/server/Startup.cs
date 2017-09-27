@@ -12,6 +12,7 @@ using StructureMap;
 using Toucan.Common.Extensions;
 using Toucan.Contract;
 using Toucan.Data;
+using System.Collections.Generic;
 
 namespace Toucan.Server
 {
@@ -33,6 +34,7 @@ namespace Toucan.Server
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
                 {
                     HotModuleReplacement = true,
+                    HotModuleReplacementEndpoint = "/dist", // this value must be the same as 'output.publicPath' in webpack.config.js
                     ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\ui")
                 });
             }

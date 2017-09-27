@@ -11,7 +11,7 @@ module.exports = () => {
 
     const srcPath = path.resolve(__dirname, './app');
 
-    const config = webpackBase(outputPath, srcPath);
+    const config = webpackBase(outputPath, srcPath, '/');
 
     const definePlugin = new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'

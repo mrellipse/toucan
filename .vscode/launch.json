@@ -17,7 +17,7 @@
             "port": 5858
         },
         {
-            "name": ".NET Core Launch (console)",
+            "name": ".NET Core (Development)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dev build",
@@ -28,6 +28,20 @@
             },
             "cwd": "${workspaceRoot}/src/server",
             "externalConsole": false,
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": ".NET Core (Production)",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceRoot}/dist/Toucan.UI.dll",
+            "args": [],
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Production"
+            },
+            "cwd": "${workspaceRoot}/dist",
+            "externalConsole": true,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         }

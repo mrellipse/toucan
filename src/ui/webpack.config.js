@@ -11,7 +11,8 @@ module.exports = () => {
 
     const srcPath = path.resolve(__dirname, './app');
 
-    const config = webpackBase(outputPath, srcPath);
+    // set publicPath to '/dist/' is so that .net core webpack middleware can proxy incoming requests to node.js middleware
+    const config = webpackBase(outputPath, srcPath, '/dist/');
 
     const definePlugin = new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"development"'

@@ -4,7 +4,7 @@ const merge = require('webpack-merge');
 const autoprefixer = require('autoprefixer');
 const webpackHtml = require('html-webpack-plugin');
 
-module.exports = (outputPath, srcPath) => {
+module.exports = (outputPath, srcPath, publicPath) => {
 
     const plugins = [
 
@@ -130,7 +130,7 @@ module.exports = (outputPath, srcPath) => {
         },
         output: {
             path: outputPath,
-            publicPath: '/',
+            publicPath: publicPath,
             filename: '[name].js'
         },
         plugins: plugins,
