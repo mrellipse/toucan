@@ -36,8 +36,6 @@ namespace Toucan.Server
 
                 if (user == null)
                 {
-                    Console.WriteLine($"Resolved user from anonymous data");
-
                     user = new User()
                     {
                         CultureName = this.culture.GetFromRequest(context, CultureService.CultureName),
@@ -54,8 +52,6 @@ namespace Toucan.Server
                     // the culture and timezone from request may be more up to date than that in the claims principal
                     user.CultureName = this.culture.GetFromRequest(context, CultureService.CultureName);
                     user.TimeZoneId = this.culture.GetFromRequest(context, CultureService.TimeZoneId);
-
-                    Console.WriteLine($"Resolved user #{user.UserId} from claims principal");
                 }
                 
                 if (string.IsNullOrEmpty(user.CultureName))

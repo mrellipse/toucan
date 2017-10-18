@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +42,8 @@ namespace Toucan.Server
 
             app.UseDefaultFiles();
             app.UseAuthentication();
+            app.UseResponseCompression();
+
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(webRoot),
@@ -80,12 +83,31 @@ namespace Toucan.Server
             services.Configure<Toucan.Data.Config>(WebApp.Configuration.GetSection("data")); // configuration
             services.Configure<Toucan.Server.Config>(WebApp.Configuration.GetSection("server"));
 
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+            services.AddResponseCompression(options =>
+            {
+                options.MimeTypes = new[]
+                {
+                    // Default
+                    "text/plain",
+                    "text/css",
+                    "application/javascript",
+                    "text/html",
+                    "application/xml",
+                    "text/xml",
+                    "application/json",
+                    "text/json",
+                    // Custom
+                    "image/svg+xml"
+                };
+            });
+
             services.AddMemoryCache();
             services.ConfigureAuthentication(tokenProvider, new string[] { "admin" });
             services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
 
             services.AddDbContext<NpgSqlContext>(options =>
-            {   
+            {
                 string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
                 options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             });
