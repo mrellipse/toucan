@@ -15,15 +15,15 @@ module.exports = (outputPath, srcPath, publicPath) => {
             Popper: ['popper.js', 'default']
         }),
 
-        new webpack.LoaderOptionsPlugin({
-            options: { postcss: [autoprefixer] }
-        }),
-
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
             minChunks: 2
+        }),
+
+        new webpack.LoaderOptionsPlugin({
+            options: { postcss: [autoprefixer] }
         })
-        
+
     ];
 
     const config = {

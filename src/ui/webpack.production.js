@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const babelMinifyPlugin = require("babel-minify-webpack-plugin");
 const autoprefixer = require('autoprefixer');
 const webpackHtml = require('html-webpack-plugin');
 const webpackBase = require('./webpack-base');
@@ -88,6 +89,8 @@ function extendConfig(config) {
     });
 
     config.plugins.splice(0, 0, definePlugin);
+
+    config.plugins.push(new babelMinifyPlugin());
 
     const tsLoader = {
         test: /\.ts$/,

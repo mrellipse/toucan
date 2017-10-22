@@ -41,4 +41,8 @@ export class Home extends Vue {
   $common: ICommonOptions;
 
   $store: Store<IRootStoreState>;
+
+  get siteLogoAlt() {
+    return this.$t('dict.logo');
+  }
 }
