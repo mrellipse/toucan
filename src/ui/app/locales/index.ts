@@ -1,32 +1,56 @@
 import * as Vue from 'vue';
-import { en } from './en';
-import { fr } from './fr';
 import VueI18n from 'vue-i18n';
+import { CookieHelper } from '../common';
+import { KeyValue } from '../model';
+import { CultureService, ICultureData } from '../services'
 
 Vue.use(VueI18n);
 
-export const SupportedLocales = ['en', 'fr'];
+export const SupportedLocales: string[] = [];
+export const SupportedTimeZones: KeyValue[] = [];
 
-var locale = resolveLocale(window.navigator.language) || "en";
+export function InitI18n() {
 
-export const i18n = new VueI18n({
-    locale: locale,
-    fallbackLocale: 'en',
-    silentTranslationWarn: false,
-    messages: {
-        'en': en,
-        'fr': fr
+    let loading = false;
+    let locale = CookieHelper.getCultureName() || "en";
+    let svc = new CultureService();
+
+    return updateSupportedLocales()
+        .then(updateSupportedTimeZones)
+        .then(() => svc.resolveCulture(locale))
+        .then(CultureService.mapLocaleMessages)
+        .then(onFulfilled);
+
+    function onFulfilled(message: VueI18n.LocaleMessage) {
+
+        let messages = {};
+        messages[locale] = message;
+
+        return new VueI18n({
+            fallbackLocale: locale,
+            locale: locale,
+            silentTranslationWarn: false,
+            messages: messages
+        });
     }
-});
 
-function resolveLocale(lang){
-    
-    if(SupportedLocales.indexOf(lang) != -1)
-        return lang;
-    
-    let locale = SupportedLocales.find((o) => {
-        return lang.toLowerCase().startsWith(o.toLowerCase());
-    });
+    function updateSupportedLocales() {
 
-    return locale;
-}
+        let onFulfilled = (data: KeyValue[]) => data.forEach(o => SupportedLocales.push(o.key));
+
+        if (SupportedLocales.length == 0)
+            return svc.supportedCultures().then(onFulfilled);
+        else
+            return Promise.resolve();
+    }
+
+    function updateSupportedTimeZones() {
+
+        let onFulfilled = (data: KeyValue[]) => data.forEach(o => SupportedTimeZones.push(o));
+
+        if (SupportedTimeZones.length == 0)
+            return svc.supportedTimeZones().then(onFulfilled);
+        else
+            return Promise.resolve();
+    }
+};

@@ -14,8 +14,8 @@
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
-  -webkit-animation: loaderSpinner 1.1s infinite linear;
-  animation: loaderSpinner 1.1s infinite linear;
+  -webkit-animation: loaderSpinner 1.6s infinite linear;
+  animation: loaderSpinner 1.6s infinite linear;
 
   &,
   &:after {
@@ -45,4 +45,18 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.loader-status {
+  color: theme-color("secondary");
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  width:100%;
+  padding-top: 2em;
+  font-size: 1.5em;
+}
+
+.loader-progress {
+  font-size: 0.75em;
 }

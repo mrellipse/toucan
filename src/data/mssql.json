@@ -1,5 +1,6 @@
 {
     "data": {
-        "connectionString": "Server=.;Database=XXXX;Trusted_Connection=True;"
+        "connectionString": "Server=.;Database=;Trusted_Connection=True;",
+        "schemaName": ""
     }
 }

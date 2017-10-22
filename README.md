@@ -95,7 +95,7 @@ Server-side routes are protected via [policies](https://docs.microsoft.com/en-us
 
 Client-side routes are protected via [navigation guards](http://router.vuejs.org/en/advanced/navigation-guards.html), which check user claims contained in access tokens issued by the server.
 
-> If an authorization check on the web server fails, a challenge is issued to the client browser. Normally this results in a 302 redirect, but this behaviour has been modified using custom middleware in *./src/server/Startup.Auth.cs*. This middleware instead returns a 401 Unauthorized response whilst setting Response header _Location=XXX_. The client-side Axios library then handles this appropriately, by way of a global http response interceptor.
+> If an authorization check on the web server fails, a challenge is issued to the client browser. Normally this results in a 302 redirect, but this behaviour has been modified using custom middleware in src/server/Startup.Auth.cs*. This middleware instead returns a 401 Unauthorized response whilst setting Response header _Location=XXX_. The client-side Axios library then handles this appropriately, by way of a global http response interceptor.
 
 ### Security
 

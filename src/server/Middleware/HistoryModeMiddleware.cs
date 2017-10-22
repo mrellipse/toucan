@@ -26,7 +26,12 @@ namespace Toucan.Server
                     string fileName = fileName = $"{webRoot}\\index.html";
 
                     if (!string.IsNullOrEmpty(area) && areas.Any(o => string.Equals(o, area, StringComparison.CurrentCultureIgnoreCase)))
+                    {
                         fileName = $"{webRoot}\\{area.ToLower()}.html";
+
+                        var cultureService = context.RequestServices.GetRequiredService<CultureService>();
+                        cultureService.EnsureCookie(context);
+                    }
 
                     await context.Response.SendFileAsync(new FileInfo(fileName));
                 }

@@ -3,8 +3,8 @@ import { IRootStoreState } from './state';
 
 export const Mutations: MutationTree<IRootStoreState> = {
     
-    secureContent: (state: IRootStoreState, content: string) => {
+    apiCallContent: (state: IRootStoreState, content: string) => {
 
-        state.secureContent = content;
+        state.apiCallContent = content;
     },
 };

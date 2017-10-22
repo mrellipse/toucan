@@ -1,8 +1,8 @@
 using System;
 
-namespace Toucan.Common.Extensions
+namespace Toucan.Common
 {
-    public static class Reflection
+    public static partial class Extensions
     {
         public static string GetAssemblyName(this Type type)
         {

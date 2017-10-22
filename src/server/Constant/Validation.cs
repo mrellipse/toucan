@@ -8,5 +8,6 @@ namespace Toucan.Server
         public const string InvalidNonce = "InvalidNonce";
         public const string InvalidAccessToken = "InvalidAccessToken";
         public const string SecureContent = "secureContent";
+        public const string UnsupportedCulture = "UnsupportedCulture";
     }
 }

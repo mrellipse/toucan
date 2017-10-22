@@ -1,40 +1,40 @@
 <main class="col">
-    <fieldset>
-      <legend>{{$t('admin.navigation.users')}}</legend>
-      <div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>{{$t('dict.name')}}</th>
-              <th class="hidden-md-down">{{$t('dict.email')}}</th>
-              <th>{{$t('dict.enabled')}}</th>
-              <th>{{$t('dict.verified')}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(user,index) in users">
-              <td class="caps-low">
-                <router-link :to="{ name: 'manageUser', params: { id: user.userId }}"><span :title="user.email">{{user.displayName}}</span></router-link>
-              </td>
-              <td class="hidden-md-down">{{user.email}}</td>
-              <td>
-                <check v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
-              </td>
-              <td>
-                <check v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot v-show="total">
-            <tr>
-              <td colspan="4">
-                <div v-if="currentPage > 1" @click="navigate(false)" class="btn btn-primary"><i class="fa fa-arrow-left"></i></div>
-                <div class="paging-splice">{{start}}-{{end}} <span class="paging-of">{{$t('dict.of')}}</span> <span class="paging-total">{{total}}</span></div>
-                <div v-if="(end < total)" @click="navigate(true)" class="btn btn-primary"><i class="fa fa-arrow-right"></i></div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </fieldset>
+  <fieldset>
+    <legend>{{$t('admin.navigation.users')}}</legend>
+    <div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>{{$t('dict.name')}}</th>
+            <th class="hidden-md-down">{{$t('dict.email')}}</th>
+            <th>{{$t('dict.enabled')}}</th>
+            <th>{{$t('dict.verified')}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(user,index) in users">
+            <td class="caps-low">
+              <router-link :to="{ name: 'manageUser', params: { id: user.userId }}"><span :title="user.email">{{user.displayName}}</span></router-link>
+            </td>
+            <td class="hidden-md-down">{{user.email}}</td>
+            <td>
+              <check v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
+            </td>
+            <td>
+              <check v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot v-show="total">
+          <tr>
+            <td colspan="4">
+              <div v-if="currentPage > 1" @click="navigate(false)" class="btn btn-primary"><i class="fa fa-arrow-left"></i></div>
+              <div class="paging-splice">{{start}}-{{end}} <span class="paging-of">{{$t('dict.of')}}</span> <span class="paging-total">{{total}}</span></div>
+              <div v-if="(end < total)" @click="navigate(true)" class="btn btn-primary"><i class="fa fa-arrow-right"></i></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </fieldset>
 </main>

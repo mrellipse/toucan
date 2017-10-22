@@ -8,8 +8,9 @@ import { ManageUserService } from './user-service';
 import { ICommonOptions } from '../../plugins';
 import { IRouteMixinData } from '../../mixins/mixin-router';
 import { PayloadMessageTypes, TokenHelper } from '../../common';
-import { IKeyValueList, ISearchResult, IStatusBarData, IUser } from '../../model';
+import { IKeyValueList, ISearchResult, IStatusBarData, IUser, KeyValue } from '../../model';
 import { StoreTypes } from '../../store';
+import { SupportedLocales, SupportedTimeZones } from '../../locales';
 import { DropDownSelect, Switch } from '../../components';
 
 import './users.scss';
@@ -21,6 +22,12 @@ let validations = {
       minLength: minLength(2)
     },
     roles: {
+      required
+    },
+    cultureName: {
+      required
+    },
+    timeZoneId: {
       required
     }
   }
@@ -40,6 +47,7 @@ export class ManageUser extends Vue {
   private svc: ManageUserService;
 
   created() {
+
     let svc = this.svc = new ManageUserService(this.$store);
 
     if (this.id) {
@@ -56,7 +64,7 @@ export class ManageUser extends Vue {
   }
 
   get allowSubmit() {
-    return !this.$v.$invalid && (this.$v.user.displayName.$dirty || this.$v.user.roles.$dirty);
+    return !this.$v.$invalid && (this.$v.user.displayName.$dirty || this.$v.user.roles.$dirty || this.$v.user.timeZoneId.$dirty || this.$v.user.cultureName.$dirty);
   }
 
   submit() {
@@ -90,6 +98,14 @@ export class ManageUser extends Vue {
     fr: { userUpdated: 'Mise à jour de l\'utilisateur' }
   }
 
+  get supportedCultures(): string[] {
+    return SupportedLocales;
+  }
+
+  get supportedTimeZones(): KeyValue[] {
+    return SupportedTimeZones;
+  }
+
   public get onText() {
     return this.$t('dict.yes');
   }
@@ -99,7 +115,7 @@ export class ManageUser extends Vue {
   }
 
   updateUserStatus(user: IUser) {
-    
+
     let data = {
       username: user.username,
       enabled: user.enabled,
@@ -112,6 +128,6 @@ export class ManageUser extends Vue {
   $route: IRouteMixinData;
   $store: Store<{}>;
   init: boolean = false;
-  user: IUser = { authenticated: false, displayName: null, email: null, name: null, username: null, roles: [], verified: false };
+  user: IUser = { authenticated: false, cultureName: null, timeZoneId: null, displayName: null, email: null, name: null, username: null, roles: [], verified: false };
   $v: Vuelidate<any>
 };

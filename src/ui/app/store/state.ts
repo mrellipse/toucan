@@ -1,8 +1,7 @@
-import { IStatusBarData, IUser, IUserOptions } from '../model';
+import { IStatusBarData, IUser } from '../model';
 
 export interface ICommonState {
     isLoading: boolean;
     user: IUser;
-    userOptions: IUserOptions;
     statusBar: IStatusBarData;
 }

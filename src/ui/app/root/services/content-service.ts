@@ -15,11 +15,12 @@ export class ContentService extends StoreService {
 
     rikerIpsum() {
         let payload: IPayload<string> = null;
-
-        return this.exec<string>(Axios.get(RIKER_IPSUM))
+        let uri = RIKER_IPSUM + '/?clientTime=' + encodeURIComponent(new Date().toISOString());
+        
+        return this.exec<string>(Axios.get(uri))
             .then((value) => {
                 payload = value;
-                return this.store.dispatch(RootStoreTypes.secureContent, value.data);
+                return this.store.dispatch(RootStoreTypes.apiCallContent, value.data);
             })
             .then((value) => this.store.dispatch(RootStoreTypes.common.updateStatusBar, payload.message))
     }

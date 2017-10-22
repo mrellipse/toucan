@@ -18,7 +18,7 @@ namespace Toucan.Contract
         public readonly string Hash;
         public Nonce(string hash)
         {
-            this.Created = DateTime.Now;
+            this.Created = DateTime.UtcNow;
             this.Hash = hash;
         }
     }

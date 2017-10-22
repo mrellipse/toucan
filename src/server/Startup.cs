@@ -9,10 +9,11 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
-using Toucan.Common.Extensions;
+using Toucan.Common;
 using Toucan.Contract;
 using Toucan.Data;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Toucan.Server
 {
@@ -27,27 +28,31 @@ namespace Toucan.Server
 
             if (env.IsDevelopment())
             {
-                loggerFactory.AddConsole(LogLevel.Debug);
+                loggerFactory.AddConsole(LogLevel.Information);
 
                 app.UseDeveloperExceptionPage();
 
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
                 {
                     HotModuleReplacement = true,
-                    HotModuleReplacementEndpoint = "/dist", // this value must be the same as 'output.publicPath' in webpack.config.js
                     ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\ui")
                 });
             }
 
             app.UseDefaultFiles();
             app.UseAuthentication();
-            app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
-
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(webRoot)
+                FileProvider = new PhysicalFileProvider(webRoot),
+                OnPrepareResponse = (content) =>
+                {
+                    var cultureService = content.Context.RequestServices.GetRequiredService<CultureService>();
+                    cultureService.EnsureCookie(content.Context);
+                }
             });
 
+            app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
+            app.UseRequestLocalization();
             app.UseMvc();
             app.UseHistoryModeMiddleware(webRoot, cfg.Server.Areas);
 
@@ -76,14 +81,14 @@ namespace Toucan.Server
             services.Configure<Toucan.Server.Config>(WebApp.Configuration.GetSection("server"));
 
             services.AddMemoryCache();
-            services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
             services.ConfigureAuthentication(tokenProvider, new string[] { "admin" });
+            services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
 
-            // services.AddDbContext<NpgSqlContext>(options =>
-            // {   
-            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
-            // });
+            services.AddDbContext<NpgSqlContext>(options =>
+            {   
+                string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+                options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            });
 
             // services.AddDbContext<MsSqlContext>(options =>
             // {

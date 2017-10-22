@@ -3,7 +3,9 @@
 
     <div class="form-group" v-show="!verifyCodeIssued">
         <p>{{$t('verify.sendCode')}}</p>
-        <button class="btn btn-primary" @click.prevent="issueVerificationCode()"><i class="fa fa-lg fa-lock" aria-hidden="true"></i></button>
+        <button class="btn btn-primary" @click.prevent="issueVerificationCode()">
+            <i class="fa fa-lg fa-lock" aria-hidden="true"></i>
+        </button>
     </div>
 
     <div class="form-group" v-show="verifyCodeIssued">
@@ -13,7 +15,9 @@
                 <span class="alert-danger" v-if="!$v.verifyCode.required">{{$t('validation.required')}}</span>
             </span>
         </p>
-        <button class="btn btn-primary" @click.prevent="redeemVerificationCode()"><i class="fa fa-lg fa-unlock" aria-hidden="true"></i></button>
+        <button class="btn btn-primary" @click.prevent="redeemVerificationCode()">
+            <i class="fa fa-lg fa-unlock" aria-hidden="true"></i>
+        </button>
     </div>
 
 </main>

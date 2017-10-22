@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Toucan.Contract;
 using Toucan.Service;
+using Toucan.Server.Model;
+using Toucan.Service.Model;
 
 namespace Toucan.Server.Controllers.Admin
 {
@@ -15,9 +17,13 @@ namespace Toucan.Server.Controllers.Admin
     public class ManageUserController : Controller
     {
         private readonly IManageUserService manageUserService;
-        public ManageUserController(IManageUserService manageUserService)
+
+        public ILocalizationService localizationService { get; }
+
+        public ManageUserController(IManageUserService manageUserService, ILocalizationService localizationService)
         {
             this.manageUserService = manageUserService;
+            this.localizationService = localizationService;
         }
 
         [HttpGet]
@@ -32,11 +38,15 @@ namespace Toucan.Server.Controllers.Admin
                 user = await this.manageUserService.ResolveUserBy(id);
 
             var availableRoles = await this.manageUserService.GetAvailableRoles();
+            var availableCultures = await this.localizationService.GetSupportedCultures();
+            var availableTimeZones = await this.localizationService.GetSupportedTimeZones();
 
             return new
             {
+                AvailableRoles = availableRoles,
+                AvailableTimeZones = availableTimeZones,
+                AvailableCultures = availableCultures,
                 User = user,
-                AvailableRoles = availableRoles
             };
         }
 
@@ -47,7 +57,7 @@ namespace Toucan.Server.Controllers.Admin
         }
 
         [HttpPut]
-        public async Task<object> UpdateUser([FromBody]Service.Model.User user)
+        public async Task<object> UpdateUser([FromBody]User user)
         {
             return await this.manageUserService.UpdateUser(user);
         }
@@ -59,13 +69,6 @@ namespace Toucan.Server.Controllers.Admin
                 throw new ServiceException(Constants.FailedToResolveUser);
 
             return await this.manageUserService.UpdateUserStatus(options.UserName, options.Enabled, options.Verified);
-        }
-
-        public class UpdateUserStatusOptions
-        {
-            public string UserName { get; set; }
-            public bool Enabled { get; set; }
-            public bool Verified { get; set; }
         }
     }
 }

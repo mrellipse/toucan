@@ -4,7 +4,7 @@
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="/"><span>T<span style="font-size: 0.8em;margin-left: 0.1em;margin: 0.1em;">o&#778;</span>ucan</span></a>
+    <a class="navbar-brand" href="/"><span>T<span style="font-size: 0.8em;margin-left: 0.1em;margin: 0.1em;">o&#778;</span>ucan</span><sup>{{activeCulture}}</sup></a>
     <div class="collapse navbar-collapse" id="navbarMenu">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <router-link class="nav-item" tag="li" to="/" exact>
@@ -17,22 +17,30 @@
           <a class="nav-link"><i class="fa fa-user-plus"></i> {{$t('navigation.signup')}}</a>
         </router-link>
         <router-link class="nav-item" tag="li" to="/profile" v-if="user.authenticated" exact>
-          <a class="nav-link" :title="user.displayName"><i class="fa fa-user"></i> {{$t('navigation.profile')}}</a>
+          <a class="nav-link" :title="user.displayName"><i class="fa fa-user" :title="user.displayName"></i> {{$t('navigation.profile')}}</a>
         </router-link>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/" v-if="isInAdminRole"><i class="fa fa-tachometer"></i> {{$t('navigation.admin')}}</a>
+        <li class="nav-item" v-if="isInAdminRole">
+          <a class="nav-link" href="/admin/"><i class="fa fa-tachometer"></i> {{$t('navigation.admin')}}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" v-if="user.authenticated" @click.prevent="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
+        <li class="nav-item" v-if="user.authenticated">
+          <a class="nav-link" href="#" @click.prevent="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle lang" id="localeChange" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-globe"></i></a>
+          <a class="nav-link dropdown-toggle lang" id="localeChange" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-lg fa-globe" :title="user.cultureName"></i>
+          </a>
           <div class="dropdown-menu" aria-labelledby="localeChange">
             <a v-for="locale in locales" class="dropdown-item" href="#" v-on:click.prevent="changeLocale(locale, $event);" :class="{'disabled': ($i18n.locale === locale)}">{{locale}}</a>
           </div>
         </li>
-        <li class="nav-item nav-search">
-          <a class="nav-link show-search-input" href="#" @click.prevent="showSearchInput()" :class="{'active': searchPageIsActive}">
+        <li class="nav-item nav-form-field">
+          <a class="nav-link" href="#" @click.prevent="toggleTimeZoneInput()">
+            <i class="fa fa-lg fa-clock-o" :title="user.timeZoneId"></i>
+          </a>
+          <autocomplete style="display:inline-block" v-if="showTimeZones" :ignoreCase="(false)" @input="onTimeZoneChange" :suggestions="timeZones" :keyValue="activeTimeZoneId"></autocomplete>
+        </li>
+        <li class="nav-item nav-form-field">
+          <a class="nav-link" href="#" @click.prevent="showSearchInput()" :class="{'active': searchPageIsActive}">
             <i class="fa fa-lg" :class="{ 'fa-search-minus': searchOptions.showInput, 'fa-search': !searchOptions.showInput }"></i>
           </a>
           <input class="form-control" type="text" v-if="searchOptions.showInput" v-model="searchOptions.searchText" @blur="submitSearch"

@@ -1,6 +1,7 @@
 import { Store, MutationTree } from 'vuex';
-import { IStatusBarData, IUser, IUserOptions } from '../model';
+import { IStatusBarData, IUser } from '../model';
 import { ICommonState } from './state';
+import { CookieHelper } from '../common';
 
 export const Mutations: MutationTree<ICommonState> = {
 
@@ -8,21 +9,36 @@ export const Mutations: MutationTree<ICommonState> = {
         state.isLoading = loading;
     },
 
-    updateLocale: (state: ICommonState, lang: string) => {
-        let user = Object.assign({}, state.userOptions);
-        user.locale = lang;
-        state.userOptions = user;
+    updateLocale: (state: ICommonState, cultureName: string) => {
+        let user = Object.assign({}, state.user);
+        user.cultureName = cultureName;
+        state.user = user;
     },
 
     updateUser: (state: ICommonState, user: IUser) => {
-        state.user = Object.assign({}, user);
-    },
 
-    updateUserOptions: (state: ICommonState, userOptions: IUserOptions) => {
-        state.userOptions = Object.assign({}, userOptions);
+        user = user || {
+            authenticated: false,
+            cultureName: CookieHelper.getCultureName(),
+            email: null,
+            name: null,
+            username: null,
+            roles: [],
+            verified: false,
+            exp: null,
+            timeZoneId: CookieHelper.getTimeZoneId()
+        };
+        
+        state.user = Object.assign({}, user);
     },
 
     updateStatusBar: (state: ICommonState, data: IStatusBarData) => {
         state.statusBar = Object.assign({}, data);
-    }
+    },
+
+    updateTimeZone: (state: ICommonState, timeZoneId: string) => {
+        let user = Object.assign({}, state.user);
+        user.timeZoneId = timeZoneId;
+        state.user = user;
+    },
 };

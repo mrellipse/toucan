@@ -34,12 +34,13 @@ namespace Toucan.Service
 
             User user = new User()
             {
-                CreatedOn = DateTime.Now,
-                Username = options.Username,
+                CultureName = options.CultureName,
                 Enabled = true,
+                Username = options.Username,
                 DisplayName = options.DisplayName,
+                TimeZoneId = options.TimeZoneId,
                 Verified = false
-            };
+            };               
 
             db.User.Add(user);
 
@@ -47,7 +48,6 @@ namespace Toucan.Service
 
             db.LocalProvider.Add(new UserProviderLocal()
             {
-                CreatedOn = DateTime.Now,
                 PasswordSalt = salt,
                 PasswordHash = crypto.CreateKey(salt, options.Password),
                 User = user,
@@ -73,7 +73,7 @@ namespace Toucan.Service
 
             if (verification != null && code == verification.Code)
             {
-                verification.RedeemedAt = DateTime.Now;
+                verification.RedeemedAt = DateTime.UtcNow;
                 verification.User.Verified = true;
 
                 await this.db.SaveChangesAsync();
@@ -109,7 +109,7 @@ namespace Toucan.Service
         private async Task<Verification> GetPendingVerificationForUser(IUser user)
         {
             return await (from v in this.db.Verification.Include(o => o.User).Include(o => o.User.Roles)
-                          where v.UserId == user.UserId && v.RedeemedAt == null && v.IssuedAt >= DateTime.Now.AddMinutes(-30)
+                          where v.UserId == user.UserId && v.RedeemedAt == null && v.IssuedAt >= DateTime.UtcNow.AddMinutes(-30)
                           select v).FirstOrDefaultAsync();
         }
     }

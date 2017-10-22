@@ -1,6 +1,7 @@
 {
     "data": {
-        "connectionString": ""
+        "connectionString": "",
+        "schemaName": ""
     },
     "kestrel": {
         "endpoints": {
@@ -11,7 +12,6 @@
         }
     },
     "server": {
-        "webroot": ".\\wwwroot",
         "areas": [
             "admin"
         ],
@@ -19,8 +19,15 @@
             "cookieName": "XSRF-COOKIE",
             "headerName": "X-XSRF-TOKEN",
             "clientName": "XSRF-TOKEN",
-            "requireSsl": true
-        }
+            "requireSsl": false
+        },
+        "defaultCulture": "en",
+        "defaultTimeZone": "AUS Eastern Standard Time",
+        "supportedCultures": [
+            "au",
+            "en"
+        ],
+        "webroot": "./wwwroot"
     },
     "service": {
         "authenticationProviders": [
@@ -38,11 +45,11 @@
             }
         ],
         "tokenProvider": {
-            "tokenExpiration": "5",
-            "tokenSecurityKey": "",
+            "tokenExpiration": "30",
+            "tokenSecurityKey": "heartyingsquawkingisrequiredofaparrotmateys",
             "tokenSecurityAlgorithm": "HS256",
-            "tokenIssuer": "",
-            "tokenAudience": ""
+            "tokenIssuer": "localhost",
+            "tokenAudience": "toucanapp"
         }
     },
     "Logging": {

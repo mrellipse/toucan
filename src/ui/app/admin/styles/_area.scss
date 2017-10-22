@@ -14,12 +14,16 @@ nav .nav-link.show-search-input:hover{
   color: $navbar-dark-hover-color
 }
 
-nav .nav-item.nav-search > a{
+nav .nav-item.nav-form-field > a{
   display:inline-block;
 }
 
-nav .nav-item.nav-search > input.form-control{
-  font-size: 0.75em;
+nav .nav-item.nav-form-field input.form-control {
+  font-size: 0.8em;
   display:inline-block;
   width: auto;
+}
+
+nav .nav-form-field select {
+  font-size: 0.8em;
 }

@@ -1,10 +1,11 @@
 import * as Vue from 'vue';
 import Component from 'vue-class-component';
+import { KeyValue } from '../../model';
 
 @Component({
     props: ['value', 'items'],
     template: `<select @change="onChange($event.target)">
-              <option v-for="(value, key) in items" :value="key">{{value}}</option>
+              <option v-for="pair in keyValues" :value="pair.key">{{pair.value}}</option>
           </select>`
 })
 export class DropDownSelect extends Vue {
@@ -28,14 +29,35 @@ export class DropDownSelect extends Vue {
     }
 
     onChange(target: HTMLSelectElement) {
-        
+
         if (typeof this.value === 'string') {
             this.$emit('input', target.value);
         } else {
             this.$emit('input', [target.value]);
-        }        
+        }
     }
 
-    items: {} = this.items;
+    get keyValues(): KeyValue[] {
+
+        if (Array.isArray(this.items)) {
+
+            if (typeof this.items[0] == 'object')
+                return this.items;
+            else
+                return this.items.map((value): KeyValue => {
+                    return { key: value, value };
+                });
+        }
+
+        if (typeof this.items == 'object') {
+            return Object.keys(this.items).map((key) => {
+                return { key, value: this.items[key] };
+            });
+        }
+
+        return [];
+    }
+
+    items: {} | any[] = this.items;
     value: string | string[] = this.value;
 }

@@ -13,15 +13,14 @@ export const CommonModule: Module<ICommonState, {}> = {
         isLoading: false,
         user: {
             authenticated: false,
+            cultureName: null,
             email: null,
             name: null,
             username: null,
             roles: [],
             verified: false,
-            exp: null
-        },
-        userOptions: {
-            locale: null
+            exp: null,
+            timeZoneId: null
         },
         statusBar: {
             messageTypeId: null,

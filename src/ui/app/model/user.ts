@@ -1,17 +1,16 @@
 export interface IUser {
     authenticated: boolean;
+    cultureName?: string;
     displayName?: string;
     email?: string;
-    enabled? : boolean;
+    enabled?: boolean;
     name?: string;
     roles: string[];
     username: string;
     verified?: boolean;
     exp?: Date;
-}
-
-export interface IUserOptions {
-    locale: string;
+    userId?: number;
+    timeZoneId?: string;
 }
 
 export const UserRoles = {

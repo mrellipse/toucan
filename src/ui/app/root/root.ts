@@ -2,24 +2,24 @@ import * as Vue from 'vue';
 import { default as Vuex } from 'vuex';
 import { default as VueRouter } from 'vue-router';
 import { default as Vuelidate } from 'vuelidate';
-import VueI18n from 'vue-i18n';
 import { GlobalConfig, TokenHelper, UseAxios } from '../common';
 import { Loader, StatusBar } from '../components';
 import { AreaFooter } from './footer/footer';
-import { i18n } from '../locales';
+import { InitI18n } from '../locales';
 import { IUser } from '../model';
 import { AreaNavigation } from './navigation/navigation';
 import * as Plugins from '../plugins';
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import './root.scss';
 import { RootStoreTypes } from './store';
+import { Store } from './store/store';  // global state management
 
 Vue.use(Vuex);
-import { Store } from './store/store';  // global state management
 Vue.use(Vuelidate); // validation
 Vue.use(VueRouter); // router
 
 const router = new VueRouter(RouterOptions);
+
 let options = {
   resolveUser: () => Store.state.common.user,
   forbiddenRouteName: RouteNames.forbidden,
@@ -34,59 +34,71 @@ Vue.use(Plugins.CommonsPlugin, {
   store: <never>Store,
 });
 
-Vue.use(Plugins.UserOptionsPlugin, {
-  key: GlobalConfig.uopt,
-  default: { locale: 'en' },
-  store: <never>Store,
-  watchLocaleChanges: true
-});
+let bootstrap = (cb: (vue: Vue) => void) => {
 
-UseAxios(router);
+  InitI18n().then((i18n) => {
+    Vue.use(Plugins.UserOptionsPlugin, {
+      i18n,
+      store: <never>Store,
+      watchLocaleChanges: true
+    });
 
-Vue.component('status-bar', StatusBar);
+    UseAxios(router);
 
-export const app = new Vue({
+    Vue.component('status-bar', StatusBar);
 
-  components: {
-    AreaFooter,
-    Loader,
-    Navigation: AreaNavigation
-  },
+    let app = new Vue({
 
-  i18n,
+      components: {
+        AreaFooter,
+        Loader,
+        Navigation: AreaNavigation
+      },
 
-  router,
+      i18n,
 
-  store: Store,
+      router,
 
-  created() {
+      store: Store,
 
-    // check if location hash has state/nonce value ...
-    let resumeExternalLogin = () => {
+      created() {
 
-      if (location.hash) {
+        // check if location hash has state/nonce value ...
+        let resumeExternalLogin = () => {
 
-        let hash = location.hash.substring(1);
+          if (location.hash) {
 
-        if (hash.indexOf("error") != -1 || hash.indexOf("state") != -1 || hash.indexOf("token") != -1) {
-          router.push({
-            name: RouteNames.login.home,
-            query: { hash: hash }
-          });
+            let hash = location.hash.substring(1);
+
+            if (hash.indexOf("error") != -1 || hash.indexOf("state") != -1 || hash.indexOf("token") != -1) {
+              router.push({
+                name: RouteNames.login.home,
+                query: { hash: hash }
+              });
+            }
+          }
         }
+
+        let token = TokenHelper.getAccessToken();
+
+        Store.dispatch(RootStoreTypes.common.updateUser, token)
+          .then(value => Store.dispatch(RootStoreTypes.common.loadingState, false))
+          .then(value => resumeExternalLogin());
+      },
+
+      computed: {
+
+        isLoading: () => Store.state.common.isLoading
+
       }
-    }
+    });
 
-    let token = TokenHelper.getAccessToken();
+    return cb(app);
+  });
+}
 
-    Store.dispatch(RootStoreTypes.common.updateUser, token)
-      .then(value => Store.dispatch(RootStoreTypes.common.loadingState, false))
-      .then(value => resumeExternalLogin());
-  },
+window['EntryPoint'] = {
 
-  computed: {
+  run: bootstrap
 
-    isLoading: () => Store.state.common.isLoading
-  }
-
-}).$mount('#app');
+}

@@ -2,24 +2,48 @@ nav .dropdown-toggle.lang::after {
   content: none;
 }
 
-nav .nav-link.show-search-input{
-  color: $navbar-dark-color;
-  padding: 0.5em 0.5em;
-  @media (max-width: 768px)  {
-    margin-left: -0.5em;
+// nav .nav-link.show-search-input{
+//   color: $navbar-dark-color;
+//   padding: 0.5em 0.5em;
+//   @media (max-width: 768px)  {
+//     margin-left: -0.5em;
+//   }
+// }
+
+// nav .nav-link.show-search-input:hover {
+//   color: $navbar-dark-hover-color
+// }
+
+nav .nav-item .nav-form-field
+{
+  margin-bottom: 0px;
+}
+
+nav .nav-item.nav-form-field{
+  > a.nav-link {
+    display: inline-block;
+    color: $navbar-dark-color;
+    @media (max-width: 768px)  {
+      // margin-left: -0.5em;
+    }
+  }
+
+  > a.nav-link:hover {
+    color: $navbar-dark-hover-color
   }
 }
 
-nav .nav-link.show-search-input:hover{
-  color: $navbar-dark-hover-color
-}
-
-nav .nav-item.nav-search > a{
-  display:inline-block;
-}
-
-nav .nav-item.nav-search > input.form-control{
-  font-size: 0.75em;
-  display:inline-block;
+nav .nav-item.nav-form-field input.form-control {
+  font-size: 0.8em;
+  display: inline-block;
   width: auto;
+}
+
+nav .nav-form-field select {
+  font-size: 0.8em;
+  display: inline-block;
+  width: auto;
+  @media (max-width: 768px)  {
+    max-width: 90%;
+  }
 }

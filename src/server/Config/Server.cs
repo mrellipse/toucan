@@ -9,7 +9,11 @@ namespace Toucan.Server
 
         public AntiForgeryConfig AntiForgery { get; set; }
         public string[] Areas { get; set; }
+        public string DefaultCulture { get; set; }
+        public string DefaultTimeZone { get; set; }
+        public string[] SupportedCultures { get; set; }
         public string Webroot { get; set; }
+
         public class AntiForgeryConfig
         {
             public string ClientName { get; set; }

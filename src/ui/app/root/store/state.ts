@@ -1,7 +1,7 @@
 import { ICommonState } from '../../store';
 
 export interface IRootState {
-    secureContent: string;
+    apiCallContent: string;
 }
 
 export interface IRootStoreState extends IRootState {

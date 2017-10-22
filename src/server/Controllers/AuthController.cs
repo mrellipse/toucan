@@ -8,6 +8,8 @@ using Toucan.Service;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
+using Toucan.Service.Security;
+using Toucan.Service.Model;
 
 namespace Toucan.Server.Controllers
 {
@@ -19,15 +21,17 @@ namespace Toucan.Server.Controllers
     {
         private readonly IAntiforgery antiForgeryService;
         private readonly ILocalAuthenticationService authService;
+        private readonly CultureService cultureService;
         private readonly Toucan.Server.Config serverConfig;
         private readonly ISignupService signupService;
         private readonly ITokenProviderService<Token> tokenService;
         private readonly IVerificationProvider verificationProvider;
 
-        public AuthController(IAntiforgery antiForgeryService, ILocalAuthenticationService authService, IOptions<Toucan.Server.Config> serverConfig, ISignupService signupService, IVerificationProvider verificationProvider, ITokenProviderService<Token> tokenService)
+        public AuthController(IAntiforgery antiForgeryService, ILocalAuthenticationService authService, CultureService cultureService, IOptions<Toucan.Server.Config> serverConfig, ISignupService signupService, IVerificationProvider verificationProvider, ITokenProviderService<Token> tokenService)
         {
             this.antiForgeryService = antiForgeryService;
             this.authService = authService;
+            this.cultureService = cultureService;
             this.serverConfig = serverConfig.Value;
             this.signupService = signupService;
             this.tokenService = tokenService;
@@ -70,7 +74,7 @@ namespace Toucan.Server.Controllers
 
         [HttpPost()]
         [IgnoreAntiforgeryToken(Order = 1000)]
-        public async Task<object> Signup([FromBody]Service.Model.LocalSignupOptions options)
+        public async Task<object> Signup([FromBody]LocalSignupOptions options)
         {
             if (!await this.authService.ValidateUser(options.Username))
                 throw new ServiceException(Constants.EmailAddressInUse);
@@ -95,6 +99,11 @@ namespace Toucan.Server.Controllers
                 throw new ServiceException(Constants.FailedToResolveUser);
 
             this.SetAntiforgeryCookies();
+
+            string cultureName = identity.Claims.FirstOrDefault(o => o.Type == CustomClaimTypes.CultureName).Value;
+            string timeZoneId = identity.Claims.FirstOrDefault(o => o.Type == CustomClaimTypes.TimeZoneId).Value;
+
+            this.cultureService.RefreshCookie(this.HttpContext, cultureName, timeZoneId);
 
             return await this.tokenService.IssueToken(identity, identity.Name);
         }

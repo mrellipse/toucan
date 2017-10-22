@@ -1,3 +1,4 @@
+export * from './autocomplete/autocomplete';
 export * from './drop-down/drop-down';
 export * from './forbidden/forbidden';
 export * from './loader/loader';

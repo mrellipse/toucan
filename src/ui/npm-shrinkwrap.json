@@ -1,7 +1,32 @@
 {
   "name": "toucan.ui",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "dependencies": {
+    "@types/node": {
+      "version": "7.0.43",
+      "from": "@types/node@>=7.0.23 <8.0.0",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-7.0.43.tgz"
+    },
+    "@types/source-map": {
+      "version": "0.5.1",
+      "from": "@types/source-map@*",
+      "resolved": "https://registry.npmjs.org/@types/source-map/-/source-map-0.5.1.tgz"
+    },
+    "@types/tapable": {
+      "version": "0.2.4",
+      "from": "@types/tapable@*",
+      "resolved": "https://registry.npmjs.org/@types/tapable/-/tapable-0.2.4.tgz"
+    },
+    "@types/uglify-js": {
+      "version": "2.6.29",
+      "from": "@types/uglify-js@*",
+      "resolved": "https://registry.npmjs.org/@types/uglify-js/-/uglify-js-2.6.29.tgz"
+    },
+    "@types/webpack": {
+      "version": "3.0.12",
+      "from": "@types/webpack@latest",
+      "resolved": "https://registry.npmjs.org/@types/webpack/-/webpack-3.0.12.tgz"
+    },
     "asynckit": {
       "version": "0.4.0",
       "from": "asynckit@>=0.4.0 <0.5.0",

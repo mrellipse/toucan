@@ -3,46 +3,62 @@ import * as i18n from 'vue-i18n';
 import Component from 'vue-class-component';
 import { Store } from 'vuex';
 import { State } from 'vuex-class';
-import { SupportedLocales } from '../../locales';
-import { IUser, UserRoles } from '../../model';
 import { Debounce, GlobalConfig } from '../../common';
-import { AuthenticationService } from '../../services';
+import { Autocomplete } from '../../components';
+import { SupportedLocales, SupportedTimeZones } from '../../locales';
+import { KeyValue, IUser, UserRoles } from '../../model';
+import { AuthenticationService, MapLocaleMessages, ProfileService, IUserCultureData } from '../../services';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { RouteNames } from '../routes';
 import { IRootStoreState, RootStoreTypes } from '../store';
 
+import './navigation.scss';
+
 @Component({
+  components: { autocomplete: Autocomplete },
   template: require('./navigation.html')
 })
 export class AreaNavigation extends Vue {
 
   private auth: AuthenticationService;
 
+  private profile: ProfileService;
+
   @State((state: IRootStoreState) => state.common.user) user: IUser;
 
   changeLocale(locale: string, e: Event) {
 
     if (locale !== this.$i18n.locale) {
-      this.$store.dispatch(RootStoreTypes.common.updateLocale, locale)
-        .then(() => {
-          this.$i18n.locale = locale;
-          this.$router.replace(this.$route.path);
-        })
-        .catch(e => this.$store.dispatch(RootStoreTypes.common.updateStatusBar, e));
+      // user-options-plugin mixin watches for locale changes, and will invoke logic to load resource strings
+      this.$store.dispatch(RootStoreTypes.common.updateLocale, locale);
     }
   }
 
   created() {
+
     this.auth = new AuthenticationService(this.$store);
+    this.profile = new ProfileService();
+  }
+
+  onTimeZoneChange(timeZoneId: string) {
+
+    if (timeZoneId && this.timeZones.find(o => o.key == timeZoneId) && timeZoneId != this.user.timeZoneId) {
+      this.$store.dispatch(RootStoreTypes.common.updateTimeZone, timeZoneId);
+      this.showTimeZones = false;
+    }
+  }
+
+  beforeMount() {
+
+    this.activeTimeZoneId = this.user.timeZoneId;
   }
 
   get isInAdminRole() {
 
     return this.user.authenticated && this.user.roles && this.auth.isInRole(this.user, UserRoles.Admin);
   }
-  
-  get locales() {
 
+  get locales() {
     return SupportedLocales;
   }
 
@@ -62,6 +78,12 @@ export class AreaNavigation extends Vue {
   showSearchInput() {
 
     this.searchOptions.showInput = !this.searchOptions.showInput;
+  }
+
+  toggleTimeZoneInput(display: boolean = null) {
+
+    display = display || !this.showTimeZones;
+    this.showTimeZones = display;
   }
 
   get searchPageIsActive(): boolean {
@@ -95,5 +117,28 @@ export class AreaNavigation extends Vue {
   searchOptions = {
     searchText: '',
     showInput: false
+  }
+
+  showTimeZones: boolean = false;
+
+  get activeCulture() {
+    return this.user.cultureName;
+  }
+
+  get activeTimeZoneId() {
+
+    return this.user.timeZoneId;
+  }
+
+  set activeTimeZoneId(value: string) {
+
+    if (value && this.timeZones.find(o => o.key == value) && value != this.user.timeZoneId) {
+      this.$store.dispatch(RootStoreTypes.common.updateTimeZone, value);
+      this.showTimeZones = false;
+    }
+  }
+
+  get timeZones() {
+    return SupportedTimeZones;
   }
 }

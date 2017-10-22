@@ -40,24 +40,35 @@ webpack -p --config webpack.config.js
 
 ### Configuration
 
-The first step in configuration is to decide what backing database to use, and then invoke scaffolding tools to generate initial data migrations.
+The first step in configuration is to decide what backing database to use. You can then ensure it is properly configured, and following that invoke scaffolding tools to generate initial data migrations.
 
 #### For PostgreSQL
 
-* update *<data:connectionString>* configuration key inside *./src/server/app.development.json*
-* update `ConfigureServices()` method in *./src/server/startup.cs*, and uncomment the code block starting `services.AddDbContext<NpgSqlContext>`
-* add the same connection string details to *./src/data/npgsql.json* (required for EF tooling)
-* scaffold migrations by switching to *./src/data* and running
+For proper localization support ensure the server defaults are set to create
+
+* new databases with a [character set](https://www.postgresql.org/docs/9.1/static/multibyte.html) that supports unicode strings (ie. UTF8)
+* client connections with default timezone set to 'UTC' for  (via postgresql.conf)
+
+Above steps may require a restart of the service/daemon. You can then proceed to
+
+* update *<data:connectionString>* configuration key inside src/server/app.development.json*
+* update `ConfigureServices()` method in src/server/startup.cs*, and uncomment the code block starting `services.AddDbContext<NpgSqlContext>`
+* update ./src/server/ContainerRegistry.cs, and uncomment the line stating`For<DbContextBase>().Use<NpgSqlContenxt>();`
+* add the same connection string details to src/data/npgsql.json* (required for EF tooling)
+* (optional) add a database schema name to src/data/npgsql.json*
+* scaffold migrations by switching to src/data* and running
 ```DOS
 dotnet ef --startup-project ../server migrations add Initial -c NpgSqlContext
 ```
 
 #### For SQL Server
 
-* update <data:connectionString>* configuration key inside *./src/server/app.development.json*
-* update the `ConfigureServices()` method in *./src/server/startup.cs*, and uncomment the code block starting `services.AddDbContext<MsSqlContext>`
-* add the same connection string details to *./src/data/mssql.json* (required for EF tooling)
-* create migrations by switching to *./src/data* and running
+* update <data:connectionString>* configuration key inside src/server/app.development.json*
+* update the `ConfigureServices()` method in src/server/startup.cs*, and uncomment the code block starting `services.AddDbContext<MsSqlContext>`
+* update ./src/server/ContainerRegistry.cs, and uncomment the line stating`For<DbContextBase>().Use<MsSqlContext>();`
+* add the same connection string details to src/data/mssql.json* (required for EF tooling)
+* (optional) add a database schema name to src/data/mssql.json*
+* create migrations by switching to src/data* and running
 ```DOS
 dotnet ef --startup-project ../server migrations add Initial -c MsSqlContext
 ```

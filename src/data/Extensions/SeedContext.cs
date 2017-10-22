@@ -92,7 +92,6 @@ namespace Toucan.Data
                 db.Role.Add(userRole);
                 db.SaveChanges();
             }
-
         }
 
         private static User EnsureAdmin(DbContextBase db, ICryptoService crypto)
@@ -103,9 +102,11 @@ namespace Toucan.Data
             {
                 adminUser = new User()
                 {
-                    Username = AdminEmail,
-                    Enabled = true,
+                    CultureName = "en",
                     DisplayName = "Webmaster",
+                    Enabled = true,
+                    TimeZoneId = Globalization.DefaultTimeZoneId,
+                    Username = AdminEmail,
                     Verified = true
                 };
 
@@ -141,7 +142,6 @@ namespace Toucan.Data
 
                 var userProvider = new UserProviderLocal
                 {
-                    CreatedOn = DateTime.Now,
                     ProviderId = ProviderTypes.Local,
                     PasswordSalt = salt,
                     PasswordHash = hash,

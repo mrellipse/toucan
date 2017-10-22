@@ -2,34 +2,48 @@
   <nav class="navbar navbar-dark bg-primary navbar-expand-md fixed-top">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu"
       aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="navbar-brand" href="/"><span>T<span style="font-size: 0.8em;margin-left: 0.1em;margin: 0.1em;">o&#778;</span>ucan</span></a>
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="/"><span>T<span style="font-size: 0.8em;margin-left: 0.1em;margin: 0.1em;">o&#778;</span>ucan</span><sup>{{activeCulture}}</sup></a>
     <div class="collapse navbar-collapse" id="navbarMenu">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <router-link class="nav-item" tag="li" to="/" exact>
-          <a class="nav-link"><i class="fa fa-tachometer"></i></a>
+          <a class="nav-link">
+            <i class="fa fa-tachometer"></i>
+          </a>
         </router-link>
         <router-link class="nav-item" tag="li" to="/users" exact>
-          <a class="nav-link"><i class="fa fa-users"></i> {{$t('admin.navigation.users')}}</a>
+          <a class="nav-link">
+            <i class="fa fa-users"></i> {{$t('admin.navigation.users')}}</a>
         </router-link>
         <router-link class="nav-item" tag="li" to="/reports" exact>
-          <a class="nav-link"><i class="fa fa-bar-chart"></i> {{$t('dict.reports')}}</a>
+          <a class="nav-link">
+            <i class="fa fa-bar-chart"></i> {{$t('dict.reports')}}</a>
         </router-link>
         <router-link class="nav-item" tag="li" to="/site" exact>
-          <a class="nav-link"><i class="fa fa-cogs"></i> {{$t('dict.settings')}}</a>
+          <a class="nav-link">
+            <i class="fa fa-cogs"></i> {{$t('dict.settings')}}</a>
         </router-link>
         <li class="nav-item">
-          <a class="nav-link" href="#" v-if="user.authenticated" @click.prevent="logout()"><i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
+          <a class="nav-link" href="#" v-if="user.authenticated" @click.prevent="logout()">
+            <i class="fa fa-sign-out"></i> {{$t('navigation.logout')}}</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle lang" id="localeChange" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-globe"></i></a>
+          <a class="nav-link dropdown-toggle lang" id="localeChange" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-lg fa-globe" :title="user.cultureName"></i>
+          </a>
           <div class="dropdown-menu" aria-labelledby="localeChange">
             <a v-for="locale in locales" class="dropdown-item" href="#" v-on:click.prevent="changeLocale(locale, $event);" :class="{'disabled': ($i18n.locale === locale)}">{{locale}}</a>
           </div>
         </li>
-        <li class="nav-item nav-search" v-if="user.authenticated">
-          <a class="nav-link show-search-input" href="#" @click.prevent="showSearchInput()" :class="{'active': searchPageIsActive}">
+        <li class="nav-item nav-form-field">
+          <a class="nav-link" href="#" @click.prevent="toggleTimeZoneInput()">
+            <i class="fa fa-lg fa-clock-o" :title="user.timeZoneId"></i>
+          </a>
+          <autocomplete style="display:inline-block" v-if="showTimeZones" :ignoreCase="(false)" @input="onTimeZoneChange" :suggestions="timeZones" :keyValue="activeTimeZoneId"></autocomplete>
+        </li>
+        <li class="nav-item nav-form-field">
+          <a class="nav-link" href="#" @click.prevent="showSearchInput()" :class="{'active': searchPageIsActive}">
             <i class="fa fa-lg" :class="{ 'fa-search-minus': searchOptions.showInput, 'fa-search': !searchOptions.showInput }"></i>
           </a>
           <input class="form-control" type="text" v-if="searchOptions.showInput" v-model="searchOptions.searchText" @blur="submitSearch"

@@ -11,20 +11,22 @@
             <p>
               <input name="email" type="text" :placeholder="$t('login.placeholder.email')" v-model.trim="username" :class="{'form-control': true}">
               <span v-show="$v.username.$error">
-              <span class="alert-danger" v-if="!$v.username.required">{{$t('validation.required')}}</span>
-              <span class="alert-danger" v-if="!$v.username.email">{{$t('validation.email')}}</span>
+                <span class="alert-danger" v-if="!$v.username.required">{{$t('validation.required')}}</span>
+                <span class="alert-danger" v-if="!$v.username.email">{{$t('validation.email')}}</span>
               </span>
             </p>
           </div>
           <div class="form-group">
             <input type="password" class="form-control" :placeholder="$t('login.placeholder.password')" v-model.trim="password">
             <span v-show="$v.password.$error">
-            <span class="alert-danger" v-if="!$v.password.required">{{$t('validation.required')}}</span>
-            <span class="alert-danger" v-if="!$v.password.minLength">{{$t('validation.minLength', 4)}}</span>
+              <span class="alert-danger" v-if="!$v.password.required">{{$t('validation.required')}}</span>
+              <span class="alert-danger" v-if="!$v.password.minLength">{{$t('validation.minLength', 4)}}</span>
             </span>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" @click.prevent="login()"><i class="fa fa-lg fa-desktop" aria-hidden="true"></i></button>
+            <button class="btn btn-primary" @click.prevent="login()">
+              <i class="fa fa-lg fa-desktop" aria-hidden="true"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -34,7 +36,9 @@
         <div class="card-body">
           <h3 class="card-title">{{$t('login.provider.external')}}</h3>
           <div v-for="(provider,index) in externalProviders" class="form-group">
-            <button class="btn btn-primary" @click.prevent="loginExternal(provider.providerId)"><i class="fa fa-lg" v-bind:class="[externalProviders[index].iconClass]" aria-hidden="true"></i></button>
+            <button class="btn btn-primary" @click.prevent="loginExternal(provider.providerId)">
+              <i class="fa fa-lg" v-bind:class="[externalProviders[index].iconClass]" aria-hidden="true"></i>
+            </button>
             <span class="external-provider-text">{{$t(provider.localeKeys.name)}}</span>
           </div>
         </div>

@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DebugType>portable</DebugType>
@@ -7,17 +6,15 @@
     <PackageId>service</PackageId>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\common\common.csproj" />
     <ProjectReference Include="..\contract\contract.csproj" />
     <ProjectReference Include="..\data\data.csproj" />
   </ItemGroup>
-
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.3.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
   </ItemGroup>
-
 </Project>

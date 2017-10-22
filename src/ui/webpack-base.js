@@ -22,43 +22,13 @@ module.exports = (outputPath, srcPath, publicPath) => {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
             minChunks: 2
-        }),
-
-        new webpackHtml({
-            chunksSortMode: 'dependency',
-            excludeChunks: ['admin'],
-            favicon: path.resolve(srcPath, './root/favicon.ico'),
-            filename: 'index.html',
-            inject: 'body',
-            template: path.resolve(srcPath, './root/root.html')
-        }),
-
-        new webpackHtml({
-            chunksSortMode: 'dependency',
-            excludeChunks: ['app'],
-            favicon: path.resolve(srcPath, './admin/favicon.ico'),
-            filename: 'admin.html',
-            inject: 'body',
-            template: path.resolve(srcPath, './admin/admin.html')
         })
+        
     ];
 
     const config = {
         devtool: '#eval-source-map',
-        entry: {
-            vendor: [
-                path.resolve(__dirname, './node_modules/popper.js/dist/popper.js'),
-                path.resolve(__dirname, './node_modules/jquery/dist/jquery.js'),
-                path.resolve(__dirname, './node_modules/bootstrap/dist/js/bootstrap.js'),
-                path.resolve(__dirname, './node_modules/jwt-decode/lib/index.js')
-            ],
-            admin: [
-                path.resolve(srcPath, './admin/admin.ts')
-            ],
-            app: [
-                path.resolve(srcPath, './root/root.ts')
-            ]
-        },
+        entry: {},
         module: {
             rules: [
                 {

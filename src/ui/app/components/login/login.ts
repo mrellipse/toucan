@@ -5,7 +5,7 @@ import Component from 'vue-class-component';
 import * as i18n from 'vue-i18n';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import { ICommonOptions } from '../../plugins';
-import { PayloadMessageTypes, TokenHelper } from '../../common';
+import { CookieHelper, PayloadMessageTypes, TokenHelper } from '../../common';
 import { AuthenticationService, GoogleClient, MicrosoftClient } from '../../services';
 import { ICredential, ILoginProvider, ILoginClient, IPayload, IPayloadMessage, IUser } from '../../model';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';

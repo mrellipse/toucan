@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Toucan.Contract;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace Toucan.Server
 {

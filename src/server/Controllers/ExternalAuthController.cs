@@ -49,7 +49,7 @@ namespace Toucan.Server.Controllers
 
         [HttpPost()]
         [IgnoreAntiforgeryToken(Order = 1000)]
-        public async Task<object> RedeemToken([FromBody]Service.Model.ExternalLogin options)
+        public async Task<object> RedeemToken([FromBody]ExternalLogin options)
         {
             // check for server-generated nonce, and make sure it was issued recently
             if (!IssuedNonces.Any(o => o.Hash == options.Nonce))

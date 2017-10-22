@@ -1,0 +1,16 @@
+@import "../../styles/global";
+$sm-map: map-get($grid-breakpoints, 'sm');
+
+main {
+    img.site-logo{
+        max-width: 4rem;
+        @media(max-width:$sm-map) and (orientation:portrait) {
+            float:right;
+            max-width: 5rem;
+        }
+    }
+}
+
+main.col.home {
+    margin-top : 0.75em;
+}

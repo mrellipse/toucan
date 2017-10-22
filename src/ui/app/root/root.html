@@ -9,11 +9,26 @@
 </head>
 
 <body>
-    <div id="app" class="container-fluid">
-        <navigation></navigation>
+    <!-- pre-load animation or text element -->
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+        <div class="loader-status" style="display:none">
+            Loading
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+    
+    <!-- application bootstrapper code that triggers display of loader, then mounts application  -->
+    <script type="text/javascript" src="/mount.js"></script>
+
+    <!-- mounted element -->
+    <div id="app" style="display:none">
         <loader v-show="isLoading"></loader>
-        <router-view></router-view>
-        <area-footer></area-footer>
+        <div class="container-fluid">
+            <navigation></navigation>
+            <router-view></router-view>
+            <area-footer></area-footer>
+        </div>
     </div>
 </body>
 

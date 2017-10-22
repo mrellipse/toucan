@@ -1,12 +1,13 @@
 import * as Vue from 'vue';
 import { Store } from 'vuex';
+import { State } from 'vuex-class';
 import Component from 'vue-class-component';
 import { IVuelidate, ValidationRuleset, Vuelidate, validationMixin } from 'vuelidate';
 import { ICommonOptions } from '../../plugins';
 import { AuthenticationService } from '../../services';
 import { ISignupOptions, IUser } from '../../model';
 import { IRouterMixinData } from '../../mixins/mixin-router';
-import { StoreTypes } from '../../store';
+import { ICommonState, StoreTypes } from '../../store';
 import { validations, TSignup } from './signup-validate';
 
 @Component({
@@ -18,6 +19,8 @@ import { validations, TSignup } from './signup-validate';
 export class Signup extends Vue {
 
     private auth: AuthenticationService;
+
+    @State((state: {common:ICommonState}) => state.common.user) user: IUser;
 
     constructor() {
         super();
@@ -46,6 +49,9 @@ export class Signup extends Vue {
             let onStoreDispatch = (o) => {
                 this.$router.push({ name: 'home' });
             };
+
+            signup.cultureName = this.user.cultureName;
+            signup.timeZoneId = this.user.timeZoneId;
 
             this.auth.signup(signup)
                 .then(onSignup)

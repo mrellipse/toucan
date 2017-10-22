@@ -4,5 +4,6 @@ export const StoreTypes = {
     updateLocale: 'updateLocale',
     updateUser: 'updateUser',
     updateUserOptions: 'updateUserOptions',
-    updateStatusBar: 'updateStatusBar'
+    updateStatusBar: 'updateStatusBar',
+    updateTimeZone: 'updateTimeZone',
 };

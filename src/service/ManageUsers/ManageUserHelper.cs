@@ -17,6 +17,22 @@ namespace Toucan.Service.Helpers
         {
             this.user = user;
         }
+        
+        public ManageUserHelper UpdateCulture(IUserExtended user){
+
+            this.user.CultureName = user.CultureName;
+            this.user.TimeZoneId = user.TimeZoneId;
+
+            return this;
+        }
+
+        public ManageUserHelper UpdateCulture(string cultureName, string timeZoneId){
+
+            this.user.CultureName = cultureName;
+            this.user.TimeZoneId = timeZoneId;
+
+            return this;
+        }
 
         public ManageUserHelper UpdateProfile(IUserExtended user)
         {

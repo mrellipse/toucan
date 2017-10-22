@@ -7,5 +7,6 @@ namespace Toucan.Data
         }
         public const string DbConnectionKey = @"data:connectionString";
         public string ConnectionString { get; set; }
+        public string SchemaName { get; set; }
     }
 }

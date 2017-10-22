@@ -1,6 +1,6 @@
 import { Store, ActionContext, ActionTree } from 'vuex';
 import { PayloadMessageTypes, TokenHelper } from '../common';
-import { IPayloadMessage, IStatusBarData, IUser, IUserOptions } from '../model';
+import { IPayloadMessage, IStatusBarData, IUser } from '../model';
 import { ICommonState } from './state';
 import { StoreTypes } from './types';
 
@@ -19,9 +19,9 @@ export const Actions: ActionTree<ICommonState, any> = {
         injectee.commit(StoreTypes.loadingState, loading);
     },
 
-    updateLocale: (injectee: ActionContext<ICommonState, any>, lang: string) => {
+    updateLocale: (injectee: ActionContext<ICommonState, any>, cultureName: string) => {
 
-        injectee.commit(StoreTypes.updateLocale, lang);
+        injectee.commit(StoreTypes.updateLocale, cultureName);
     },
 
     updateUser: (injectee: ActionContext<ICommonState, any>, userData: string | IUser) => {
@@ -34,11 +34,6 @@ export const Actions: ActionTree<ICommonState, any> = {
             payload = userData
 
         injectee.commit(StoreTypes.updateUser, payload);
-    },
-
-    updateUserOptions: (injectee: ActionContext<ICommonState, any>, userOptions: IUserOptions) => {
-
-        injectee.commit(StoreTypes.updateUserOptions, userOptions);
     },
 
     updateStatusBar: (injectee: ActionContext<ICommonState, any>, data: Error | IStatusBarData | IPayloadMessage) => {
@@ -82,5 +77,11 @@ export const Actions: ActionTree<ICommonState, any> = {
 
         if (payload)
             injectee.commit(StoreTypes.updateStatusBar, payload);
+    },
+
+    updateTimeZone: (injectee: ActionContext<ICommonState, any>, timeZoneId: string) => {
+
+        injectee.commit(StoreTypes.updateTimeZone, timeZoneId);
+        
     }
 };

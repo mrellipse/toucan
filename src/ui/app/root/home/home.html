@@ -1,17 +1,9 @@
-<main class="col">
-  <div v-if="!authenticated">
-    <h1 class="mb-2"><img src="~assets/images/tukan.png" style="max-width: 4rem;margin-right:0.3em;" />{{$t('home.title.begin')}} {{$t('home.title.end')}}</h1>
-    <div v-html="$t('home.body[0]')"></div>
-    <div v-html="$t('home.body[1]')"></div>
-    <div v-html="$t('home.body[2]')"></div>
-  </div>
-  <div v-if="authenticated && init">
-    <h1 class="mb-2"><img src="~assets/images/tukan.png" style="max-width: 4rem;margin-right:0.3em;" /> {{$t('dict.hello')}} {{displayName}}</h1>
-    <p v-if="secureContent">
-      {{secureContent}}
-    </p>
-    <p v-if="!secureContent">
-      {{$t('dict.errors.unanticipated')}}
-    </p>
+<main class="col home">
+   <div v-if="init">
+    <h1 class="mb-2"><img :alt="siteLogoAlt" class="site-logo" src="~assets/images/tukan.png"/>
+      <span v-if="authenticated">{{$t('dict.hello')}} {{displayName}}</span>
+      <span v-if="!authenticated">{{$t('dict.hello')}} {{$t('dict.stranger')}}</span>
+    </h1>
+    <p v-html="apiCallContent"></p>
   </div>
 </main>
