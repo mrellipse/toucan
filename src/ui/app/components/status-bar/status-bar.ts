@@ -1,4 +1,4 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import { Store } from 'vuex';
 import { State } from 'vuex-class';
 import Component from 'vue-class-component';

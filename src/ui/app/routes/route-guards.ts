@@ -1,4 +1,4 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import { NavigationGuard, RawLocation, Route, RouteRecord } from 'vue-router';
 import { AuthenticationService, IClaimsHelper } from '../services';
 import { TokenHelper } from '../common';

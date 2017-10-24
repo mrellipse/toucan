@@ -1,7 +1,7 @@
-import * as Vue from 'vue';
-import { default as Vuex } from 'vuex';
-import { default as VueRouter } from 'vue-router';
-import { default as Vuelidate } from 'vuelidate';
+import Vue from 'vue';
+import Vuex from 'vuex';
+import VueRouter from 'vue-router';
+import Vuelidate from 'vuelidate';
 import { GlobalConfig, TokenHelper, UseAxios } from '../common';
 import { Loader, StatusBar } from '../components';
 import { AreaFooter } from './footer/footer';

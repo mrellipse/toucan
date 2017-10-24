@@ -106,11 +106,11 @@ namespace Toucan.Server
             services.ConfigureAuthentication(tokenProvider, new string[] { "admin" });
             services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
 
-            services.AddDbContext<NpgSqlContext>(options =>
-            {
-                string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-                options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
-            });
+            // services.AddDbContext<NpgSqlContext>(options =>
+            // {
+            //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
+            //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            // });
 
             // services.AddDbContext<MsSqlContext>(options =>
             // {

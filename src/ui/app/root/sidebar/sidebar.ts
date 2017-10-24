@@ -1,13 +1,11 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { RouteNames } from '../routes/route-names'
 import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { ProfileSidebar } from '../profile/profile-sidebar';
 
 @Component({
-  components: {
-    profile: ProfileSidebar
-  },
+  components: { ProfileSidebar },
   template: `<component v-bind:is="currentSidebar"></component>`
 })
 export class AreaSidebar extends Vue {
@@ -18,7 +16,6 @@ export class AreaSidebar extends Vue {
     let sidebar: string = Object.keys(this.$options.components).find((value: string) => value === routeName);
 
     return sidebar;
-
   }
 
   $route: IRouteMixinData;

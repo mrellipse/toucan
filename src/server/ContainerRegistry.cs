@@ -21,7 +21,7 @@ namespace Toucan.Server
             };
 
             For<IConfiguration>().Use(WebApp.Configuration).Singleton();
-            For<DbContextBase>().Use<NpgSqlContext>();
+            //For<DbContextBase>().Use<NpgSqlContext>();
             //For<DbContextBase>().Use<MsSqlContext>();
 
             For<HttpServiceContextFactory>();

@@ -1,4 +1,4 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import * as i18n from 'vue-i18n';
 import Component from 'vue-class-component';
 import { Store } from 'vuex';

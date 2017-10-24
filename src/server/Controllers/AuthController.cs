@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Toucan.Contract;
-using Toucan.Service;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
+using Toucan.Contract;
+using Toucan.Service;
 using Toucan.Service.Security;
 using Toucan.Service.Model;
 

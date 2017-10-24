@@ -1,4 +1,4 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import { default as Vuex } from 'vuex';
 import { Mutations } from './mutations';
 import { Actions } from './actions';

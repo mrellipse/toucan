@@ -1,7 +1,7 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import { Store } from 'vuex';
 import { State } from 'vuex-class';
-import Component from 'vue-class-component';
+import { default as Component } from 'vue-class-component';
 import { IVuelidate, ValidationRuleset, Vuelidate, validationMixin } from 'vuelidate';
 import { ICommonOptions } from '../../plugins';
 import { AuthenticationService } from '../../services';

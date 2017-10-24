@@ -23,10 +23,6 @@
         },
         "defaultCulture": "en",
         "defaultTimeZone": "AUS Eastern Standard Time",
-        "supportedCultures": [
-            "au",
-            "en"
-        ],
         "webroot": "./wwwroot"
     },
     "service": {
@@ -46,7 +42,7 @@
         ],
         "tokenProvider": {
             "tokenExpiration": "30",
-            "tokenSecurityKey": "heartyingsquawkingisrequiredofaparrotmateys",
+            "tokenSecurityKey": "startrekkingacrosstheuniverseonthestarshipenterpriseundercaptainkirk",
             "tokenSecurityAlgorithm": "HS256",
             "tokenIssuer": "localhost",
             "tokenAudience": "toucanapp"

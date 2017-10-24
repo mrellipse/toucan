@@ -1,4 +1,4 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import { CookieHelper } from '../common';
 import { KeyValue } from '../model';

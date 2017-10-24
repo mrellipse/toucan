@@ -1,4 +1,4 @@
-import * as Vue from 'vue';
+import Vue from 'vue';
 import { Store } from 'vuex';
 import Component from 'vue-class-component';
 import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';

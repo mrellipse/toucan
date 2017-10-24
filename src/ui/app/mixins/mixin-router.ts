@@ -1,6 +1,5 @@
-import * as Vue from 'vue';
-import VueRouter = require('vue-router');
-import { Route } from 'vue-router';
+import Vue from 'vue';
+import { Route, default as VueRouter } from 'vue-router';
 
 export type IRouterMixinData = VueRouter;
 

@@ -1,16 +1,15 @@
 declare module "vuelidate" {
 
-    import _Vue = require("vue");
+    import { default as _Vue}  from 'vue';
 
     /**
      * @module augmentation to ComponentOptions defined by Vue.js
     */
     module "vue/types/options" {
-
         interface ComponentOptions<V extends _Vue> {
-            validations?: ValidationRuleset<{}>;
+          validations?: ValidationRuleset<{}>;
         }
-    }
+      }
 
     module "vue/types/vue" {
         interface Vue {

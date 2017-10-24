@@ -110,7 +110,7 @@ module.exports = (outputPath, srcPath, publicPath) => {
                 'assets': path.resolve(srcPath, './assets'),
                 'components': path.resolve(srcPath, './components'),
                 'state': path.resolve(srcPath, './state'),
-                'vue$': path.resolve(__dirname, './node_modules/vue/dist/vue.js')
+                'vue$': path.resolve(__dirname, './node_modules/vue/dist/vue.esm.js')
             },
             extensions: ['.js', '.ts', '.html'],
             enforceExtension: false,

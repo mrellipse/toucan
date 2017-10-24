@@ -1,5 +1,5 @@
 import { default as Axios, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import VueRouter = require('vue-router');
+import { default as VueRouter } from 'vue-router';
 import { GlobalConfig, TokenHelper } from '../common';
 
 let initialized: boolean = false;

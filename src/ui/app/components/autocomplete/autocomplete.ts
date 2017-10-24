@@ -1,6 +1,6 @@
 
 // attrib : https://github.com/fareez-ahamed/autocomplete-vuejs2/blob/master/src/components/Autocomplete.vue
-import * as Vue from 'vue';
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import { KeyValue } from '../../model'
 

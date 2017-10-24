@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,18 +14,17 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
-using Toucan.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using Toucan.Data;
-using Toucan.Server.Core;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
-using Toucan.Server.Formatters;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Toucan.Data;
+using Toucan.Server.Core;
+using Toucan.Server.Formatters;
 using Toucan.Server.Model;
+using Toucan.Service;
 
 namespace Toucan.Server
 {
