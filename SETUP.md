@@ -35,7 +35,7 @@ npm install
 npm install webpack -g
 npm install typings -g
 typings install
-webpack -p --config webpack.config.js
+webpack --config webpack.config.js
 ```
 
 ### Configuration
@@ -97,6 +97,8 @@ To remove a provider from appearing the UI, edit `externalProviders` class prope
 Run the project by switching to ./src/server and running
 
 ```DOS
-dotnet run -p server.csproj -c Development
+set ASPNETCORE_ENVIRONMENT=Development
+set ASPNETCORE_URLS=http://localhost:5000
+dotnet run -p server.csproj
 ```
 You should now be able to load the site at [http://localhost:5000/](http://localhost:5000/) 

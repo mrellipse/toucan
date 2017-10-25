@@ -2,19 +2,22 @@
 
 This is an opinionated multi-project solution template, combining .NET Core and Vue.js.
 
-The main objective is to provide scaffolding for an SPA web application, that incorporates SOLID design principles.
+The main objective is to provide scaffolding for a responsive SPA web application, that incorporates SOLID design principles.
+
+See [releases](https://github.com/mrellipse/toucan/releases) for a history of recent changes
 
 ## Features
-* localization
-* validation
 * global application state/event bus
+* form validation
+* token-based authentication for local & external providers
 * multiple optimized entry points
-* token-based authentication
-* support for local or external authentication providers
-* HMR support for development
+* hot module reloading for development
+* comprehensive [localization](src/I18N.md) (new)
+* loading screen (new)
 
 ## Preview
-![Screenshot](screen.png)
+
+![mobile](mobile.jpg)
 
 ## Getting Started
 
@@ -42,6 +45,8 @@ or using [setup](SETUP.md) instructions
 ## Architecture
 
 Be sure to check out [README](src/server/README.md) for details on MVC middleware and filters being used in the pipeline.
+
+An outline on how localization works can be found in [I18N](src/I18N.md)
 
 ### .NET Core
 See the readme files for each project
@@ -115,9 +120,6 @@ For .NET Core, a sample XUnit test is provided as a starting point */test/* dire
 * [TypeScript](https://www.TypeScriptlang.org/) - TypeScript is a typed superset of Javascript that compiles to plain JavaScript
 * [Vue.js](https://vuejs.org/v2/guide/) - Simple yet powerful library for building modern web interfaces
 * [Bootstrap](http://getbootstrap.com/) - Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Built With](vendors.png)
-
 * [Axios](https://github.com/mzabriskie/axios) - Promise based HTTP client for the browser and node.js
 * [StructureMap](http://structuremap.github.io/) - IOC/DI container
 
