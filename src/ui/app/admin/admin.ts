@@ -12,11 +12,11 @@ import * as Plugins from '../plugins';
 import { RouteGuards, RouteNames, RouterOptions } from './routes';
 import './admin.scss';
 import { AdminStoreTypes } from './store';
-import { Store } from './store/store';  // global state management
+import { Store } from './store/store';
 
 Vue.use(Vuex);
-Vue.use(Vuelidate); // validation
-Vue.use(VueRouter); // router
+Vue.use(Vuelidate);
+Vue.use(VueRouter);
 
 const router = new VueRouter(RouterOptions);
 
@@ -34,7 +34,7 @@ Vue.use(Plugins.CommonsPlugin, {
   store: <never>Store,
 });
 
-let bootstrap = (cb: (vue: Vue) => void) => {
+let loadApp = (cb: (vue: Vue) => void) => {
 
   InitI18n().then((i18n) => {
     Vue.use(Plugins.UserOptionsPlugin, {
@@ -97,8 +97,6 @@ let bootstrap = (cb: (vue: Vue) => void) => {
   });
 }
 
-window['EntryPoint'] = {
-
-  run: bootstrap
-
-}
+(() => {
+  window['bootstrap'].loadApp = loadApp;
+})();

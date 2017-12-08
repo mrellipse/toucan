@@ -32,7 +32,6 @@
             "command": "webpack",
             "isShellCommand": true,
             "args": [
-                "-p",
                 "--config",
                 "webpack.config.js"
             ],

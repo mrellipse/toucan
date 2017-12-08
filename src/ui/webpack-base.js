@@ -6,25 +6,7 @@ const webpackHtml = require('html-webpack-plugin');
 
 module.exports = (outputPath, srcPath, publicPath) => {
 
-    const plugins = [
-
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            Popper: ['popper.js', 'default']
-        }),
-
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            minChunks: 2
-        }),
-
-        new webpack.LoaderOptionsPlugin({
-            options: { postcss: [autoprefixer] }
-        })
-
-    ];
+    const plugins = [];
 
     const config = {
         devtool: '#eval-source-map',
@@ -32,8 +14,24 @@ module.exports = (outputPath, srcPath, publicPath) => {
         module: {
             rules: [
                 {
+                    test: /\.ts$/,
+                    loader: 'lodash-ts-imports-loader',
+                    exclude: /node_modules/,
+                    enforce: "pre"
+                },
+                {
+                    test: /\.ejs$/,
+                    use: {
+                        loader: 'ejs-loader'
+                    }
+                },
+                {
                     test: /\.html$/,
                     use: { loader: 'vue-html-loader' }
+                },
+                {
+                    test: /\.css$/,
+                    use: ['css-loader']
                 },
                 {
                     test: /\.(png|jpg|jpeg|gif)$/,
@@ -47,13 +45,14 @@ module.exports = (outputPath, srcPath, publicPath) => {
                     }
                 },
                 {
-                    test: /\.scss$/,
-                    exclude: /node_modules/,
-                    use: [
-                        { loader: "style-loader" },
-                        { loader: "css-loader" },
-                        { loader: "sass-loader" }
-                    ]
+                    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                    use: {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000,
+                            mimetype: 'image/svg+xml'
+                        }
+                    }
                 },
                 {
                     test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
@@ -62,16 +61,6 @@ module.exports = (outputPath, srcPath, publicPath) => {
                         options: {
                             name: '[name].[ext]',
                             publicPath: '/assets/fonts'
-                        }
-                    }
-                },
-                {
-                    test: /\.(woff|woff2)$/,
-                    use: {
-                        loader: 'url-loader',
-                        options: {
-                            prefix: 'font',
-                            limit: 10000
                         }
                     }
                 },
@@ -87,12 +76,12 @@ module.exports = (outputPath, srcPath, publicPath) => {
                     }
                 },
                 {
-                    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                    test: /\.(woff|woff2)$/,
                     use: {
                         loader: 'url-loader',
                         options: {
-                            limit: 10000,
-                            mimetype: 'image/svg+xml'
+                            prefix: 'font',
+                            limit: 50000
                         }
                     }
                 }

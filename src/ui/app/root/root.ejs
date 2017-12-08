@@ -9,17 +9,20 @@
 </head>
 
 <body>
+    <link href="/mount.css" rel="stylesheet">
     <!-- pre-load animation or text element -->
     <div class="loader-wrapper">
+        <div>
             <div class="loader"></div>
             <div class="loader-status" style="display:none">
-                Loading
+                <div class="loader-message">Downloading</div>
                 <div class="loader-progress"></div>
             </div>
         </div>
-        
-        <!-- application bootstrapper code that triggers display of loader, then mounts application  -->
-        <script type="text/javascript" src="/mount.js"></script>
+    </div>
+
+    <!-- application bootstrapper code that triggers display of loader, then mounts application  -->
+    <script type="text/javascript" src="/mount.js"></script>
 
     <!-- mounted element -->
     <div id="app" style="display:none">
@@ -31,6 +34,19 @@
         </div>
     </div>
 
+    <script>
+        var assets = "<%=htmlWebpackPlugin.files.css%>,<%=htmlWebpackPlugin.files.js%>";
+        var onContentLoaded = function () {
+            var handle = window.setInterval(function () {
+                if (window.bootstrap !== undefined) {
+                    window.clearInterval(handle);
+                    assets = assets.split(',');
+                    window.bootstrap.loadAssets(assets);
+                }
+            }, 200)
+        }
+        document.addEventListener('DOMContentLoaded', onContentLoaded);
+    </script>
 </body>
 
 </html>

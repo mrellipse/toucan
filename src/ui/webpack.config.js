@@ -2,8 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const autoprefixer = require('autoprefixer');
-const webpackHtml = require('html-webpack-plugin');
 const webpackBase = require('./webpack-base');
+const webpackHtml = require('html-webpack-plugin');
+const webpackExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const outputPath = path.join(__dirname, '../server/wwwroot');
 const srcPath = path.resolve(__dirname, './app');
@@ -29,13 +30,29 @@ function createMount() {
     // remove source maps
     delete config.devtool;
 
+    // emit css to an external file
+    const extractTextRule = {
+        exclude: /node_modules/,
+        test: /mount\.scss$/,
+        use: webpackExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: ['css-loader', 'sass-loader']
+        })
+    };
+
+    config.module.rules.splice(1, 0, extractTextRule);
+
     // clear plugins
     config.plugins.length = 0;
+
+    config.plugins.push(
+        new webpackExtractTextPlugin('mount.css')
+    );
 
     // add entry points to be built
     config.entry = {
         mount: [
-            path.resolve(srcPath, 'mount.ts')
+            path.resolve(srcPath, './mount/mount.ts')
         ]
     };
 
@@ -47,13 +64,29 @@ function createAreas() {
     // set publicPath to '/dist/' so that .net core webpack middleware can proxy incoming requests to node.js middleware
     const config = webpackBase(outputPath, srcPath, '/dist/');
 
+    // emit all css to an external file
+    const extractTextRule = {
+        exclude: /node_modules/,
+        test: /\.scss$/,
+        use: webpackExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: ['css-loader', 'sass-loader']
+        })
+    };
+
+    config.module.rules.splice(0, 0, extractTextRule);
+
+    config.plugins.push(
+        new webpackExtractTextPlugin('[name].css')
+    );
+
     config.plugins.push(new webpackHtml({
         chunksSortMode: 'dependency',
         excludeChunks: ['admin'],
         favicon: path.resolve(srcPath, './root/favicon.ico'),
         filename: 'index.html',
-        inject: 'body',
-        template: path.resolve(srcPath, './root/root.html')
+        inject: false,
+        template: path.resolve(srcPath, './root/root.ejs')
     }));
 
     config.plugins.push(new webpackHtml({
@@ -61,17 +94,23 @@ function createAreas() {
         excludeChunks: ['app'],
         favicon: path.resolve(srcPath, './admin/favicon.ico'),
         filename: 'admin.html',
-        inject: 'body',
-        template: path.resolve(srcPath, './admin/admin.html')
+        inject: false,
+        template: path.resolve(srcPath, './admin/admin.ejs')
+    }));
+
+    config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor'
+    }));
+
+    config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+        name: 'common',
+        minChunks: 2
     }));
 
     // add entry points to be built
     config.entry = {
         vendor: [
-            path.resolve(__dirname, './node_modules/popper.js/dist/popper.min.js'),
-            path.resolve(__dirname, './node_modules/jquery/dist/jquery.js'),
-            path.resolve(__dirname, './node_modules/bootstrap/dist/js/bootstrap.js'),
-            path.resolve(__dirname, './node_modules/jwt-decode/lib/index.js')
+            'vue', 'vue-router', 'vuex', 'vuelidate', 'vue-i18n'
         ],
         admin: [
             path.resolve(srcPath, './admin/admin.ts')
@@ -86,10 +125,15 @@ function createAreas() {
 
 function extendConfig(config) {
 
+    const providePlugin =  new webpack.ProvidePlugin({
+        Popper: ['popper.js', 'default']
+    })
+
     const definePlugin = new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"development"'
     });
 
+    config.plugins.splice(0, 0, providePlugin);
     config.plugins.splice(0, 0, definePlugin);
 
     const tsLoader = {
