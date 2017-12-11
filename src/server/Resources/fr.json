@@ -28,7 +28,7 @@
         "search": "Chercher",
         "secureContent": "Affichage de contenu sécurisé uniquement pour les utilisateurs enregistrés",
         "settings": "Paramètres",
-        "stranger" : "Étranger",
+        "stranger": "Étranger",
         "success": "Succès",
         "update": "Mettre à jour",
         "verified": "Vérifié",
@@ -43,7 +43,6 @@
         "body": [
             "<p>Quand la justice a-t-elle été aussi simple qu'un livre de règles?</p>",
             "<p>Je pense que vous avez laissé vos sentiments personnels assombrir votre jugement.</p>"
-
         ]
     },
     "login": {
@@ -77,6 +76,10 @@
     "notfound": {
         "title": "Page non trouvée",
         "instruction": "Malheureuses circonstances"
+    },
+    "token": {
+        "expiresAt": "Votre jeton de connexion expire à{0}",
+        "expired": "Votre jeton de connexion a expiré"
     },
     "search": {
         "title": "Résultats de recherche pour '{0}'",

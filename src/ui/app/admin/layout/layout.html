@@ -1,6 +1,7 @@
 <div>
   <div class="row">
     <status-bar :clear-after="5" locale-prefix="dict"></status-bar>
+    <token-expiry :info-timeout="300" :warn-timeout="60" :error-timeout="true" :logout="true"></token-expiry>
   </div>
   <div class="row">
     <area-sidebar></area-sidebar>

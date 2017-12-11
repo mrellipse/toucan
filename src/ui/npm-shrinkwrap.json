@@ -1,6 +1,6 @@
 {
   "name": "toucan.ui",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "dependencies": {
     "@types/node": {
       "version": "7.0.23",

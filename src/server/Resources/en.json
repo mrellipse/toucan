@@ -28,7 +28,7 @@
         "search": "Search",
         "secureContent": "Displaying secure content for registered users only",
         "settings": "Settings",
-        "stranger" : "Stranger",
+        "stranger": "Stranger",
         "success": "Success",
         "update": "Update",
         "verified": "Verified",
@@ -100,6 +100,10 @@
     },
     "site": {
         "copyright": "© Copyright 2058, Toucan Corporation"
+    },
+    "token": {
+        "expiresAt": "Your login token expires at {0}",
+        "expired": "Your login token has expired"
     },
     "user": {
         "updated": "User updated"

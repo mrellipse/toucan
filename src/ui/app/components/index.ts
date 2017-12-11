@@ -7,4 +7,5 @@ export * from './notfound/notfound';
 export * from './search/search';
 export * from './status-bar/status-bar';
 export * from './switch/switch';
+export * from './token-expiry/token-expiry';
 export * from './verify/verify';
