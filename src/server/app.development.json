@@ -49,11 +49,19 @@
         }
     },
     "Logging": {
-        "IncludeScopes": false,
+        "IncludeScopes": true,
+        "Debug": {
+            "LogLevel": {
+                "Default": "Information"
+            }
+        },
+        "Console": {
+            "LogLevel": {
+                "Default": "Information"
+            }
+        },
         "LogLevel": {
-            "Default": "Verbose",
-            "System": "Information",
-            "Microsoft": "Information"
+            "Default": "Information"
         }
     }
 }

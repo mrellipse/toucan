@@ -8,16 +8,16 @@ namespace Toucan.Server.Filters
 {
     public class GlobalExceptionFilter : IExceptionFilter
     {
-        private readonly ILogger _logger;
+        private readonly ILogger logger;
 
-        public GlobalExceptionFilter(ILoggerFactory logger)
+        public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger)
         {
             if (logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            this._logger = logger.CreateLogger("Global Exception Filter");
+            this.logger = logger;
         }
 
         public void OnException(ExceptionContext context)
@@ -34,8 +34,7 @@ namespace Toucan.Server.Filters
                 DeclaredType = typeof(Model.ErrorResponse)
             };
 
-            this._logger.LogError("GlobalExceptionFilter", context.Exception);
+            this.logger.LogError(context.Exception, context.Exception.Message);
         }
-
     }
 }

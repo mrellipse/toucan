@@ -30,7 +30,8 @@ namespace Toucan.Server
 {
     public static partial class Extensions
     {
-        private const string DefaultEnvironment = "production";
+        private const string DefaultEnvironment = "Production";
+
         public static IConfigurationBuilder AddToucan(this IConfigurationBuilder builder)
         {
             builder.AddEnvironmentVariables("ASPNETCORE_");
@@ -43,6 +44,7 @@ namespace Toucan.Server
                 Console.WriteLine($"WARN: Required runtime variable ASPNETCORE_ENVIRONMENT not found. Default set to '{env}'");
             }
 
+            builder.AddJsonFile($"app.settings.json", optional: true);
             builder.AddJsonFile($"app.{env}.json", optional: false);
 
             return builder;

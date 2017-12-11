@@ -37,7 +37,7 @@ namespace Toucan.Data
                             .AddJsonFile("npgsql.json")
                             .Build();
 
-                        designTimeConfig = config.GetTypedSection<Config>("data");
+                        designTimeConfig = config.GetSection("data").Get<Config>();
                     }
                     catch (Exception) { }
                 }

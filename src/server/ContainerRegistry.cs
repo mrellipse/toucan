@@ -15,7 +15,7 @@ namespace Toucan.Server
     {
         public ContainerRegistry()
         {
-            var targets = new Dictionary<Type, PayloadMessageType>()
+            var targets = new Filters.ApiExceptionFilterTargets()
             {
                 { typeof(Toucan.Service.ServiceException), PayloadMessageType.Failure}
             };
@@ -32,7 +32,8 @@ namespace Toucan.Server
             For<ILocalizationService>().Add<LocalizationService>();
 
             For<Filters.ApiResultFilter>();
-            For<Filters.ApiExceptionFilter>().Use(() => new Filters.ApiExceptionFilter(targets));
+            For<Filters.ApiExceptionFilterTargets>().Use(targets);
+            For<Filters.ApiExceptionFilter>();
             For<Filters.IdentityMappingFilter>();
 
             For<CultureService>();

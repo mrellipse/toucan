@@ -24,7 +24,7 @@
             "program": "${workspaceRoot}/src/server/bin/Debug/netcoreapp2.0/Toucan.UI.dll",
             "args": [],
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "development"
+                "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "cwd": "${workspaceRoot}/src/server",
             "externalConsole": false,
@@ -41,7 +41,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Production"
             },
             "cwd": "${workspaceRoot}/dist",
-            "externalConsole": true,
+            "externalConsole": false,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         }

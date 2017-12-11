@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -13,8 +16,7 @@ using StructureMap;
 using Toucan.Common;
 using Toucan.Contract;
 using Toucan.Data;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging.Console;
 
 namespace Toucan.Server
 {
@@ -22,15 +24,17 @@ namespace Toucan.Server
     {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var cfg = app.ApplicationServices.GetRequiredService<IOptions<AppConfig>>().Value;
-            string webRoot = new DirectoryInfo(cfg.Server.Webroot).FullName;
+            AppConfig config = WebApp.Configuration.Get<Toucan.Server.AppConfig>();
+            IConfigurationSection logging = WebApp.Configuration.GetSection("Logging");
 
-            loggerFactory.AddDebug();
+            if (logging.GetSection("Debug").Exists())
+                loggerFactory.AddDebug();
+
+            if (logging.GetSection("Console").Exists())
+                loggerFactory.AddConsole(logging.GetSection("Console"));
 
             if (env.IsDevelopment())
             {
-                loggerFactory.AddConsole(LogLevel.Information);
-
                 app.UseDeveloperExceptionPage();
 
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions()
@@ -44,6 +48,8 @@ namespace Toucan.Server
             app.UseAuthentication();
             app.UseResponseCompression();
 
+            string webRoot = new DirectoryInfo(config.Server.Webroot).FullName;
+
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(webRoot),
@@ -54,10 +60,10 @@ namespace Toucan.Server
                 }
             });
 
-            app.UseAntiforgeryMiddleware(cfg.Server.AntiForgery.ClientName);
+            app.UseAntiforgeryMiddleware(config.Server.AntiForgery.ClientName);
             app.UseRequestLocalization();
             app.UseMvc();
-            app.UseHistoryModeMiddleware(webRoot, cfg.Server.Areas);
+            app.UseHistoryModeMiddleware(webRoot, config.Server.Areas);
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
@@ -72,9 +78,7 @@ namespace Toucan.Server
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var dataConfig = WebApp.Configuration.GetTypedSection<Toucan.Data.Config>("data");
-            var serverConfig = WebApp.Configuration.GetTypedSection<Toucan.Server.Config>("server");
-            var tokenProvider = WebApp.Configuration.GetTypedSection<Toucan.Service.TokenProviderConfig>("service:tokenProvider");
+            var config = WebApp.Configuration.Get<Toucan.Server.AppConfig>();
 
             services.AddOptions();
             services.Configure<AppConfig>(WebApp.Configuration); // root web configuration
@@ -103,19 +107,19 @@ namespace Toucan.Server
             });
 
             services.AddMemoryCache();
-            services.ConfigureAuthentication(tokenProvider, new string[] { "admin" });
-            services.ConfigureMvc(WebApp.Configuration.GetTypedSection<Config.AntiForgeryConfig>("server:antiForgery"));
+            services.ConfigureAuthentication(config.Service.TokenProvider, new string[] { "admin" });
+            services.ConfigureMvc(config.Server.AntiForgery);
 
             // services.AddDbContext<NpgSqlContext>(options =>
             // {
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     options.UseNpgsql(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            //     options.UseNpgsql(config.Data.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
             // services.AddDbContext<MsSqlContext>(options =>
             // {
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     options.UseSqlServer(dataConfig.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            //     options.UseSqlServer(config.Data.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
             var container = new Container(c =>
