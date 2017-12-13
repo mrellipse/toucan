@@ -1,50 +1,56 @@
 {
-    "version": "0.1.0",
+    "version": "2.0.0",
     "tasks": [
         {
-            "taskName": "dev build",
+            "label": "dev build",
             "command": "cmd",
-            "isShellCommand": true,
+            "type": "shell",
             "args": [
                 "/C",
                 "dotnet",
                 "build",
                 "${workspaceRoot}/src/server/server.csproj"
             ],
-            "isBuildCommand": false,
+            "group": "build",
             "problemMatcher": "$msCompile"
         },
         {
-            "taskName": "test",
+            "label": "test",
             "command": "cmd",
-            "isShellCommand": true,
+            "type": "shell",
             "args": [
                 "/C",
                 "dotnet",
                 "test",
                 "${workspaceRoot}/test/test-common/test-common.csproj"
             ],
-            "isTestCommand": true,
+            "group": "test",
             "problemMatcher": "$msCompile"
         },
         {
-            "taskName": "dev build ui",
+            "label": "dev build ui",
             "command": "webpack",
-            "isShellCommand": true,
+            "type": "shell",
             "args": [
                 "--config",
                 "webpack.config.js"
             ],
-            "showOutput": "always",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
             "options": {
                 "cwd": "${workspaceRoot}/src/ui"
             },
-            "isBuildCommand": true
+            "group": "build"
         },
         {
-            "taskName": "publish",
+            "label": "publish",
             "command": "cmd",
-            "isShellCommand": true,
+            "type": "shell",
+            "problemMatcher": [],
             "args": [
                 "/C",
                 "powershell",
@@ -56,7 +62,7 @@
             "options": {
                 "cwd": "${workspaceRoot}/src/ui"
             },
-            "isBuildCommand": false
+            "group": "build"
         }
     ]
 }

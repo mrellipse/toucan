@@ -23,11 +23,11 @@ namespace Toucan.Server
                 if (!path.EndsWith(".ico"))
                 {
                     string area = path.ToString().Split('/')[1];
-                    string fileName = fileName = $"{webRoot}\\index.html";
+                    string fileName = fileName = $"{webRoot}/index.html";
 
                     if (!string.IsNullOrEmpty(area) && areas.Any(o => string.Equals(o, area, StringComparison.CurrentCultureIgnoreCase)))
                     {
-                        fileName = $"{webRoot}\\{area.ToLower()}.html";
+                        fileName = $"{webRoot}/{area.ToLower()}.html";
 
                         var cultureService = context.RequestServices.GetRequiredService<CultureService>();
                         cultureService.EnsureCookie(context);

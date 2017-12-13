@@ -184,7 +184,7 @@ export class Login extends Vue {
 
     provider: ILoginProvider = { nonce: null, providerId: null, uri: null, responseUri: null, returnUri: null };
 
-    password: string = 'P@ssword';
+    password: string = 'P@ssw0rd';
 
     public get returnUrl(): string {
 

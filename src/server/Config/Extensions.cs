@@ -30,7 +30,7 @@ namespace Toucan.Server
 {
     public static partial class Extensions
     {
-        private const string DefaultEnvironment = "Production";
+        private const string DefaultEnvironment = "production";
 
         public static IConfigurationBuilder AddToucan(this IConfigurationBuilder builder)
         {

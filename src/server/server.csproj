@@ -51,15 +51,20 @@
     <PackageReference Include="System.Reflection" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="*.json;wwwroot/**/*;Resources/**/*.*;" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+  <ItemGroup>  
+      <ResourceFiles Include="Resources/**/*.*"/>  
+  </ItemGroup>  
+  <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
   </ItemGroup>
-  <Target Name="SyncFolders" AfterTargets="AfterPublish" Condition="'$(Configuration)' == 'Release'">
-    <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
-    <RemoveDir Directories="$(PublishDir)wwwroot" Condition="Exists('$(PublishDir)wwwroot')" />
+    <Target Name="Webpack" BeforeTargets="PrepareForPublish" Condition="'$(Configuration)' == 'Release'">
+    <Exec Command="webpack --config webpack.production.js" WorkingDirectory="../ui"/>  
   </Target>
-  <Target Name="SyncFiles" AfterTargets="AfterPublish" Condition="'$(Configuration)' == 'Release'">
-    <Delete Files="$(PublishDir)app.development.json" />
-    <Delete Files="$(PublishDir)project.json" />
-    <Delete Files="$(PublishDir)project.lock.json" />
+  <Target Name="SyncFolders" AfterTargets="AfterPublish" Condition="'$(Configuration)' == 'Release'">
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(PublishDir)resources/"/>
+    <Copy SourceFiles="app.production.json" DestinationFolder="$(PublishDir)"/>
+    <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
   </Target>
 </Project>
