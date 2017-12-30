@@ -1,5 +1,4 @@
 import { default as Axios } from 'axios';
-import { LocaleMessageObject } from 'vue-i18n';
 import { ApiService } from './api-service';
 import { GlobalConfig } from '../common';
 import { IUser } from '../model';

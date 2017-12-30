@@ -1,5 +1,5 @@
 import { default as Axios } from 'axios';
-import { LocaleMessageObject } from 'vue-i18n';
+import VueI18n from 'vue-i18n';
 import { ApiService } from './api-service';
 import { KeyValue } from '../model';
 import { GlobalConfig } from '../common';
@@ -11,8 +11,7 @@ export interface ICultureData {
     resources?: string | {}
 }
 
-
-export function MapLocaleMessages(data: ICultureData): LocaleMessageObject {
+export function MapLocaleMessages(data: ICultureData): VueI18n.LocaleMessageObject {
 
     if (typeof data.resources == 'string') {
         return JSON.parse(data.resources);
@@ -25,7 +24,7 @@ export class CultureService extends ApiService {
         super();
     }
 
-    static mapLocaleMessages(data: ICultureData): LocaleMessageObject {
+    static mapLocaleMessages(data: ICultureData): VueI18n.LocaleMessageObject {
         return MapLocaleMessages(data);
     }
 

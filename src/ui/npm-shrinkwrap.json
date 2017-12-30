@@ -1,6 +1,6 @@
 {
   "name": "toucan.ui",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "dependencies": {
     "@types/node": {
       "version": "7.0.23",
@@ -235,9 +235,9 @@
       "resolved": "https://registry.npmjs.org/vue-class-component/-/vue-class-component-6.0.0.tgz"
     },
     "vue-i18n": {
-      "version": "7.3.2",
-      "from": "vue-i18n@>=7.3.2 <8.0.0",
-      "resolved": "https://registry.npmjs.org/vue-i18n/-/vue-i18n-7.3.2.tgz"
+      "version": "7.3.3",
+      "from": "vue-i18n@>=7.3.3 <8.0.0",
+      "resolved": "https://registry.npmjs.org/vue-i18n/-/vue-i18n-7.3.3.tgz"
     },
     "vue-router": {
       "version": "3.0.1",
