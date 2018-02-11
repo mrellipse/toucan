@@ -57,7 +57,7 @@ namespace Toucan.Server.Controllers
 
             Nonce nonce = IssuedNonces.FirstOrDefault(o => o.Hash == options.Nonce);
 
-            if (nonce.Created.AddMinutes(30) < DateTime.Now)
+            if (nonce.Created.AddMinutes(30) < DateTime.UtcNow)
                 throw new ServiceException(Constants.InvalidNonce);
 
             // swap the external access token for a local application token
