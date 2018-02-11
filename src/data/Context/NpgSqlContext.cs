@@ -162,8 +162,11 @@ namespace Toucan.Data
 
             modelBuilder.Entity<Verification>(entity =>
             {
-                entity.HasKey(e => e.UserId)
+                entity.HasKey(e => e.Code)
                     .HasName("PK_Verification");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IX_Verification_UserId");
 
                 entity.Property(e => e.Code)
                     .IsRequired(true)

@@ -108,8 +108,10 @@ namespace Toucan.Service
 
         private async Task<Verification> GetPendingVerificationForUser(IUser user)
         {
+            DateTime cutoff = DateTime.UtcNow.AddMinutes(-30);
+
             return await (from v in this.db.Verification.Include(o => o.User).Include(o => o.User.Roles)
-                          where v.UserId == user.UserId && v.RedeemedAt == null && v.IssuedAt >= DateTime.UtcNow.AddMinutes(-30)
+                          where v.UserId == user.UserId && v.RedeemedAt == null && v.IssuedAt >= cutoff
                           select v).FirstOrDefaultAsync();
         }
     }
