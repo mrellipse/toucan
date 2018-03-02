@@ -104,7 +104,7 @@ function createAreas() {
 
     config.entry = {
         vendor: [
-            'vue', 'vue-router', 'vuex', 'vuelidate', 'vue-i18n'
+            'vue', 'vue-router', 'vuex', 'vuelidate', 'vue-i18n', 'bootstrap'
         ],
         admin: [
             path.resolve(srcPath, './admin/admin.ts')
@@ -123,6 +123,9 @@ function extendConfig(config) {
     delete config.devtool;
 
     const providePlugin =  new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        bootstrap: ['bootstrap/js/dist', 'default'],
         Popper: ['popper.js', 'default']
     })
 

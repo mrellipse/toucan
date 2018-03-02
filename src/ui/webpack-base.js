@@ -95,10 +95,7 @@ module.exports = (outputPath, srcPath, publicPath) => {
         plugins: plugins,
         resolve: {
             alias: {
-                'src': path.resolve(srcPath, './src'),
                 'assets': path.resolve(srcPath, './assets'),
-                'components': path.resolve(srcPath, './components'),
-                'state': path.resolve(srcPath, './state'),
                 'vue$': path.resolve(__dirname, './node_modules/vue/dist/vue.esm.js')
             },
             extensions: ['.js', '.ts', '.html'],

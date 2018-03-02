@@ -1,4 +1,4 @@
-import VueRouter = require('vue-router');
+import { Route, RouteConfig as VueRouteConfig } from 'vue-router';
 import { PageForbidden, Login, PageNotFound, Search, Verify } from '../../components';
 import { AreaLayout } from '../layout/layout';
 import { AreaDashboard } from '../dashboard/dashboard';
@@ -9,7 +9,7 @@ import { SiteReports } from '../reports/reports';
 import { UserRoles } from '../../model';
 import { RouteNames } from './route-names';
 
-export const RouteConfig: VueRouter.RouteConfig[] = [
+export const RouteConfig: VueRouteConfig[] = [
     {
         component: Login,
         name: RouteNames.login,
@@ -41,7 +41,7 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
                 component: ManageUserList,
                 name: RouteNames.manageUsers,
                 path: 'users',
-                props: function (route: VueRouter.Route) {
+                props: function (route: Route) {
 
                     let page = Number.parseInt(route.query['page']);
                     let pageSize = Number.parseInt(route.query['pageSize']);

@@ -9,7 +9,7 @@
       "es6"
     ],
     "listEmittedFiles": false,
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "Node",
     "target": "es2015",
     "traceResolution": true,

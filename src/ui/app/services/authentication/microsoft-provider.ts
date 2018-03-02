@@ -1,4 +1,4 @@
-import ClientOAuth2 = require('client-oauth2');
+import { default as ClientOAuth2 } from 'client-oauth2';
 import { Route } from 'vue-router';
 import { ILoginClient, ILoginProvider, LoginProviders } from '../../model';
 import { GlobalConfig } from '../../common';

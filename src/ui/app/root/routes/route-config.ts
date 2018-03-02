@@ -1,4 +1,4 @@
-import VueRouter = require('vue-router');
+import { RouteConfig as VueRouteConfig } from 'vue-router';
 import { PageForbidden, Login, PageNotFound, Search, Verify } from '../../components';
 import { AreaLayout } from '../layout/layout';
 import { Home } from '../home/home';
@@ -6,7 +6,7 @@ import { Profile } from '../profile/profile';
 import { Signup } from '../signup/signup';
 import { RouteNames } from './route-names';
 
-export const RouteConfig: VueRouter.RouteConfig[] = [
+export const RouteConfig: VueRouteConfig[] = [
     {
         component: AreaLayout,
         path: '/',
@@ -46,7 +46,7 @@ export const RouteConfig: VueRouter.RouteConfig[] = [
         name: RouteNames.login.home,
         path: '/login'
     },
-    {
+    <VueRouteConfig>{
         component: Signup,
         name: RouteNames.signup,
         path: '/signup',

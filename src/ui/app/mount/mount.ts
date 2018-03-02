@@ -1,4 +1,4 @@
-import { filter, map } from 'lodash';
+import * as _ from 'lodash';
 import { default as networkLoader, INetworkResource } from './network-loader';
 import './mount.scss';
 
@@ -9,7 +9,7 @@ function show(el: HTMLElement) {
 
 const loadAssets = (assets: string[]) => {
 
-    let resources: INetworkResource[] = map(assets, (asset: string) => {
+    let resources: INetworkResource[] = _.map(assets, (asset: string) => {
 
         var resource: INetworkResource = {
             completed: false,
@@ -38,7 +38,7 @@ const loadAssets = (assets: string[]) => {
     }
 
     let updateMessage = (items: INetworkResource[]) => {
-        let completed = filter(items, (o: INetworkResource) => o.completed).length;
+        let completed = _.filter(items, (o: INetworkResource) => o.completed).length;
         let total = items.length;
         elMessage.innerText = 'Downloading ' + completed + ' / ' + total + ' network resources';
     };

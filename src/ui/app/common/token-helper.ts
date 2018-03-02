@@ -1,6 +1,6 @@
-import jwtDecode = require('jwt-decode');
+import { default as jwtDecode } from 'jwt-decode';
+import { default as base64 } from 'base-64';
 import { IJwtToken, ILoginProvider, IUser } from '../model';
-import base64 = require('base-64');
 import { default as GlobalConfig } from '../config';
 
 export class TokenHelper {

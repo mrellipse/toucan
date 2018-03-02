@@ -110,7 +110,7 @@ function createAreas() {
     // add entry points to be built
     config.entry = {
         vendor: [
-            'vue', 'vue-router', 'vuex', 'vuelidate', 'vue-i18n'
+            'vue', 'vue-router', 'vuex', 'vuelidate', 'vue-i18n', 'bootstrap'
         ],
         admin: [
             path.resolve(srcPath, './admin/admin.ts')
@@ -126,6 +126,9 @@ function createAreas() {
 function extendConfig(config) {
 
     const providePlugin =  new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        bootstrap: ['bootstrap/js/dist', 'default'],
         Popper: ['popper.js', 'default']
     })
 

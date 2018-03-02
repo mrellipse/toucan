@@ -1,6 +1,6 @@
 import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import jwtDecode = require('jwt-decode');
-import base64 = require('base-64');
+import { default as jwtDecode } from 'jwt-decode';
+import { default as base64 } from 'base-64';
 import { IClaimsHelper } from './claims-helper';
 import { GlobalConfig, PayloadMessageTypes, TokenHelper } from '../../common';
 import { IAccessToken, ICredential, IJwtToken, ILoginProvider, IPayload, ISignupOptions, IUser } from '../../model';
@@ -54,7 +54,7 @@ export class AuthenticationService extends StoreService implements IClaimsHelper
     login(credentials: ICredential) {
 
         let onSuccess = (token: IAccessToken) => {
-            
+
             if (token) {
 
                 TokenHelper.setAccessToken(token.access_token);
