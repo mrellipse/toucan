@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowJs": false,
+    "baseUrl": "node_modules",
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "listEmittedFiles": false,
+    "module": "es2015",
+    "moduleResolution": "Node",
+    "target": "es2015",
+    "traceResolution": true,
+    "types": ["node"]
+  },
+  "exclude": [
+    "bin",
+    "node_modules"
+  ]
+}

@@ -15,17 +15,47 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "test",
+            "label": "test dotnet",
             "command": "cmd",
             "type": "shell",
             "args": [
                 "/C",
                 "dotnet",
                 "test",
-                "${workspaceRoot}/test/test-common/test-common.csproj"
+                "${workspaceRoot}/test/common/test-common.csproj"
             ],
             "group": "test",
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test ui",
+            "command": "node_modules/.bin/mocha-webpack --require jsdom-global/register --webpack-config ./webpack.config.js --glob \"*.spec.js\" *.ts",
+            "type": "shell",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceRoot}/test/ui"
+            },
+            "group": "test"
+        },
+        {
+            "label": "test watch ui",
+            "command": "node_modules/.bin/mocha-webpack --watch --require jsdom-global/register --webpack-config ./webpack.config.js --glob \"*.spec.js\" *.ts",
+            "type": "shell",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceRoot}/test/ui"
+            },
+            "group": "test"
         },
         {
             "label": "dev build ui",
@@ -48,17 +78,9 @@
         },
         {
             "label": "publish",
-            "command": "cmd",
+            "command": "cmd /C powershell Set-ExecutionPolicy -ExecutionPolicy Bypass | powershell ${workspaceRoot}/build/production.ps1",
             "type": "shell",
             "problemMatcher": [],
-            "args": [
-                "/C",
-                "powershell",
-                "Set-ExecutionPolicy -ExecutionPolicy Bypass",
-                "|",
-                "powershell",
-                "${workspaceRoot}/build/production.ps1"
-            ],
             "options": {
                 "cwd": "${workspaceRoot}/src/ui"
             },

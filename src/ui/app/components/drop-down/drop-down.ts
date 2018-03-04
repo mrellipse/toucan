@@ -3,8 +3,8 @@ import Component from 'vue-class-component';
 import { KeyValue } from '../../model';
 
 @Component({
-    props: ['value', 'items'],
-    template: `<select @change="onChange($event.target)">
+    props: ['value', 'multiple', 'items'],
+    template: `<select :multiple="multiple" @change="onChange">
               <option v-for="pair in keyValues" :value="pair.key">{{pair.value}}</option>
           </select>`
 })
@@ -13,28 +13,27 @@ export class DropDownSelect extends Vue {
     mounted() {
 
         let root: HTMLSelectElement = <HTMLSelectElement>this.$el;
-        let selected: string[] = null;
+        let selected: string[] = [];
 
         if (typeof this.value === 'string') {
             selected = [this.value];
-        } else {
+        } else if (Array.isArray(this.value)) {
             selected = this.value.concat([]);
         }
 
         for (var i = 0; i < root.children.length; i++) {
             let child: HTMLOptionElement = <HTMLOptionElement>root.children[i];
+
             if (selected.find(value => value === child.value && !child.selected))
                 child.selected = true;
         }
     }
 
-    onChange(target: HTMLSelectElement) {
+    onChange(event: Event) {
+        
+        let target = <HTMLSelectElement>event.target;
 
-        if (typeof this.value === 'string') {
-            this.$emit('input', target.value);
-        } else {
-            this.$emit('input', [target.value]);
-        }
+        this.$emit('input', [target.value]);
     }
 
     get keyValues(): KeyValue[] {
@@ -58,6 +57,9 @@ export class DropDownSelect extends Vue {
         return [];
     }
 
+    multiple: boolean = this.multiple;
+
     items: {} | any[] = this.items;
+
     value: string | string[] = this.value;
 }

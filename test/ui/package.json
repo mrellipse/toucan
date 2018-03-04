@@ -1,0 +1,44 @@
+{
+  "name": "uitest",
+  "version": "0.0.1",
+  "description": "ui testing project",
+  "main": "index.spec.ts",
+  "files": [],
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "chai",
+    "jsdom",
+    "mocha",
+    "mocha-webpack",
+    "typescript",
+    "vue"
+  ],
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "test": "node_modules/.bin/mocha-webpack --require jsdom-global/register --webpack-config ./webpack.config.js --glob \"*.spec.js\" *.ts",
+    "watch-test": "node_modules/.bin/mocha-webpack --watch --require jsdom-global/register --webpack-config ./webpack.config.js --glob \"*.spec.js\" *.ts"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.1",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.7",
+    "chai": "^4.0.2",
+    "jsdom": "^11.6.2",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^3.4.2",
+    "mocha-webpack": "^1.0.1",
+    "ts-loader": "^3.5.0",
+    "ts-node": "^3.1.0",
+    "typescript": "^2.7.2",
+    "vue": "^2.2.0",
+    "vue-class-component": "^6.0.0",
+    "vue-template-compiler": "^2.3.4",
+    "webidl-conversions": "^4.0.1",
+    "webpack": "^3.11.0",
+    "webpack-node-externals": "^1.6.0"
+  },
+  "dependencies": {}
+}
