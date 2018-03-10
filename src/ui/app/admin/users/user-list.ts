@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { Store } from 'vuex';
 import Component from 'vue-class-component';
 import * as i18n from 'vue-i18n';
+import { VueModelDate } from 'vue-model-date/lib-esm';
 import { ManageUserService } from './user-service';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { ICommonOptions } from '../../plugins';
@@ -10,11 +11,16 @@ import { ICommonState, StoreTypes } from '../../store';
 import { Switch } from '../../components';
 
 import './users.scss';
+import { AdminStoreTypes } from '../store';
+import { PayloadMessageTypes } from '../../common';
 
 @Component({
   template: require('./user-list.html'),
   components: {
     check: Switch
+  },
+  directives: {
+    'modelDate': VueModelDate
   },
   props: ['page', 'pageSize']
 })
@@ -27,12 +33,25 @@ export class ManageUserList extends Vue {
 
     this.svc = new ManageUserService(this.$store);
 
+    let unwatch = this.$watch(() => this.registeredAfter, (oldValue, newValue) => {
+      
+      let msg: IStatusBarData = {
+        text: 'dict.warnings.stub',
+        title: 'dict.notImplemented',
+        messageTypeId: PayloadMessageTypes.warning
+      }
+
+      this.$store.dispatch(AdminStoreTypes.common.updateStatusBar, msg)
+        .then(() => unwatch());
+    });
+
     this.search();
   }
 
   private search() {
 
     let onSuccess = (value: ISearchResult<IUser>) => {
+
       if (value) {
         this.searchResults = value;
 
@@ -80,6 +99,7 @@ export class ManageUserList extends Vue {
 
   currentPage: number = Object.assign((<any>this).page);
   currentPageSize: number = Object.assign((<any>this).pageSize);
+  registeredAfter: Date = null;
   start: number = 1;
   end: number = 5;
 

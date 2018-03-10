@@ -32,6 +32,9 @@
         "success": "Succès",
         "update": "Mettre à jour",
         "verified": "Vérifié",
+        "warnings": {
+            "stub": "Fins d'illustration seulement"
+        },
         "yes": "Oui"
     },
     "forbidden": {

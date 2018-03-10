@@ -14,7 +14,9 @@
         <tbody>
           <tr v-for="(user,index) in users">
             <td class="caps-low">
-              <router-link :to="{ name: 'manageUser', params: { id: user.userId }}"><span :title="user.email">{{user.displayName}}</span></router-link>
+              <router-link :to="{ name: 'manageUser', params: { id: user.userId }}">
+                <span :title="user.email">{{user.displayName}}</span>
+              </router-link>
             </td>
             <td class="hidden-md-down">{{user.email}}</td>
             <td>
@@ -28,10 +30,27 @@
         <tfoot v-show="total">
           <tr>
             <td colspan="4">
-              <div v-if="currentPage > 1" @click="navigate(false)" class="btn btn-primary"><i class="fa fa-arrow-left"></i></div>
-              <div class="paging-splice">{{start}}-{{end}} <span class="paging-of">{{$t('dict.of')}}</span> <span class="paging-total">{{total}}</span></div>
-              <div v-if="(end < total)" @click="navigate(true)" class="btn btn-primary"><i class="fa fa-arrow-right"></i></div>
+              <div v-if="currentPage > 1" @click="navigate(false)" class="btn btn-primary">
+                <i class="fa fa-arrow-left"></i>
+              </div>
+              <div class="paging-splice">{{start}}-{{end}}
+                <span class="paging-of">{{$t('dict.of')}}</span>
+                <span class="paging-total">{{total}}</span>
+              </div>
+              <div v-if="(end < total)" @click="navigate(true)" class="btn btn-primary">
+                <i class="fa fa-arrow-right"></i>
+              </div>
             </td>
+          </tr>
+          <tr>
+            <th colspan="4">
+              <div class="form-inline">
+                <div class="form-group">
+                  <label class="label filter-label" for="registeredAfter">registered after</label>
+                  <input class="form-control ml-2" name="registeredAfter" id="registeredAfter" type="date" v-model-date="registeredAfter">
+                </div>
+              </div>
+            </th>
           </tr>
         </tfoot>
       </table>

@@ -37,6 +37,7 @@
     "vue": "^2.5.2",
     "vue-class-component": "^6.0.0",
     "vue-i18n": "^7.3.3",
+    "vue-model-date": "^1.0.5",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.5.0",
     "vuex": "^3.0.0",
@@ -68,7 +69,7 @@
     "vue-hot-typescript-loader": "0.0.1",
     "vue-html-loader": "1.2.4",
     "vue-i18n": "^7.3.3",
-    "webpack": "3.6.0",
+    "webpack": "^3.11.0",
     "webpack-hot-middleware": "2.19.1",
     "webpack-merge": "4.1.0"
   }
