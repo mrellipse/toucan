@@ -15,11 +15,11 @@ namespace Toucan.Service
             For<IExternalAuthenticationProvider>().Add<GoogleAuthenticationProvider>();
             For<IExternalAuthenticationProvider>().Add<MicrosoftAuthenticationProvider>();
             
-            For<IManageUserService>().Add<ManageUserService>();
-            For<IManageProfileService>().Add<ManageUserService>();
+            For<IAuditService>().Use<AuditService>();
+            For<IManageUserService>().Use<ManageUserService>();
+            For<IManageProfileService>().Use<ManageUserService>();
             For<ISignupService>().Use<SignupService>();
             For<IVerificationProvider>().Use<SmtpVerificationProvider>();
-
             For<ITokenProviderService<Token>>().Use<TokenProviderService>();
         }
     }
