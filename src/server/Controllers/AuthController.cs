@@ -25,9 +25,8 @@ namespace Toucan.Server.Controllers
         private readonly Toucan.Server.Config serverConfig;
         private readonly ISignupService signupService;
         private readonly ITokenProviderService<Token> tokenService;
-        private readonly IVerificationProvider verificationProvider;
 
-        public AuthController(IAntiforgery antiForgeryService, ILocalAuthenticationService authService, CultureService cultureService, IOptions<Toucan.Server.Config> serverConfig, ISignupService signupService, IVerificationProvider verificationProvider, ITokenProviderService<Token> tokenService)
+        public AuthController(IAntiforgery antiForgeryService, ILocalAuthenticationService authService, CultureService cultureService, IOptions<Toucan.Server.Config> serverConfig, ISignupService signupService, ITokenProviderService<Token> tokenService)
         {
             this.antiForgeryService = antiForgeryService;
             this.authService = authService;
@@ -35,19 +34,21 @@ namespace Toucan.Server.Controllers
             this.serverConfig = serverConfig.Value;
             this.signupService = signupService;
             this.tokenService = tokenService;
-            this.verificationProvider = verificationProvider;
         }
 
         [Authorize]
         [HttpGet()]
-        public async Task<object> IssueVerificationCode()
+        public async Task<object> IssueVerificationCode(string providerKey = null)
         {
             IUser user = this.ApplicationUser();
 
             if (user == null)
                 throw new ServiceException(Constants.FailedToVerifyUser);
 
-            string code = await this.signupService.IssueCode(this.verificationProvider, user);
+            if (string.IsNullOrWhiteSpace(providerKey))
+                providerKey = HttpVerificationProvider.ProviderKey;
+
+            string code = await this.signupService.SendVerificationCode(user, providerKey);
 
             if (code == null)
                 throw new ServiceException(Constants.FailedToVerifyUser);
@@ -129,7 +130,7 @@ namespace Toucan.Server.Controllers
             if (user == null)
                 throw new ServiceException(Constants.FailedToVerifyUser);
 
-            var identity = await this.signupService.RedeemCode(code, user);
+            var identity = await this.signupService.RedeemVerificationCode(user, code);
 
             if (identity == null)
                 throw new ServiceException(Constants.FailedToVerifyUser);

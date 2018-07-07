@@ -12,14 +12,16 @@ namespace Toucan.Service
 {
     public class ExternalAuthenticationService : IExternalAuthenticationService
     {
-        private readonly DbContextBase db;
         private readonly ICryptoService crypto;
+        private readonly DbContextBase db;
+        private readonly IDeviceProfiler deviceProfiler;
         private readonly IEnumerable<IExternalAuthenticationProvider> providers;
 
-        public ExternalAuthenticationService(DbContextBase db, ICryptoService crypto, IList<IExternalAuthenticationProvider> providers)
+        public ExternalAuthenticationService(DbContextBase db, ICryptoService crypto, IDeviceProfiler deviceProfiler, IList<IExternalAuthenticationProvider> providers)
         {
-            this.db = db;
             this.crypto = crypto;
+            this.db = db;
+            this.deviceProfiler = deviceProfiler;
             this.providers = providers;
         }
 
@@ -62,10 +64,13 @@ namespace Toucan.Service
                     ProviderId = provider.ProviderId,
                     User = user
                 });
+
                 db.SaveChanges();
             }
 
-            return user.ToClaimsIdentity();
+            string fingerprint = this.deviceProfiler.DeriveFingerprint(user);
+
+            return user.ToClaimsIdentity(fingerprint);
         }
 
         public void RevokeToken(string providerId, string accessToken)
@@ -96,8 +101,7 @@ namespace Toucan.Service
                 DisplayName = email.Split('@')[0],
                 Enabled = true,
                 TimeZoneId = Globalization.DefaultTimeZoneId,
-                Username = email,
-                Verified = false
+                Username = email
             };
 
             db.User.Add(user);

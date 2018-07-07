@@ -72,8 +72,7 @@ export class ManageUserList extends Vue {
 
     let data = {
       username: user.username,
-      enabled: user.enabled,
-      verified: user.verified
+      enabled: user.enabled
     };
 
     this.svc.updateUserStatus(data);

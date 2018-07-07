@@ -8,7 +8,6 @@
             <th>{{$t('dict.name')}}</th>
             <th class="hidden-md-down">{{$t('dict.email')}}</th>
             <th>{{$t('dict.enabled')}}</th>
-            <th>{{$t('dict.verified')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -21,9 +20,6 @@
             <td class="hidden-md-down">{{user.email}}</td>
             <td>
               <check v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
-            </td>
-            <td>
-              <check v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
             </td>
           </tr>
         </tbody>

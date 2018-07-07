@@ -25,12 +25,10 @@ namespace Toucan.Service.Model
             }
         }
         public bool Enabled { get; set; }
-        
+
         public string TimeZoneId { get; set; }
 
         public string Username { get; set; }
-
-        public bool Verified { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
     }

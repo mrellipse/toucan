@@ -41,11 +41,9 @@ namespace Toucan.Service.Helpers
             return this;
         }
 
-        public ManageUserHelper UpdateStatus(bool enabled, bool verified)
+        public ManageUserHelper UpdateStatus(bool enabled)
         {
-            this.user.Enabled = enabled;
-            this.user.Verified = verified;
-            
+            this.user.Enabled = enabled;            
             return this;
         }
     }

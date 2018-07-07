@@ -3,7 +3,14 @@ import Component from 'vue-class-component';
 import { KeyValue } from '../../model';
 
 @Component({
-    props: ['value', 'multiple', 'items'],
+    props: {
+        'items': {},
+        'multiple': {
+            default: false,
+            type: Boolean
+        },
+        'value': {}
+    },
     template: `<select :multiple="multiple" @change="onChange">
               <option v-for="pair in keyValues" :value="pair.key">{{pair.value}}</option>
           </select>`
@@ -12,28 +19,44 @@ export class DropDownSelect extends Vue {
 
     mounted() {
 
-        let root: HTMLSelectElement = <HTMLSelectElement>this.$el;
         let selected: string[] = [];
 
         if (typeof this.value === 'string') {
             selected = [this.value];
         } else if (Array.isArray(this.value)) {
             selected = this.value.concat([]);
+            this.outputArray = true;
         }
 
-        for (var i = 0; i < root.children.length; i++) {
-            let child: HTMLOptionElement = <HTMLOptionElement>root.children[i];
+        this.inspector((el) => {
+            if (selected.find(value => value === el.value && !el.selected))
+                el.selected = true;
+        });
+    }
 
-            if (selected.find(value => value === child.value && !child.selected))
-                child.selected = true;
+    inspector(cb: (el: HTMLOptionElement) => void) {
+        let root: HTMLSelectElement = <HTMLSelectElement>this.$el;
+        for (var i = 0; i < root.children.length; i++) {
+            cb(<HTMLOptionElement>root.children[i]);
         }
     }
 
     onChange(event: Event) {
-        
+
         let target = <HTMLSelectElement>event.target;
 
-        this.$emit('input', [target.value]);
+        if (this.outputArray) {
+            let values = [];
+
+            this.inspector((el) => {
+                if (el.selected)
+                    values.push(el.value);
+            });
+
+            this.$emit('input', values);
+        }
+        else
+            this.$emit('input', target.value);
     }
 
     get keyValues(): KeyValue[] {
@@ -57,9 +80,11 @@ export class DropDownSelect extends Vue {
         return [];
     }
 
+    items: {} | any[] = this.items;
+
     multiple: boolean = this.multiple;
 
-    items: {} | any[] = this.items;
+    outputArray: boolean = false;
 
     value: string | string[] = this.value;
 }

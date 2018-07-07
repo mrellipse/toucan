@@ -10,15 +10,15 @@ namespace Toucan.Service
 {
     public static partial class Extensions
     {
-        public static ClaimsIdentity ToClaimsIdentity(this User user)
+        public static ClaimsIdentity ToClaimsIdentity(this User user, string fingerPrint = null)
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Email, user.Username));
             claims.Add(new Claim(ClaimTypes.Name, user.DisplayName));
             claims.Add(new Claim(ClaimTypes.Sid, user.UserId.ToString()));
-            claims.Add(new Claim(CustomClaimTypes.Verified, user.Verified ? Boolean.TrueString.ToLower() : Boolean.FalseString.ToLower()));
             claims.Add(new Claim(CustomClaimTypes.CultureName, user.CultureName));
             claims.Add(new Claim(CustomClaimTypes.TimeZoneId, user.TimeZoneId));
+            claims.Add(new Claim(CustomClaimTypes.Fingerprint, fingerPrint ?? "None"));
 
             var roles = (from r in user.Roles
                          select new Claim(ClaimTypes.Role, r.RoleId)).ToArray();
@@ -27,6 +27,14 @@ namespace Toucan.Service
                 roles = new Claim[] { new Claim(ClaimTypes.Role, RoleTypes.User) };
 
             claims.AddRange(roles);
+
+            // admin users never have to go through account verification process
+            bool isVerified = user.Roles.Any(o => o.RoleId == RoleTypes.Admin);
+
+            if (!isVerified)
+                isVerified = !string.IsNullOrWhiteSpace(fingerPrint) && user.Verifications != null && user.Verifications.Any(o => o.Fingerprint == fingerPrint && o.RedeemedAt != null);
+
+            claims.Add(new Claim(CustomClaimTypes.Verified, isVerified ? Boolean.TrueString.ToLower() : Boolean.FalseString.ToLower()));
 
             return new ClaimsIdentity(
                 new System.Security.Principal.GenericIdentity(user.Username, "Token"),
@@ -49,8 +57,7 @@ namespace Toucan.Service
                         Enabled = true,
                         Username = principal.TryGetClaimValue<string>(ClaimTypes.Email),
                         UserId = userId,
-                        TimeZoneId = principal.TryGetClaimValue<string>(CustomClaimTypes.TimeZoneId),
-                        Verified = principal.TryGetClaimValue<bool>(CustomClaimTypes.Verified)
+                        TimeZoneId = principal.TryGetClaimValue<string>(CustomClaimTypes.TimeZoneId)
                     };
                 }
             }

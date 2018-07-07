@@ -12,6 +12,6 @@ namespace Toucan.Contract
         Task<IUserExtended> ResolveUserBy(string username);
         Task<ISearchResult<IUserExtended>> Search(int page, int pageSize);
         Task<IUserExtended> UpdateUser(IUserExtended user);
-        Task<IUserExtended> UpdateUserStatus(string username, bool enabled, bool verified);
+        Task<IUserExtended> UpdateUserStatus(string username, bool enabled);
     }
 }

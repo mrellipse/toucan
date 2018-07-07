@@ -85,8 +85,6 @@ namespace Toucan.Data
                     .IsRequired()
                     .HasMaxLength(128);
 
-                entity.Property(e => e.Verified);
-
                 entity.Property(e => e.TimeZoneId)
                     .IsRequired()
                     .HasMaxLength(32);
@@ -155,6 +153,14 @@ namespace Toucan.Data
                     .HasName("IX_Verification_UserId");
 
                 entity.Property(e => e.Code)
+                    .IsRequired(true)
+                    .HasMaxLength(64);
+
+                entity.Property(e => e.Fingerprint)
+                    .IsRequired(true)
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.ProviderKey)
                     .IsRequired(true)
                     .HasMaxLength(64);
 

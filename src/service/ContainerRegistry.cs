@@ -19,7 +19,6 @@ namespace Toucan.Service
             For<IManageUserService>().Use<ManageUserService>();
             For<IManageProfileService>().Use<ManageUserService>();
             For<ISignupService>().Use<SignupService>();
-            For<IVerificationProvider>().Use<SmtpVerificationProvider>();
             For<ITokenProviderService<Token>>().Use<TokenProviderService>();
         }
     }

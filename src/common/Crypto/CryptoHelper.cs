@@ -48,7 +48,6 @@ namespace Toucan.Common
         
         public string CreateKey(string salt, string data, int keySizeInKb)
         {
-
             if (salt == null)
                 throw new ArgumentNullException($"Argument {nameof(salt)} cannot be null");
 
@@ -74,6 +73,11 @@ namespace Toucan.Common
         public bool CheckKey(string hash, string salt, string data)
         {
             return CreateKey(salt, data) == hash;
+        }
+
+        public string CreateFingerprint(string data)
+        {
+            return RabinFingerPrint.ComputeFingerPrint(data).ToString();
         }
     }
 }

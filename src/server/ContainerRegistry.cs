@@ -37,7 +37,8 @@ namespace Toucan.Server
             For<Filters.IdentityMappingFilter>();
 
             For<CultureService>();
-
+            For<IDeviceProfiler>().Use<HttpDeviceProfiler>();
+            For<IVerificationProvider>().Use<HttpVerificationProvider>();
         }
     }
 }

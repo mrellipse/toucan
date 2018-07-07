@@ -85,14 +85,14 @@ namespace Toucan.Service
 
             return this.MapUser(dbUser);
         }
-        public async Task<IUserExtended> UpdateUserStatus(string username, bool enabled, bool verified)
+        public async Task<IUserExtended> UpdateUserStatus(string username, bool enabled)
         {
             Data.Model.User dbUser = this.ResolveUser(username);
 
             if (dbUser == null)
                 return null;
 
-            new ManageUserHelper(dbUser).UpdateStatus(enabled, verified);
+            new ManageUserHelper(dbUser).UpdateStatus(enabled);
 
             await this.db.SaveChangesAsync();
 
@@ -104,6 +104,7 @@ namespace Toucan.Service
             return this.db.User
                 .Include(o => o.Roles)
                 .Include(o => o.Providers)
+                .Include(o => o.Verifications)
                 .SingleOrDefault(o => o.Username == username);
         }
 
@@ -112,6 +113,7 @@ namespace Toucan.Service
             return this.db.User
                 .Include(o => o.Roles)
                 .Include(o => o.Providers)
+                .Include(o => o.Verifications)
                 .SingleOrDefault(o => o.UserId == userId);
         }
 
@@ -128,8 +130,7 @@ namespace Toucan.Service
                     Roles = user.Roles.Select(o => o.RoleId),
                     TimeZoneId = user.TimeZoneId,
                     UserId = user.UserId,
-                    Username = user.Username,
-                    Verified = user.Verified
+                    Username = user.Username
                 };
         }
     }

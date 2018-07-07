@@ -25,7 +25,6 @@ namespace Toucan.Data.Model
             }
         }
         public bool Enabled { get; set; }
-        public bool Verified { get; set; }
         public string TimeZoneId { get; set; }
         public string Username { get; set; }
 

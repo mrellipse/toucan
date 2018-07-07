@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Toucan.Contract;
 using Toucan.Data;
 using Toucan.Data.Model;
@@ -12,15 +13,17 @@ namespace Toucan.Service
 {
     public class SignupService : ISignupService
     {
-        private readonly DbContextBase db;
         private readonly ICryptoService crypto;
-        private readonly IVerificationProvider verificationProvider;
+        private readonly DbContextBase db;
+        private readonly IDeviceProfiler deviceProfiler;
+        private readonly IServiceProvider serviceProvider;
 
-        public SignupService(DbContextBase db, ICryptoService crypto, IVerificationProvider verificationProvider)
+        public SignupService(DbContextBase db, ICryptoService crypto, IDeviceProfiler deviceProfiler, System.IServiceProvider serviceProvider)
         {
-            this.db = db;
             this.crypto = crypto;
-            this.verificationProvider = verificationProvider;
+            this.db = db;
+            this.deviceProfiler = deviceProfiler;
+            this.serviceProvider = serviceProvider;
         }
 
         public async Task<ClaimsIdentity> SignupUser(ISignupServiceOptions options)
@@ -38,9 +41,8 @@ namespace Toucan.Service
                 Enabled = true,
                 Username = options.Username,
                 DisplayName = options.DisplayName,
-                TimeZoneId = options.TimeZoneId,
-                Verified = false
-            };               
+                TimeZoneId = options.TimeZoneId
+            };
 
             db.User.Add(user);
 
@@ -64,55 +66,41 @@ namespace Toucan.Service
 
             db.SaveChanges();
 
-            return user.ToClaimsIdentity();
+            var fingerprint = this.deviceProfiler.DeriveFingerprint(user);
+
+            return user.ToClaimsIdentity(fingerprint);
         }
 
-        public async Task<ClaimsIdentity> RedeemCode(string code, IUser user)
+        public async Task<ClaimsIdentity> RedeemVerificationCode(IUser user, string code)
         {
-            Verification verification = await this.GetPendingVerificationForUser(user);
+            var provider = (from p in this.serviceProvider.GetServices<IVerificationProvider>()
+                            where p.CanHandle(user, code)
+                            select p).FirstOrDefault();
 
-            if (verification != null && code == verification.Code)
+            if (provider != null)
             {
-                verification.RedeemedAt = DateTime.UtcNow;
-                verification.User.Verified = true;
+                if (await provider.RedeemCode(user, code))
+                {
+                    var dbUser = await (from u in this.db.User.Include(o => o.Roles)
+                        .Include(o => o.Verifications)
+                            where u.UserId == user.UserId
+                            select u).FirstOrDefaultAsync();
 
-                await this.db.SaveChangesAsync();
-                return verification.User.ToClaimsIdentity();
+                    var fingerprint = this.deviceProfiler.DeriveFingerprint(dbUser);
+
+                    return dbUser.ToClaimsIdentity(fingerprint);
+                }
             }
 
             return null;
         }
 
-        public async Task<string> IssueCode(IVerificationProvider provider, IUser user)
+        public async Task<string> SendVerificationCode(IUser user, string providerKey)
         {
-            Verification verification = await this.GetPendingVerificationForUser(user);
+            var q = this.serviceProvider.GetServices<IVerificationProvider>();
+            var provider = q.FirstOrDefault(o => o.Key == providerKey);
 
-            if (verification == null)
-            {
-                verification = new Verification()
-                {
-                    Code = Guid.NewGuid().ToString(),
-                    UserId = user.UserId
-                };
-
-                this.db.Verification.Add(verification);
-                this.db.SaveChanges();
-            }
-
-            string code = verification.Code;
-
-            provider.Send(user, code);
-
-            return code;
-        }
-
-        private async Task<Verification> GetPendingVerificationForUser(IUser user)
-        {
-            DateTime cutoff = DateTime.UtcNow.AddMinutes(-30);
-
-            return await (from v in this.db.Verification.Include(o => o.User).Include(o => o.User.Roles)
-                          where v.UserId == user.UserId && v.RedeemedAt == null && v.IssuedAt >= cutoff
-                          select v).FirstOrDefaultAsync();
+            return await provider.IssueCode(user);
         }
     }
 }

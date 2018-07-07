@@ -55,10 +55,6 @@
         <div class="col-sm-2 col-form-like-label">
           <check id="enabled" v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
         </div>
-        <label class="col-sm-2 col-form-label" for="verified">{{$t('dict.verified')}}</label>
-        <div class="col-sm-2 col-form-like-label">
-          <check id="verified" v-model="user.verified" :enabled="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></check>
-        </div>
       </div>
       <div class="form-group row">
         <div class="col-sm-2"></div>

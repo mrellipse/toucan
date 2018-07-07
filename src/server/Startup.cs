@@ -11,12 +11,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
 using Toucan.Common;
 using Toucan.Contract;
 using Toucan.Data;
-using Microsoft.Extensions.Logging.Console;
 
 namespace Toucan.Server
 {
@@ -86,7 +86,6 @@ namespace Toucan.Server
             services.Configure<Toucan.Service.TokenProviderConfig>(WebApp.Configuration.GetSection("service:tokenProvider")); // token provider configuration
             services.Configure<Toucan.Data.Config>(WebApp.Configuration.GetSection("data")); // configuration
             services.Configure<Toucan.Server.Config>(WebApp.Configuration.GetSection("server"));
-
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression(options =>
             {
@@ -107,6 +106,7 @@ namespace Toucan.Server
             });
 
             services.AddMemoryCache();
+            services.AddDetection();
             services.ConfigureAuthentication(config.Service.TokenProvider, new string[] { "admin" });
             services.ConfigureMvc(config.Server.AntiForgery);
 

@@ -43,8 +43,7 @@ namespace Toucan.Server
                         Enabled = context.User.Identity.IsAuthenticated,
                         Username = context.User.Identity.Name,
                         UserId = 0,
-                        TimeZoneId = this.culture.GetFromRequest(context, CultureService.TimeZoneId),
-                        Verified = false
+                        TimeZoneId = this.culture.GetFromRequest(context, CultureService.TimeZoneId)
                     };
                 }
                 else

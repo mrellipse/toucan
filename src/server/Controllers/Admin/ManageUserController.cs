@@ -68,7 +68,7 @@ namespace Toucan.Server.Controllers.Admin
             if (options == null || string.IsNullOrEmpty(options.UserName))
                 throw new ServiceException(Constants.FailedToResolveUser);
 
-            return await this.manageUserService.UpdateUserStatus(options.UserName, options.Enabled, options.Verified);
+            return await this.manageUserService.UpdateUserStatus(options.UserName, options.Enabled);
         }
     }
 }

@@ -40,7 +40,7 @@ export class ManageUserService extends StoreService {
             .then((value) => this.processPayload(value));
     }
 
-    updateUserStatus(options: { username: string, enabled: boolean, verified: boolean }) {
+    updateUserStatus(options: { username: string, enabled: boolean}) {
 
         return this.exec<IUser>(Axios.put(UPDATE_STATUS_URL, options))
             .then((value) => this.processPayload(value));
