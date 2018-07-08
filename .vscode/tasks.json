@@ -74,7 +74,8 @@
             "options": {
                 "cwd": "${workspaceRoot}/src/ui"
             },
-            "group": "build"
+            "group": "build",
+            "problemMatcher": []
         },
         {
             "label": "publish",

@@ -12,10 +12,10 @@
     <ProjectReference Include="..\data\data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.3.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.4" />
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
   </ItemGroup>
 </Project>
