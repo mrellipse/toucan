@@ -2,11 +2,11 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
 
-import { TokenHelper, PayloadMessageTypes } from '../../common/index';
+import { TokenHelper, PayloadMessageTypes } from '../../common';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { IPayloadMessage, IUser } from '../../model';
 import { ICommonState, Store, StoreTypes } from '../../store';
-import { AuthenticationService } from '../../services/index';
+import { AuthenticationService } from '../../services';
 
 @Component({
     props: ['infoTimeout', 'warnTimeout', 'errorTimeout', 'logout'],

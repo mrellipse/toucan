@@ -16,10 +16,17 @@ namespace Toucan.Contract
     {
         public readonly DateTime Created;
         public readonly string Hash;
+        public bool Processing;
+
         public Nonce(string hash)
         {
             this.Created = DateTime.UtcNow;
             this.Hash = hash;
+            this.Processing = false;
+        }
+
+        public void Update(bool processing){
+            this.Processing = processing;
         }
     }
 

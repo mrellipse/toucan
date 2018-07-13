@@ -17,6 +17,8 @@ namespace Toucan.Server.Controllers
     {
         private const string IssuedNoncesKey = "IssuedNonces";
         private readonly IExternalAuthenticationService externalAuthService;
+        private readonly ILocalizationService localization;
+        private readonly IDomainContextResolver resolver;
         private readonly ITokenProviderService<Token> tokenService;
         private readonly IMemoryCache cache;
 
@@ -28,10 +30,12 @@ namespace Toucan.Server.Controllers
             }
         }
 
-        public ExternalAuthControllerController(IExternalAuthenticationService externalAuthService, IMemoryCache cache, ITokenProviderService<Token> tokenService)
+        public ExternalAuthControllerController(IExternalAuthenticationService externalAuthService, IMemoryCache cache, ITokenProviderService<Token> tokenService, IDomainContextResolver resolver, ILocalizationService localization)
         {
-            this.externalAuthService = externalAuthService;
             this.cache = cache;
+            this.externalAuthService = externalAuthService;
+            this.localization = localization;
+            this.resolver = resolver;
             this.tokenService = tokenService;
         }
 
@@ -51,14 +55,25 @@ namespace Toucan.Server.Controllers
         [IgnoreAntiforgeryToken(Order = 1000)]
         public async Task<object> RedeemToken([FromBody]ExternalLogin options)
         {
+            IDomainContext context = this.resolver.Resolve();
+            ILocalizationDictionary dict = this.localization.CreateDictionary(context);
+
             // check for server-generated nonce, and make sure it was issued recently
             if (!IssuedNonces.Any(o => o.Hash == options.Nonce))
-                throw new ServiceException(Constants.InvalidNonce);
+                throw new ServiceException(dict[Constants.InvalidNonce].Value);
 
             Nonce nonce = IssuedNonces.FirstOrDefault(o => o.Hash == options.Nonce);
 
+            if (nonce.Processing)
+                throw new ServiceException(dict[Constants.InProgressNonce].Value);
+
             if (nonce.Created.AddMinutes(30) < DateTime.UtcNow)
-                throw new ServiceException(Constants.InvalidNonce);
+            {
+                IssuedNonces.Remove(nonce);
+                throw new ServiceException(dict[Constants.ExpiredNonce].Value);
+            }
+
+            nonce.Update(true);
 
             // swap the external access token for a local application token
             var identity = await this.externalAuthService.RedeemToken(options);

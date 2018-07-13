@@ -52,6 +52,11 @@
         "title": "s'identifier",
         "instruction": "Connectez-vous à votre compte",
         "invalid_token": "Jeton invalide",
+        "nonce": {
+            "invalid": "Nonce invalide",
+            "expired": "Nonce a expiré. Retournez à la page de connexion et réessayez",
+            "inProgress": "Une demande de connexion existante est en cours"
+        },
         "secureRoute": "Connectez-vous pour continuer",
         "provider": {
             "local": "ce site",

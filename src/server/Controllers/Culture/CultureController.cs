@@ -31,44 +31,6 @@ namespace Toucan.Server.Controllers
             this.localization = localization;
         }
 
-        // public class Dto
-        // {
-        //     public DateTime Date { get; set; }
-        //     public string Id { get; set; }
-        // }
-
-        // [HttpPost]
-        // [Route("[action]")]
-        // [IgnoreAntiforgeryToken(Order = 1000)]
-        // public object JsonPost([FromBody]Dto dto)
-        // {
-        //     return dto;
-        // }
-
-        // [HttpPost]
-        // [Route("[action]")]
-        // [IgnoreAntiforgeryToken(Order = 1000)]
-        // public object UrlEncodedPost(Dto dto)
-        // {
-        //     return dto;
-        // }
-
-        // [HttpPost]
-        // [Route("[action]")]
-        // [IgnoreAntiforgeryToken(Order = 1000)]
-        // public object FormDataPost(Dto dto)
-        // {
-        //     return dto;
-        // }
-
-        // [HttpPut]
-        // [Route("[action]")]
-        // [IgnoreAntiforgeryToken(Order = 1000)]
-        // public object Put([FromBody]Dto dto)
-        // {
-        //     return dto;
-        // }
-
         [HttpGet]
         [Route("[action]")]
         public async Task<object> SupportedTimeZones()

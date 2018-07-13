@@ -164,17 +164,13 @@ export class Login extends Vue {
 
             let returnUrl: RawLocation = provider.returnUri || { name: 'home' };
 
-            let onSuccess = (user: IUser) => {
-                this.$store.dispatch(StoreTypes.updateUser, user);
-                this.$router.push(returnUrl);
-            };
-
             this.auth.redeemAccessToken(provider)
-                .then(onSuccess)
+                .then((user: IUser) => this.$store.dispatch(StoreTypes.updateUser, user))
+                .then(() => window.setTimeout(() => this.$router.push(returnUrl), 1000))
         }
     }
 
-    onProviderChange(val: ILoginProvider, oldVal: ILoginProvider) {
+    onProviderChange(val: ILoginProvider) {
 
         if (val.nonce && val.providerId && val.uri && !val.access_token) {
             TokenHelper.setProvider(val);
