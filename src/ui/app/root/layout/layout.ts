@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AreaSidebar } from '../sidebar/sidebar';
-import { TokenExpiry } from '../../components/';
+import { TokenExpiry } from '../../components';
 
 @Component({
   components: { AreaSidebar, TokenExpiry },

@@ -8,7 +8,7 @@ import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { ICommonOptions } from '../../plugins';
 import { ISearchResult, IStatusBarData, IUser } from '../../model';
 import { ICommonState, StoreTypes } from '../../store';
-import { Switch } from '../../components';
+import { Toggle } from '../../components';
 
 import './users.scss';
 import { AdminStoreTypes } from '../store';
@@ -17,7 +17,7 @@ import { PayloadMessageTypes } from '../../common';
 @Component({
   template: require('./user-list.html'),
   components: {
-    check: Switch
+    check: Toggle
   },
   directives: {
     'modelDate': VueModelDate

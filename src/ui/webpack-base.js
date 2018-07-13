@@ -1,16 +1,23 @@
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const autoprefixer = require('autoprefixer');
 const webpackHtml = require('html-webpack-plugin');
 
 module.exports = (outputPath, srcPath, publicPath) => {
 
-    const plugins = [];
-
     const config = {
+        mode: null,
         devtool: '#eval-source-map',
-        entry: {},
+        entry: {
+            vendor: [
+                'vue', 'vue-router', 'vuex', 'vuelidate', 'vue-i18n', 'bootstrap'
+            ],
+            admin: [
+                path.resolve(srcPath, './admin/admin.ts')
+            ],
+            app: [
+                path.resolve(srcPath, './root/root.ts')
+            ]
+        },
         module: {
             rules: [
                 {
@@ -87,12 +94,36 @@ module.exports = (outputPath, srcPath, publicPath) => {
                 }
             ]
         },
+        optimization: {},
         output: {
             path: outputPath,
             publicPath: publicPath,
             filename: '[name].js'
         },
-        plugins: plugins,
+        plugins: [
+            new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+                bootstrap: ['bootstrap/js/dist', 'default'],
+                Popper: ['popper.js', 'default']
+            }),
+            new webpackHtml({
+                chunksSortMode: 'dependency',
+                excludeChunks: ['admin'],
+                favicon: path.resolve(srcPath, './root/favicon.ico'),
+                filename: 'index.html',
+                inject: false,
+                template: path.resolve(srcPath, './root/root.ejs')
+            }),
+            new webpackHtml({
+                chunksSortMode: 'dependency',
+                excludeChunks: ['app'],
+                favicon: path.resolve(srcPath, './admin/favicon.ico'),
+                filename: 'admin.html',
+                inject: false,
+                template: path.resolve(srcPath, './admin/admin.ejs')
+            })
+        ],
         resolve: {
             alias: {
                 'assets': path.resolve(srcPath, './assets'),

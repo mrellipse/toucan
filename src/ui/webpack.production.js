@@ -1,11 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const babelMinifyPlugin = require("babel-minify-webpack-plugin");
-const autoprefixer = require('autoprefixer');
 const webpackBase = require('./webpack-base');
-const webpackHtml = require('html-webpack-plugin');
-const webpackExtractTextPlugin = require('extract-text-webpack-plugin');
+const miniCssExtractPlugin = require("mini-css-extract-plugin")
 
 const outputPath = path.join(__dirname, '../../dist/wwwroot');
 const srcPath = path.resolve(__dirname, './app');
@@ -30,24 +26,17 @@ function createMount() {
     // remove source maps
     delete config.devtool;
 
-    // emit all css to an external file
-    const extractTextRule = {
-        exclude: /node_modules/,
-        test: /mount\.scss$/,
-        use: webpackExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: ['css-loader', 'sass-loader']
-        })
-    };
-
-    config.module.rules.splice(1, 0, extractTextRule);
-
     // clear plugins
     config.plugins.length = 0;
 
-    config.plugins.push(new webpackExtractTextPlugin('mount.css'));
+    // emit css to an external file
+    var cssExtractPlugin = new miniCssExtractPlugin({
+        filename: "mount.css"
+    })
 
-    // add entry points to be built
+    config.plugins.push(cssExtractPlugin);
+
+    // switch entry point to be built
     config.entry = {
         mount: [
             path.resolve(srcPath, './mount/mount.ts')
@@ -61,82 +50,63 @@ function createAreas() {
 
     const config = webpackBase(outputPath, srcPath, '/');
 
-    // emit site css to an external file
-    const extractTextRuleSite = {
-        exclude: /node_modules/,
-        test: /\.scss$/,
-        use: webpackExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: ['css-loader', 'sass-loader']
-        })
-    };
+    // remove source maps
+    delete config.devtool;
 
-    config.module.rules.splice(1, 0, extractTextRuleSite);
+    // emit css to an external file
+    var cssExtractPlugin = new miniCssExtractPlugin({
+        filename: "[name].css"
+    })
 
-    config.plugins.push(new webpackExtractTextPlugin('[name].css'));
-
-    config.plugins.push(new webpackHtml({
-        chunksSortMode: 'dependency',
-        excludeChunks: ['admin'],
-        favicon: path.resolve(srcPath, './root/favicon.ico'),
-        filename: 'index.html',
-        inject: false,
-        template: path.resolve(srcPath, './root/root.ejs')
-    }));
-
-    config.plugins.push(new webpackHtml({
-        chunksSortMode: 'dependency',
-        excludeChunks: ['app'],
-        favicon: path.resolve(srcPath, './admin/favicon.ico'),
-        filename: 'admin.html',
-        inject: false,
-        template: path.resolve(srcPath, './admin/admin.ejs')
-    }));
-
-    config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor'
-    }));
-
-    config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        name: 'common',
-        minChunks: 2
-    }));
-
-    config.entry = {
-        vendor: [
-            'vue', 'vue-router', 'vuex', 'vuelidate', 'vue-i18n', 'bootstrap'
-        ],
-        admin: [
-            path.resolve(srcPath, './admin/admin.ts')
-        ],
-        app: [
-            path.resolve(srcPath, './root/root.ts')
-        ]
-    };
+    config.plugins.push(cssExtractPlugin);
+    
+    config.optimization = {
+        splitChunks: {
+            chunks: 'async',
+            minSize: 30000,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 5,
+            automaticNameDelimiter: '~',
+            name: true,
+            cacheGroups: {
+                vendors: {
+                    name: 'vendor',
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10
+                },
+                styles: {
+                    name: 'styles',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true
+                },
+                default: {
+                    name: 'common',
+                    chunks: 'initial',
+                    minChunks: 2
+                }
+            }
+        }
+    }
 
     return config;
 }
 
 function extendConfig(config) {
 
+    config.mode = 'production';
+
     // remove source maps
     delete config.devtool;
-
-    const providePlugin =  new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-        bootstrap: ['bootstrap/js/dist', 'default'],
-        Popper: ['popper.js', 'default']
-    })
 
     const definePlugin = new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'
     });
 
-    config.plugins.splice(0, 0, providePlugin);
-    config.plugins.splice(0, 0, definePlugin);
+    const noErrorsPlugin = new webpack.NoEmitOnErrorsPlugin()
 
-    config.plugins.push(new babelMinifyPlugin());
+    config.plugins.splice(0, 0, definePlugin, noErrorsPlugin);
 
     const tsLoader = {
         test: /\.ts$/,
@@ -144,5 +114,22 @@ function extendConfig(config) {
         use: ['babel-loader', 'ts-loader']
     };
 
-    config.module.rules.splice(1, 0, tsLoader);
+    const cssExtractRule = {
+        test: /\.css$/,
+        use: [
+            miniCssExtractPlugin.loader,
+            'css-loader'
+        ]
+    }
+
+    const scssExtractRule = {
+        test: /\.scss$/,
+        use: [
+            miniCssExtractPlugin.loader,
+            'css-loader',
+            'sass-loader'
+        ]
+    }
+
+    config.module.rules.splice(1, 0, tsLoader, cssExtractRule, scssExtractRule);
 }

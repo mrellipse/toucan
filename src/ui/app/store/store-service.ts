@@ -1,10 +1,6 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
 import { Store } from 'vuex';
-import { State } from 'vuex-class';
-import { PluginFunction } from "vue/types/plugin";
-import { StoreTypes } from '../store';
-import { IPayload, IPayloadMessage, IStatusBarData, PayloadMapper, PayloadMessageTypes } from '../model';
+import { StoreTypes } from '.';
+import { IPayload, IStatusBarData, PayloadMapper, PayloadMessageTypes } from '../model';
 
 export interface IStoreService {
     exec: <T>(cb: Promise<{}>) => Promise<IPayload<T>>

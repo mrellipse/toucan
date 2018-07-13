@@ -70,5 +70,5 @@ export class Signup extends Vue {
 
     $store: Store<{}>;
 
-    $v: Vuelidate<TSignup>
+    $v: any
 }

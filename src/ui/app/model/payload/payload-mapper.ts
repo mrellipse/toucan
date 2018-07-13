@@ -1,7 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { IPayloadMessage } from './payload-message';
 import { PayloadMessageTypes } from '../../common/message';
-import { IPayload } from './index';
+import { IPayload } from './payload';
 
 export { PayloadMessageTypes } from '../../common/message';
 

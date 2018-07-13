@@ -13,7 +13,7 @@ import './switch.scss';
         <span class="custom-control-description">{{displayText}}</span>
     </label>`
 })
-export class Switch extends Vue {
+export class Toggle extends Vue {
 
     enabled: boolean = this.enabled;
     onText: string = this.onText;

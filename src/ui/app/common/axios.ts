@@ -1,6 +1,6 @@
 import { default as Axios, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { default as VueRouter } from 'vue-router';
-import { GlobalConfig, TokenHelper } from '../common';
+import { TokenHelper } from './token-helper';
 
 let initialized: boolean = false;
 

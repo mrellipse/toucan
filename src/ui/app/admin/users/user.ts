@@ -11,7 +11,7 @@ import { PayloadMessageTypes, TokenHelper } from '../../common';
 import { IKeyValueList, ISearchResult, IStatusBarData, IUser, KeyValue } from '../../model';
 import { StoreTypes } from '../../store';
 import { SupportedLocales, SupportedTimeZones } from '../../locales';
-import { DropDownSelect, Switch } from '../../components';
+import { DropDownSelect, Toggle } from '../../components';
 
 import './users.scss';
 
@@ -36,7 +36,7 @@ let validations = {
 @Component({
   components: {
     dropDown: DropDownSelect,
-    check: Switch
+    check: Toggle
   },
   mixins: [validationMixin],
   props: ['id'],
