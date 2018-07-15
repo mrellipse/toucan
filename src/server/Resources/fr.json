@@ -52,11 +52,6 @@
         "title": "s'identifier",
         "instruction": "Connectez-vous à votre compte",
         "invalid_token": "Jeton invalide",
-        "nonce": {
-            "invalid": "Nonce invalide",
-            "expired": "Nonce a expiré. Retournez à la page de connexion et réessayez",
-            "inProgress": "Une demande de connexion existante est en cours"
-        },
         "secureRoute": "Connectez-vous pour continuer",
         "provider": {
             "local": "ce site",
@@ -122,10 +117,12 @@
         "sameAs": "Doit correspondre {0}",
         "login": {
             "EmailAddressInUse": "L'adresse e-mail est déjà utilisée",
-            "FailedToResolveUser": "Nom d'utilisateur ou mot de passe incorrect",
+            "InvalidUsernameOrPassword": "Nom d'utilisateur ou mot de passe incorrect",
             "FailedToVerifyUser": "Échec de la vérification de l'utilisateur",
             "Network": "Erreur de réseau"
-        }
+        },
+        "unknownCulture": "Culture inconnue",
+        "unknownUser": "Utilisateur inconnu"
     },
     "verify": {
         "title": "Vérification",

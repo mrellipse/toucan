@@ -1,0 +1,10 @@
+$info : #f4d137;
+
+@import "./node_modules/bootstrap/scss/functions";
+@import "./node_modules/bootstrap/scss/variables";
+
+$headings-font-family:  "Architects Daughter";
+$headings-color: lighten($secondary, 10%);
+
+$grid-md-break : map-get($grid-breakpoints, 'md');
+$grid-sm-break : map-get($grid-breakpoints, 'sm');

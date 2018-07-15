@@ -4,8 +4,8 @@ import './toggle.scss';
 
 @Component({
     props: ['enabled', 'value', 'onText', 'offText'],
-    template: `<label v-show="show" class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" 
+    template: `<label v-show="show" class="form-check-label ml-4">
+        <input type="checkbox" class="form-check-input" 
             :value="value"
             :checked="value"
             @change="onChange($event.target)" />

@@ -17,35 +17,32 @@ namespace Toucan.Server.Controllers.Admin
     [ServiceFilter(typeof(Filters.ApiResultFilter))]
     [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
     [ServiceFilter(typeof(Filters.IdentityMappingFilter))]
-    public class ProfileController : Controller
+    public class ProfileController : ControllerBase
     {
         private readonly CultureService cultureService;
-        private readonly ILocalizationService localization;
         private readonly IManageProfileService profileService;
-
         public ILocalizationService localizationService { get; }
 
-        public ProfileController(CultureService cultureService, ILocalizationService localization, IManageProfileService profileService)
+        public ProfileController(CultureService cultureService, IManageProfileService profileService, IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
         {
             this.cultureService = cultureService;
-            this.localization = localization;
             this.profileService = profileService;
         }
 
         [HttpPut]
-        [IgnoreAntiforgeryToken(Order=1000)]
+        [IgnoreAntiforgeryToken(Order = 1000)]
         [Route("[action]")]
         public async Task<object> UpdateUserCulture([FromBody] UpdateUserCultureOptions user)
         {
             if (user == null || string.IsNullOrWhiteSpace(user.CultureName))
-                throw new ServiceException(Constants.UnsupportedCulture);
+                this.ThrowLocalizedServiceException(Constants.UnknownUser);
 
-            if (!this.localization.IsSupportedCulture(user.CultureName))
-                throw new ServiceException(Constants.UnsupportedCulture);
+            if (!this.Localization.IsSupportedCulture(user.CultureName))
+                this.ThrowLocalizedServiceException(Constants.UnknownCulture);
 
             string cultureName = user.CultureName;
             string timeZoneId = user.TimeZoneId;
-            
+
             if (this.ApplicationUser() != null && this.ApplicationUser().UserId == user.UserId)
             {
                 var dbUser = await this.profileService.UpdateUserCulture(user.UserId, user.CultureName, user.TimeZoneId);
@@ -57,7 +54,7 @@ namespace Toucan.Server.Controllers.Admin
                 }
             }
 
-            var resources = await localization.ResolveCulture(cultureName);
+            var resources = await this.Localization.ResolveCulture(cultureName);
 
             this.cultureService.RefreshCookie(this.HttpContext, user.CultureName, user.TimeZoneId);
 

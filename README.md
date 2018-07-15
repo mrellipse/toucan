@@ -140,5 +140,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Wille Ristimäki for [vue.js-starter-template](https://github.com/villeristi/vue.js-starter-template)
 * Nate Barbettini for [SimpleTokenProvider](https://github.com/nbarbettini/SimpleTokenProvider)
 * Monterail for [Vuelidate](https://monterail.github.io/vuelidate/)
+* Simon de la Salle [Toucan](http://simondelasalle.com/blog/)
 
 *[EF]: Entity Framework

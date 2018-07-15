@@ -11,33 +11,25 @@ using Toucan.Server.Model;
 namespace Toucan.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class ContentController : Controller
+    public class ContentController : ControllerBase
     {
-        private ILocalizationService localization;
-        private readonly IDomainContextResolver resolver;
-
-        public ContentController(IDomainContextResolver resolver, ILocalizationService localization)
+        public ContentController(IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
         {
-            this.localization = localization;
-            this.resolver = resolver;
         }
 
         [HttpGet()]
         [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
         public async Task<object> RikerIpsum([FromQuery]DateTime clientTime)
         {
-            IDomainContext context = this.resolver.Resolve();
-            ILocalizationDictionary dict = this.localization.CreateDictionary(context);
-
-            DateTime roundTripTime = TimeZoneInfo.ConvertTimeFromUtc(clientTime, context.SourceTimeZone);
+            DateTime roundTripTime = TimeZoneInfo.ConvertTimeFromUtc(clientTime, this.DomainContext.SourceTimeZone);
 
             var payload = new Model.Payload<object>()
             {
-                Data = !context.User.Enabled ? dict["home.body.0"].Value : dict["home.body.1"].Value,
+                Data = !this.DomainContext.User.Enabled ? this.Dictionary["home.body.0"].Value : this.Dictionary["home.body.1"].Value,
                 Message = new PayloadMessage()
                 {
                     MessageType = PayloadMessageType.Info,
-                    Text = string.Format(dict["home.text"].Value, roundTripTime.ToString("hh:mm tt"))
+                    Text = string.Format(this.Dictionary["home.text"].Value, roundTripTime.ToString("hh:mm tt"))
                 }
             };
 

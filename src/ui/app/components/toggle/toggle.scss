@@ -1,14 +1,5 @@
 @import "../../styles/variables";
 
-.custom-checkbox .custom-control-indicator {
-    border-radius: 0 !important;
-}
-
-.custom-control-input:checked~.custom-control-indicator {
-    color: #fff;
-    background-color: theme-color("primary") !important;
-}
-
-.custom-control-input:focus~.custom-control-indicator {
-    box-shadow: 0 0 0 0.075rem #fff, 0 0 0 0.2rem theme-color("primary") !important;
+input[type="checkbox"].form-check-input {
+    margin-top: 0.5rem;
 }

@@ -17,7 +17,7 @@ import { PayloadMessageTypes } from '../../common';
 @Component({
   template: require('./user-list.html'),
   components: {
-    check: Toggle
+    toggle: Toggle
   },
   directives: {
     'modelDate': VueModelDate

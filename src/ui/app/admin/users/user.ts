@@ -1,14 +1,12 @@
 import Vue from 'vue';
 import { Store } from 'vuex';
 import Component from 'vue-class-component';
-import * as i18n from 'vue-i18n';
 import { Vuelidate, validationMixin } from 'vuelidate';
 import { required, minLength } from 'vuelidate/lib/validators';
 import { ManageUserService } from './user-service';
-import { ICommonOptions } from '../../plugins';
 import { IRouteMixinData } from '../../mixins/mixin-router';
-import { PayloadMessageTypes, TokenHelper } from '../../common';
-import { IKeyValueList, ISearchResult, IStatusBarData, IUser, KeyValue } from '../../model';
+import { PayloadMessageTypes } from '../../common';
+import { IKeyValueList, IStatusBarData, IUser, KeyValue } from '../../model';
 import { StoreTypes } from '../../store';
 import { SupportedLocales, SupportedTimeZones } from '../../locales';
 import { DropDownSelect, Toggle } from '../../components';

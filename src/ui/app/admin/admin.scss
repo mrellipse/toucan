@@ -3,9 +3,7 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
 // Project specific
-@import "../styles/global";
-@import "../styles/bootstrap/bootstrap";
-@import "../styles/components";
+@import "../styles/index";
 
 // Area specific
 @import "./styles/area";

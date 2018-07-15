@@ -33,7 +33,11 @@ html {
 }
 
 body {
-  padding-top: 4em;
+  padding-top: 3.5em;
+}
+
+h1 {
+  font-size: 3.25em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -82,7 +86,7 @@ fieldset legend {
 }
 
 .navbar-expand-sm > .container {
-  @media (max-width: 767px) {      
+  @media (max-width: 767px) {
     margin-left: 0 !important;
   }
 }

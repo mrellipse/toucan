@@ -14,16 +14,14 @@ namespace Toucan.Server.Controllers.Admin
     [Route("api/manage/user/[action]")]
     [ServiceFilter(typeof(Filters.ApiResultFilter))]
     [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
-    public class ManageUserController : Controller
+    public class ManageUserController : ControllerBase
     {
         private readonly IManageUserService manageUserService;
 
-        public ILocalizationService localizationService { get; }
 
-        public ManageUserController(IManageUserService manageUserService, ILocalizationService localizationService)
+        public ManageUserController(IManageUserService manageUserService,IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
         {
             this.manageUserService = manageUserService;
-            this.localizationService = localizationService;
         }
 
         [HttpGet]
@@ -38,8 +36,8 @@ namespace Toucan.Server.Controllers.Admin
                 user = await this.manageUserService.ResolveUserBy(id);
 
             var availableRoles = await this.manageUserService.GetAvailableRoles();
-            var availableCultures = await this.localizationService.GetSupportedCultures();
-            var availableTimeZones = await this.localizationService.GetSupportedTimeZones();
+            var availableCultures = await this.Localization.GetSupportedCultures();
+            var availableTimeZones = await this.Localization.GetSupportedTimeZones();
 
             return new
             {
@@ -66,7 +64,7 @@ namespace Toucan.Server.Controllers.Admin
         public async Task<object> UpdateUserStatus([FromBody] UpdateUserStatusOptions options)
         {
             if (options == null || string.IsNullOrEmpty(options.UserName))
-                throw new ServiceException(Constants.FailedToResolveUser);
+                this.ThrowLocalizedServiceException(Constants.UnknownUser);
 
             return await this.manageUserService.UpdateUserStatus(options.UserName, options.Enabled);
         }

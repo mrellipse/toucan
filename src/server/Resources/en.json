@@ -39,7 +39,7 @@
     },
     "forbidden": {
         "title": "Access Denied",
-        "content": "Insufficient permissions"
+        "content": "Insufficent permissions"
     },
     "home": {
         "text": "Earth English. Round Trip Time {0}",
@@ -52,11 +52,6 @@
         "title": "Log In",
         "instruction": "Log in to your account.",
         "invalid_token": "Invalid token",
-        "nonce": {
-            "invalid": "Invalid nonce",
-            "expired": "Nonce has expired. Return to login page and try again",
-            "inProgress": "An existing external login request is in progress"
-        },
         "secureRoute": "Log in to continue",
         "accessDenied": "Insufficient permission",
         "provider": {
@@ -125,10 +120,12 @@
             "EmailAddressInUse": "Email address is already being used",
             "InvalidAccessToken": "Invalid access token",
             "InvalidNonce": "Invalid nonce",
-            "FailedToResolveUser": "Invalid username or password",
+            "InvalidUsernameOrPassword": "Invalid username or password",
             "FailedToVerifyUser": "Failed to verify user",
             "Network": "Network error"
-        }
+        },
+        "unknownCulture": "Unknown culture",
+        "unknownUser": "Unknown user"
     },
     "verify": {
         "title": "Verification",

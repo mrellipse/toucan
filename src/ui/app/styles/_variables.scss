@@ -1,9 +1,0 @@
-@import "./bootstrap/functions";
-@import "./bootstrap/variables";
-@import "./bootstrap/custom";
-
-$headings-font-family:  "Architects Daughter";
-$headings-color: lighten(theme-color("primary"), 10%);
-
-$grid-md-break : map-get($grid-breakpoints, 'md');
-$grid-sm-break : map-get($grid-breakpoints, 'sm');

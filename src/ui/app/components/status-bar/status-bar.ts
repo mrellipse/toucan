@@ -2,9 +2,8 @@ import Vue from 'vue';
 import { Store } from 'vuex';
 import { State } from 'vuex-class';
 import Component from 'vue-class-component';
-import * as i18n from 'vue-i18n';
-import { PayloadMessageTypes, TokenHelper } from '../../common';
-import { IPayload, IStatusBarData } from '../../model';
+import { PayloadMessageTypes } from '../../common';
+import { IStatusBarData } from '../../model';
 import { ICommonState, StoreTypes } from '../../store';
 import './status-bar.scss';
 
@@ -75,13 +74,13 @@ export class StatusBar extends Vue {
   localePrefix: string = this.localePrefix;
 
   public get hasTitle(): boolean {
-    return this.statusTitle? true : false;
+    return this.statusTitle ? true : false;
   }
 
   public get statusText(): string {
 
     let key = this.getLocaleKey(this.status.text);
-    
+
     return this.$te(key) ? <string>this.$t(key) : this.status.text;
   }
 

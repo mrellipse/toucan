@@ -17,7 +17,7 @@ namespace Toucan.Server.Controllers
     [ServiceFilter(typeof(Filters.ApiResultFilter))]
     [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
     [ServiceFilter(typeof(Filters.IdentityMappingFilter))]
-    public class AuthController : Controller
+    public class AuthController : ControllerBase
     {
         private readonly IAntiforgery antiForgeryService;
         private readonly ILocalAuthenticationService authService;
@@ -26,7 +26,7 @@ namespace Toucan.Server.Controllers
         private readonly ISignupService signupService;
         private readonly ITokenProviderService<Token> tokenService;
 
-        public AuthController(IAntiforgery antiForgeryService, ILocalAuthenticationService authService, CultureService cultureService, IOptions<Toucan.Server.Config> serverConfig, ISignupService signupService, ITokenProviderService<Token> tokenService)
+        public AuthController(IAntiforgery antiForgeryService, ILocalAuthenticationService authService, CultureService cultureService, IOptions<Toucan.Server.Config> serverConfig, ISignupService signupService, ITokenProviderService<Token> tokenService, IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
         {
             this.antiForgeryService = antiForgeryService;
             this.authService = authService;
@@ -43,7 +43,7 @@ namespace Toucan.Server.Controllers
             IUser user = this.ApplicationUser();
 
             if (user == null)
-                throw new ServiceException(Constants.FailedToVerifyUser);
+                this.ThrowLocalizedServiceException(Constants.UnknownUser);
 
             if (string.IsNullOrWhiteSpace(providerKey))
                 providerKey = HttpVerificationProvider.ProviderKey;
@@ -51,7 +51,7 @@ namespace Toucan.Server.Controllers
             string code = await this.signupService.SendVerificationCode(user, providerKey);
 
             if (code == null)
-                throw new ServiceException(Constants.FailedToVerifyUser);
+                this.ThrowLocalizedServiceException(Constants.FailedToVerifyUser);
 
             return code;
         }
@@ -78,12 +78,12 @@ namespace Toucan.Server.Controllers
         public async Task<object> Signup([FromBody]LocalSignupOptions options)
         {
             if (!await this.authService.ValidateUser(options.Username))
-                throw new ServiceException(Constants.EmailAddressInUse);
+                this.ThrowLocalizedServiceException(Constants.EmailAddressInUse);
 
             var identity = await this.signupService.SignupUser(options);
 
             if (identity == null)
-                throw new ServiceException(Constants.FailedToResolveUser);
+                this.ThrowLocalizedServiceException(Constants.UnknownUser);
 
             this.SetAntiforgeryCookies();
 
@@ -97,7 +97,7 @@ namespace Toucan.Server.Controllers
             var identity = await this.authService.ResolveUser(credentials.Username, credentials.password);
 
             if (identity == null)
-                throw new ServiceException(Constants.FailedToResolveUser);
+                this.ThrowLocalizedServiceException(Constants.UnknownUser);
 
             this.SetAntiforgeryCookies();
 
@@ -116,7 +116,7 @@ namespace Toucan.Server.Controllers
             bool available = await this.authService.ValidateUser(username);
 
             if (!available)
-                throw new ServiceException(Constants.EmailAddressInUse);
+                this.ThrowLocalizedServiceException(Constants.EmailAddressInUse);
 
             return "";
         }
@@ -128,12 +128,12 @@ namespace Toucan.Server.Controllers
             IUser user = this.ApplicationUser();
 
             if (user == null)
-                throw new ServiceException(Constants.FailedToVerifyUser);
+                this.ThrowLocalizedServiceException(Constants.UnknownUser);
 
             var identity = await this.signupService.RedeemVerificationCode(user, code);
 
             if (identity == null)
-                throw new ServiceException(Constants.FailedToVerifyUser);
+                this.ThrowLocalizedServiceException(Constants.FailedToVerifyUser);
 
             return await this.tokenService.IssueToken(identity, identity.Name);
         }
