@@ -2,11 +2,13 @@
 
 ## Prerequisites
 
-* [.NET Core SDK 2.0.0](https://www.microsoft.com/net/core/#windowscmd)
-* [Visual Studio Code](https://code.visualstudio.com/download/) (or a similar text-based editor like Sublime)
-* [TypeScript](https://www.typescriptlang.org/)
+Your development machine will need to have the following installed.
+
+* [.NET Core SDK 2.1](https://www.microsoft.com/net/core/#windowscmd)
+* [Webpack 4+](https://webpack.js.org/api/cli/)
 * [Node.js](https://nodejs.org/en/)
 * [PostgreSQL](https://www.postgresql.org/) or [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+* [Visual Studio Code](https://code.visualstudio.com/download/) (or a similar text-based editor like Sublime)
 
 ## Installing
 
@@ -98,7 +100,7 @@ Run the project by switching to ./src/server and running
 
 ```DOS
 set ASPNETCORE_ENVIRONMENT=Development
-set ASPNETCORE_URLS=http://localhost:5000
+set ASPNETCORE_URLS=https://localhost:5001
 dotnet run -p server.csproj
 ```
-You should now be able to load the site at [http://localhost:5000/](http://localhost:5000/) 
+You should now be able to load the site at [https://localhost:5001/](http://localhost:5001/) 

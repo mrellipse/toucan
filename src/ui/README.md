@@ -1,5 +1,43 @@
+# Toucan - UI
 
-## ./ui/app/\<project folder>
+## Bootstrap
+
+Only a small amount of customization has been done to the default bootstrap theme. Both scripts and styles are referenced from local /node_modules folder during the build process.
+
+For the predefined dev & production builds, webpack is configured to extract css into external files
+
+## Webpack
+
+There are multiple areas defined in the client Vue.js application ... 
+
+* ./ui/app/root/root.ts => https://localhost:5001
+* ./ui/app/admin/admin.ts  => https://localhost:5001/admin
+
+The motive behind this decision was to
+
+* optimize end user experience (by ensuring only required resources are downloaded)
+* enable switching between layouts in different areas of a site
+* establish a common set of components for re-use
+
+To support multiple entry points as described above, the webpack build process is configured to emit multiple files
+
+* vendor.js - contains core third-party dependencies
+* common.js - contains code used by all areas/subsites
+* common.css - contains code used by all areas/subsites
+* [area].js - contains area-specific code and resources
+* [area].css - contains area-specific code and resources
+
+## Html
+
+Default html files for each area are automatically injects with links to required asset bundles outputted by webpack.
+
+## Supported Browsers
+
+TypeScript source files are transpiled by babel-loader, and try to keep it fairly fresh - _target last two versions_ is the default specified in babel.rc configuration
+
+Polyfills are also provided by the babel loader if native browser support is inadequate
+
+## Project Structure
 
 * _assets_ - static resources for inclusion in client bundles
 * _common_ - utility classes
@@ -17,30 +55,7 @@ Other components will be found in specific sub-areas (such as 'root' or 'admin')
 * _layout_  - contains any custom layouts
 * _navigation_  - navbar or menu components for use by layouts
 * _routes_  - route configuration, and route names
-* _store_ - a custom vuex store that extends the vuex store
+* _store_ - a custom vuex store that extends the default vuex store
 * _[area].ts_ - code to bootstrap the entry point
 * _[area].html_ - entry point page
 * _[area].scss_ - area SASS styles
-
-### Areas * Webpack
-
-There are multiple areas defined in the client Vue.js application ... 
-
-* ./ui/app/root/root.ts => https://localhost:5000
-* ./ui/app/admin/admin.ts  => https://localhost:5000/admin
-
-The motive behind this decision was to
-
-* optimize end user experience (by ensuring only required resources are downloaded)
-* enable switching between layouts in different areas of a site
-* establish a common set of components for re-use
-
-To support multiple entry points as described above, the webpack build process is configured to emit multiple files
-
-* vendor.js - contains core third-party dependencies
-* common.js - contains code used by all areas/subsites (using [commons-chunk-plugin](http://webpack.github.io/docs/examples.html#commons-chunk-plugin))
-* [area].js - contains area-specific code and resources
-
-### Bootstrap
-
-Bootstrap colour theme has been customized. Bootstrap javascript files are sourced from /node_modules folder, but bootstrap CSS files are generated based on SASS files ./ui/app/styles/bootstrap
