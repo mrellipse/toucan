@@ -1,10 +1,9 @@
-# toucan [![NPM Version][npm-image]](https://www.npmjs.com/package/generator-toucan)
+# toucan!
 
 > is an opinionated multi-project solution template, combining .NET Core and Vue.js.
 > The objective is to provide scaffolding for a responsive SPA web application, based on SOLID design principles.
 
 ![](preview.png)
-
 
 ## Features
 

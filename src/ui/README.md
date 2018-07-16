@@ -29,7 +29,7 @@ To support multiple entry points as described above, the webpack build process i
 
 ## Html
 
-Default html files for each area are automatically injects with links to required asset bundles outputted by webpack.
+Default html files for each area are automatically injected with links to any asset bundles produced by webpack.
 
 ## Supported Browsers
 
