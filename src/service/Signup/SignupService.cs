@@ -28,9 +28,7 @@ namespace Toucan.Service
 
         public async Task<ClaimsIdentity> SignupUser(ISignupServiceOptions options)
         {
-            UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)
-                                             where p.User.Username == options.Username
-                                             select p).FirstOrDefaultAsync();
+            UserProviderLocal login = await this.db.LocalProvider.Where(o => o.User.Username == options.Username).FirstOrDefaultAsync();
 
             if (login != null)
                 throw new ServiceException($"A user account for {options.Username} already exists");
@@ -81,10 +79,7 @@ namespace Toucan.Service
             {
                 if (await provider.RedeemCode(user, code))
                 {
-                    var dbUser = await (from u in this.db.User.Include(o => o.Roles)
-                        .Include(o => o.Verifications)
-                            where u.UserId == user.UserId
-                            select u).FirstOrDefaultAsync();
+                    var dbUser = await this.db.User.Where(o => o.UserId == user.UserId).FirstOrDefaultAsync();
 
                     var fingerprint = this.deviceProfiler.DeriveFingerprint(dbUser);
 

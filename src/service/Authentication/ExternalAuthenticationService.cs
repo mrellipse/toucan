@@ -46,9 +46,7 @@ namespace Toucan.Service
             if (token.aud != provider.ClientId)
                 return null;
 
-            User user = (from p in this.db.User.Include(o => o.Providers).Include(o => o.Roles)
-                         where p.Username == token.email
-                         select p).FirstOrDefault();
+            User user = this.db.User.FirstOrDefault(o => o.Username == token.email);
 
             if (user == null)
             {

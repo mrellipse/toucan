@@ -100,7 +100,7 @@ namespace Toucan.Service
             if (string.IsNullOrWhiteSpace(fingerprint))
                 throw new ApplicationException($"Null or empty verification fingerprint");
 
-            var q = from v in this.db.Verification.Include(o => o.User).Include(o => o.User.Roles)
+            var q = from v in this.db.Verification
                     where v.UserId == user.UserId && v.RedeemedAt == null && v.IssuedAt >= cutoff
                         && v.Fingerprint == fingerprint
                     select v;

@@ -23,13 +23,9 @@ namespace Toucan.Service
             this.deviceProfiler = deviceProfiler;
         }
 
-        public Task<ClaimsIdentity> ResolveUser(string username, string password)
+        public async Task<ClaimsIdentity> ResolveUser(string username, string password)
         {
-            UserProviderLocal login = (from p in this.db.LocalProvider.Include(o => o.User)
-                    .Include(o => o.User.Roles)
-                    .Include(o => o.User.Verifications)
-                where p.User.Username == username
-                select p).FirstOrDefault();
+            UserProviderLocal login = await this.db.LocalProvider.Where(o => o.User.Username == username).FirstOrDefaultAsync();
 
             if (login != null)
             {
@@ -38,11 +34,11 @@ namespace Toucan.Service
                     string fingerprint = this.deviceProfiler.DeriveFingerprint(login.User);
                     ClaimsIdentity identity = login.User.ToClaimsIdentity(fingerprint);
 
-                    return Task.FromResult(identity);
+                    return identity;
                 }
             }
 
-            return Task.FromResult<ClaimsIdentity>(null);
+            return null;
         }
 
         public async Task<IUser> ResolveUser(string username)
@@ -52,9 +48,7 @@ namespace Toucan.Service
 
         public async Task<bool> ValidateUser(string username)
         {
-            UserProviderLocal login = await (from p in this.db.LocalProvider.Include(o => o.User)
-                                             where p.User.Username == username
-                                             select p).FirstOrDefaultAsync();
+            UserProviderLocal login = await this.db.LocalProvider.Where(o => o.User.Username == username).FirstOrDefaultAsync();
 
             return login == null;
         }

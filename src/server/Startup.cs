@@ -113,13 +113,16 @@ namespace Toucan.Server
             // services.AddDbContext<NpgSqlContext>(options =>
             // {
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     options.UseNpgsql(config.Data.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+            //     options.UseLazyLoadingProxies()
+            //        .UseNpgsql(config.Data.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
             // services.AddDbContext<MsSqlContext>(options =>
             // {
             //     string assemblyName = typeof(Toucan.Data.Config).GetAssemblyName();
-            //     options.UseSqlServer(config.Data.ConnectionString, s => s.MigrationsAssembly(assemblyName));
+
+            //     options.UseLazyLoadingProxies()
+            //         .UseSqlServer(config.Data.ConnectionString, s => s.MigrationsAssembly(assemblyName));
             // });
 
             var container = new Container(c =>

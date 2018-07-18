@@ -33,22 +33,21 @@ namespace Toucan.Service
 
         public async Task<IUserExtended> ResolveUserBy(long userId)
         {
-            Data.Model.User dbUser = this.ResolveUser(userId);
+            Data.Model.User dbUser = this.db.User.SingleOrDefault(o => o.UserId == userId);
 
             return await Task.FromResult(this.MapUser(dbUser));
         }
 
         public async Task<IUserExtended> ResolveUserBy(string username)
         {
-            Data.Model.User dbUser = this.ResolveUser(username);
+            Data.Model.User dbUser = await this.db.User.Where(o => o.Username == username).SingleOrDefaultAsync();
 
-            return await Task.FromResult(this.MapUser(dbUser));
+            return this.MapUser(dbUser);
         }
 
         public Task<ISearchResult<IUserExtended>> Search(int page, int pageSize)
         {
-            var q = from u in this.db.User.Include(o => o.Roles).Include(o => o.Providers)
-                    select u;
+            var q = this.db.User.Include(o => o.Roles).Include(o => o.Providers);
 
             var result = (ISearchResult<IUserExtended>)new SearchResult<IUserExtended>(q.AsNoTracking(), o => MapUser(o as Data.Model.User), page, pageSize);
 
@@ -57,7 +56,7 @@ namespace Toucan.Service
 
         public async Task<IUserExtended> UpdateUser(IUserExtended user)
         {
-            Data.Model.User dbUser = this.ResolveUser(user.Username);
+            Data.Model.User dbUser = this.db.User.SingleOrDefault(o => o.Username == user.Username);
 
             if (dbUser == null)
                 return null;
@@ -74,7 +73,7 @@ namespace Toucan.Service
         }
         public async Task<IUserExtended> UpdateUserCulture(long userId, string cultureName, string timeZoneId)
         {
-            Data.Model.User dbUser = this.ResolveUser(userId);
+            Data.Model.User dbUser = this.db.User.SingleOrDefault(o => o.UserId == userId);
 
             if (dbUser == null)
                 return null;
@@ -87,7 +86,7 @@ namespace Toucan.Service
         }
         public async Task<IUserExtended> UpdateUserStatus(string username, bool enabled)
         {
-            Data.Model.User dbUser = this.ResolveUser(username);
+            Data.Model.User dbUser = this.db.User.SingleOrDefault(o => o.Username == username);
 
             if (dbUser == null)
                 return null;
@@ -97,24 +96,6 @@ namespace Toucan.Service
             await this.db.SaveChangesAsync();
 
             return this.MapUser(dbUser);
-        }
-
-        private Data.Model.User ResolveUser(string username)
-        {
-            return this.db.User
-                .Include(o => o.Roles)
-                .Include(o => o.Providers)
-                .Include(o => o.Verifications)
-                .SingleOrDefault(o => o.Username == username);
-        }
-
-        private Data.Model.User ResolveUser(long userId)
-        {
-            return this.db.User
-                .Include(o => o.Roles)
-                .Include(o => o.Providers)
-                .Include(o => o.Verifications)
-                .SingleOrDefault(o => o.UserId == userId);
         }
 
         private Model.User MapUser(Data.Model.User user)
