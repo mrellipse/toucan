@@ -11,9 +11,12 @@ namespace Toucan.Service.Model
         public User()
         {
         }
+        
         public long UserId { get; set; }
 
         public string CultureName { get; set; }
+
+        public DateTime CreatedOn { get; set; }
 
         public string DisplayName { get; set; }
 
@@ -31,5 +34,7 @@ namespace Toucan.Service.Model
         public string Username { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
+
+        public IEnumerable<string> Claims { get; set; }
     }
 }

@@ -14,7 +14,8 @@ export const RouteConfig: VueRouteConfig[] = [
             {
                 component: Home,
                 name: RouteNames.home,
-                path: ''
+                path: '',
+                alias: '/home'
             },
             {
                 component: Profile,

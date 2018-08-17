@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Toucan.Contract;
 using Toucan.Server.Model;
+using Toucan.Server.Security;
 using Toucan.Service;
+using Toucan.Service.Security;
 
 namespace Toucan.Server.Controllers
 {

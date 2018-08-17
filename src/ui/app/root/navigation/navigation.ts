@@ -1,13 +1,12 @@
 import Vue from 'vue';
-import * as i18n from 'vue-i18n';
 import Component from 'vue-class-component';
 import { Store } from 'vuex';
 import { State } from 'vuex-class';
 import { Debounce, GlobalConfig } from '../../common';
 import { Autocomplete } from '../../components';
 import { SupportedLocales, SupportedTimeZones } from '../../locales';
-import { KeyValue, IUser, UserRoles } from '../../model';
-import { AuthenticationService, MapLocaleMessages, ProfileService, IUserCultureData } from '../../services';
+import { IUser, SecurityRoleClaims } from '../../model';
+import { AuthenticationService, ProfileService } from '../../services';
 import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { RouteNames } from '../routes';
 import { IRootStoreState, RootStoreTypes } from '../store';
@@ -54,8 +53,8 @@ export class AreaNavigation extends Vue {
   }
 
   get isInAdminRole() {
-
-    return this.user.authenticated && this.user.roles && this.auth.isInRole(this.user, UserRoles.Admin);
+    
+    return this.user.authenticated && this.auth.satisfies(this.user, [SecurityRoleClaims.Admin]);
   }
 
   get locales() {

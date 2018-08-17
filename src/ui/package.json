@@ -1,6 +1,6 @@
 {
   "name": "toucan.ui",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "UI project for Toucan template",
   "keywords": [
     "vuejs",
@@ -41,9 +41,11 @@
     "vue-router": "3.0.1",
     "vuelidate": "0.7.4",
     "vuex": "3.0.1",
-    "vuex-class": "0.3.1"
+    "vuex-class": "0.3.1",
+    "vue-select": "2.4.0"
   },
   "devDependencies": {
+    "@types/lodash": "4.14.112",
     "@types/node": "10.5.2",
     "aspnet-webpack": "3.0.0",
     "autoprefixer": "8.6.5",
@@ -56,7 +58,6 @@
     "file-loader": "1.1.11",
     "html-webpack-plugin": "3.2.0",
     "lodash": "4.17.10",
-    "lodash-ts-imports-loader": "1.2.0",
     "mini-css-extract-plugin": "0.4.1",
     "node-sass": "4.9.2",
     "sass-loader": "7.0.3",

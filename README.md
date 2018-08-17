@@ -11,6 +11,7 @@
 * multiple entry points
 * token-based authentication for local & external providers
 * two factor verification based on device profile
+* role & claims management (NEW)
 * comprehensive [localization](src/I18N.md) support (server and client)
 * global application state/event bus
 * hot module reloading for development

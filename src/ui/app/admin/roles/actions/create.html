@@ -1,0 +1,69 @@
+<main class="col">
+  <fieldset v-if="init && role">
+    <legend>{{title}}</legend>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="roleId">{{$t('dict.key')}}</label>
+      <div class="col-sm-6 col-lg-4  col-form-like-label">
+        <input id="roleId" class="form-control" minlength="4" maxlength="32" v-model="role.roleId" type="text" @input="$v.role.roleId.$touch()">
+        <span v-show="$v.role.roleId.$dirty">
+          <span class="alert-danger" v-if="!$v.role.roleId.alphaNum">{{$t('validation.alphaNum')}}</span>
+          <span class="alert-danger" v-if="!$v.role.roleId.duplicate">{{$t('validation.duplicate')}}</span>
+          <span class="alert-danger" v-if="!$v.role.roleId.required">{{$t('validation.required')}}</span>
+          <span class="alert-danger" v-if="!$v.role.roleId.minLength">{{$t('validation.minLength', [4])}}</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="name">{{$t('dict.name')}}</label>
+      <div class="col-sm-6 col-lg-4">
+        <input id="name" class="form-control" minlength="4" maxlength="64" v-model="role.name" type="text" @input="$v.role.name.$touch()">
+        <span v-show="$v.role.name.$dirty">
+          <span class="alert-danger" v-if="!$v.role.name.required">{{$t('validation.required')}}</span>
+          <span class="alert-danger" v-if="!$v.role.name.duplicate">{{$t('validation.duplicate')}}</span>
+          <span class="alert-danger" v-if="!$v.role.name.minLength">{{$t('validation.minLength', [4])}}</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="parentRoleId">{{$t('admin.role.parentRoleId')}}</label>
+      <div class="col-sm-6 col-lg-4 col-form-like-label">
+        <span>{{role.parent.name}}</span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="isSystemRole">{{$t('admin.role.isSystemRole')}}</label>
+      <div class="col-sm-6 col-lg-4 col-form-like-label">
+        <div id="isSystemRole" class="form-control-static">{{yesOrNo(false)}}</div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="enabled">{{$t('dict.enabled')}}</label>
+      <div class="col-sm-2 col-form-like-label">
+        <toggle id="enabled" v-model="role.enabled" :on-text="onText" :off-text="offText"></toggle>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-12 col-md-10 col-lg-8">
+        <security-claims-editor v-on:change="onClaimsChange" :allowed-values-pattern="allowedValuesPattern" :available-claims="availableClaims"
+          :selected-claims="role.securityClaims"></security-claims-editor>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-6">
+        <button class="btn btn-primary" @click.prevent="submit()" v-bind:disabled="!allowSubmit">{{$t('dict.submit')}}</button>
+        <router-link tag="button" class="btn btn-default" :to="{ name: 'listRoles' }">
+          <span>{{$t('dict.cancel')}}</span>
+        </router-link>
+      </div>
+    </div>
+
+  </fieldset>
+</main>

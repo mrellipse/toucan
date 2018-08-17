@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Toucan.Contract;
+using Toucan.Contract.Security;
 using Toucan.Data;
 using Toucan.Service.Model;
 

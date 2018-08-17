@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Toucan.Contract;
+using Toucan.Contract.Security;
 using Toucan.Service;
 using Toucan.Service.Model;
 

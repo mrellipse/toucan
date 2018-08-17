@@ -4,18 +4,32 @@
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="/"><span>T<span style="font-size: 0.8em;margin-left: 0.1em;margin: 0.1em;">o&#778;</span>ucan</span><sup>{{activeCulture}}</sup></a>
+    <a class="navbar-brand" href="/">
+      <span>T
+        <span style="font-size: 0.8em;margin-left: 0.1em;margin: 0.1em;">o&#778;</span>ucan</span>
+      <sup>{{activeCulture}}</sup>
+    </a>
     <div class="collapse navbar-collapse" id="navbarMenu">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <ul v-show="user.authenticated" class="navbar-nav mr-auto mt-2 mt-lg-0">
         <router-link class="nav-item" tag="li" to="/" exact>
           <a class="nav-link">
             <i class="fa fa-tachometer"></i>
           </a>
         </router-link>
-        <router-link class="nav-item" tag="li" to="/users" exact>
-          <a class="nav-link">
-            <i class="fa fa-users"></i> {{$t('admin.navigation.users')}}</a>
-        </router-link>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="localeChange" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-lg fa-lock" :title="$t('dict.security')"></i>
+            {{$t('dict.security')}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="localeChange">
+            <router-link class="nav-item" tag="li" to="/users" exact>
+              <a class="dropdown-item">Users</a>
+            </router-link>
+            <router-link class="nav-item" tag="li" to="/roles" exact>
+              <a class="dropdown-item">Roles</a>
+            </router-link>
+          </div>
+        </li>
         <router-link class="nav-item" tag="li" to="/reports" exact>
           <a class="nav-link">
             <i class="fa fa-bar-chart"></i> {{$t('dict.reports')}}</a>
@@ -40,7 +54,8 @@
           <a class="nav-link" href="#" @click.prevent="toggleTimeZoneInput()">
             <i class="fa fa-lg fa-clock-o" :title="user.timeZoneId"></i>
           </a>
-          <autocomplete style="display:inline-block" v-if="showTimeZones" :ignoreCase="(false)" @input="onTimeZoneChange" :suggestions="timeZones" :keyValue="activeTimeZoneId"></autocomplete>
+          <autocomplete style="display:inline-block" v-if="showTimeZones" :ignoreCase="(false)" @input="onTimeZoneChange" :suggestions="timeZones"
+            :keyValue="activeTimeZoneId"></autocomplete>
         </li>
         <li class="nav-item nav-form-field">
           <a class="nav-link" href="#" @click.prevent="showSearchInput()" :class="{'active': searchPageIsActive}">

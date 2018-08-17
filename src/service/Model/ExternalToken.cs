@@ -1,4 +1,4 @@
-using Toucan.Contract;
+using Toucan.Contract.Security;
 
 namespace Toucan.Service.Model
 {

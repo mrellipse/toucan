@@ -1,17 +1,17 @@
 // Copyright (c) Nate Barbettini. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-
-using Toucan.Contract;
 using System.Text;
+using System.Threading.Tasks;
+using Toucan.Contract;
+using Toucan.Contract.Security;
 
 namespace Toucan.Service
 {

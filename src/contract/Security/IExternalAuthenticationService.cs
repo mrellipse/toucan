@@ -2,7 +2,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Toucan.Contract
+namespace Toucan.Contract.Security
 {
     public interface IExternalAuthenticationService
     {

@@ -1,6 +1,6 @@
-import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { IKeyValueList, IPayload, ISearchResult, IUser } from '../../model';
-import { GlobalConfig, PayloadMessageTypes } from '../../common';
+import { default as Axios } from 'axios';
+import { ISearchResult, IUser, KeyValue } from '../../model';
+import { GlobalConfig } from '../../common';
 import { Store, StoreService } from '../../store';
 
 // URL and endpoint constants
@@ -11,9 +11,9 @@ const GET_USER_URL = BASE_URL + 'GetUser';
 const UPDATE_STATUS_URL = BASE_URL + 'UpdateUserStatus';
 const UPDATE_USER_URL = BASE_URL + 'UpdateUser';
 
-interface IGetUserPayload {
+export interface IGetUserPayload {
     user: IUser,
-    availableRoles: IKeyValueList<string, string>
+    availableRoles: KeyValue[]
 }
 
 export class ManageUserService extends StoreService {

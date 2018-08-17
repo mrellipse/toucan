@@ -1,0 +1,98 @@
+<main class="col">
+  <!-- <div class=""></div>
+  <div class=""></div>
+   -->
+  <fieldset v-if="init && role">
+    <legend>{{title}}</legend>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="roleId">{{$t('dict.key')}}</label>
+      <div class="col-sm-6 col-lg-4 col-form-like-label">
+        <span>{{role.roleId}}</span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="parentRoleId">{{$t('admin.role.parentRoleId')}}</label>
+      <div class="col-sm-6 col-lg-4 col-form-like-label">
+        <span v-if="role.isSystemRole"></span>
+        <span v-else-if="!role.isSystemRole">
+          {{role.parent.name}}
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="isSystemRole">{{$t('admin.role.isSystemRole')}}</label>
+      <div class="col-sm-6 col-lg-4 col-form-like-label">
+        <div id="isSystemRole" class="form-control-static">{{yesOrNo(role.isSystemRole)}}</div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="enabled">{{$t('dict.enabled')}}</label>
+      <div class="col-sm-2 col-form-like-label">
+        <span>{{yesOrNo(role.enabled)}}</span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="lastUpdated">{{$t('admin.role.lastUpdated')}}</label>
+      <div class="col-sm-6 col-lg-4 col-form-like-label">
+        <div id="lastUpdated" class="form-control-static">{{lastUpdateText}}</div>
+      </div>
+    </div>
+
+
+    <div v-show="role.roleId === 'admin'" class="form-group row">
+      <label class="col-sm-2 col-form-label" for="claims">{{$t('admin.role.claims')}}</label>
+      <div class="col-sm-6 col-lg-4 col-form-like-label">
+        <div id="claims" class="form-control-static">{{$t('dict.all')}}</div>
+      </div>
+    </div>
+
+    <div v-show="role.roleId !== 'admin'" class="form-group row">
+      <div class="col-sm-12 col-md-10 col-lg-8">
+        <h5>
+          <span>{{$t('admin.role.claims')}}</span>
+        </h5>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="d-none d-md-table-cell">{{$t('dict.origin')}}</th>
+              <th>{{$t('dict.name')}}</th>
+              <th>{{$t('dict.value')}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(claim,index) in role.securityClaims">
+              <td class="d-none d-md-table-cell">
+                {{claim.securityClaim.origin}}
+              </td>
+              <td>
+                {{claim.securityClaimId}}</span>
+              </td>
+              <td>
+                {{claim.value}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-2">
+        <router-link :disabled="role.roleId === 'admin'" tag="button" class="btn btn-primary" :to="{ name: 'updateRole', params: { id: role.roleId }}">
+          <span :title="$t('dict.update')" class="fa fa-lg fa-edit"></span>
+        </router-link>
+        <router-link :disabled="role.roleId === 'admin'" tag="button" class="btn btn-primary" :to="{ name: 'createRole', params: { id: role.roleId }}">
+          <span :title="$t('dict.copy')" class="fa fa-lg fa-clone"></span>
+        </router-link>
+      </div>
+    </div>
+
+  </fieldset>
+</main>

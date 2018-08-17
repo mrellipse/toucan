@@ -21,12 +21,6 @@ module.exports = (outputPath, srcPath, publicPath) => {
         module: {
             rules: [
                 {
-                    test: /\.ts$/,
-                    loader: 'lodash-ts-imports-loader',
-                    exclude: /node_modules/,
-                    enforce: "pre"
-                },
-                {
                     test: /\.ejs$/,
                     use: {
                         loader: 'ejs-loader'

@@ -1,0 +1,52 @@
+<div>
+    <h5>
+        <span>{{$t('admin.role.claims')}}</span>
+    </h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="d-none d-md-table-cell">{{$t('dict.origin')}}</th>
+                <th>{{$t('dict.name')}}</th>
+                <th>{{$t('dict.value')}}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(claim,index) in $v.selectedClaims.$each.$iter">
+                <td class="d-none d-md-table-cell">
+                    {{claim.$model.securityClaim.origin}}
+                </td>
+                <td>
+                    {{claim.$model.securityClaimId}}</span>
+                </td>
+                <td>
+                    <div v-if="useDefaultEditor(claim.$model)">
+                        <v-select v-model="claim.$model.values" v-on:input="claim.value.$touch" multiple :searchable="false" :filterable="false"
+                            :input-id="claim.$model.securityClaimId" :options="claimOptionDefaults"></v-select>
+                    </div>
+                    <div v-if="!useDefaultEditor(claim.$model)">
+                        <input class="form-control" type="text" v-model="claim.$model.value" v-on:input="claim.value.$touch" />
+                    </div>
+                    <div class="alert-danger" v-if="claim.value.$dirty && !claim.value.required">One or more values are required.</div>
+                    <div class="alert-danger" v-if="claim.value.$dirty && claim.value.required && !claim.value.validClaimValue">Does not meet requirements.</div>
+                </td>
+                <td>
+                    <button class="btn" @click.prevent="removeClaim(claim.$model)">
+                        <span class="fa fa-minus-circle"></span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot v-if="unusedClaims.length !== 0">
+            <tr>
+                <td></td>
+                <td class="d-none d-md-table-cell"></td>
+                <td>
+                    <v-select  label="securityClaimId" v-on:input="addClaim" :options="unusedClaims">
+                        <slot name="no-options">Sorry, no matching options.</slot>
+                    </v-select>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

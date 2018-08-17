@@ -40,6 +40,7 @@
                 "revokeUri": ""
             }
         ],
+        "claimsNamespace": "https://toucan/claims/",
         "tokenProvider": {
             "tokenExpiration": "30",
             "tokenSecurityKey": "startrekkingacrosstheuniverseonthestarshipenterpriseundercaptainkirk",

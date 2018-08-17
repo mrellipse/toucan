@@ -1,13 +1,10 @@
 import Vue from 'vue';
 import { Store } from 'vuex';
 import Component from 'vue-class-component';
-import { default as Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { State } from 'vuex-class';
 import { ICommonOptions } from '../../plugins';
-import { AuthenticationService, IClaimsHelper } from '../../services';
 import { ContentService } from '../services';
-import { IPayload } from '../../model';
-import { IRootStoreState, RootStoreTypes } from '../store';
+import { IRootStoreState } from '../store';
 
 require('./home.scss');
 

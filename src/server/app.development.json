@@ -1,67 +1,66 @@
 {
-    "data": {
-        "connectionString": "",
-        "schemaName": ""
-    },
-    "kestrel": {
-        "endpoints": {
-            "localhost": {
-                "address": "localhost",
-                "port": 5000
-            }
-        }
-    },
-    "server": {
-        "areas": [
-            "admin"
-        ],
-        "antiForgery": {
-            "cookieName": "XSRF-COOKIE",
-            "headerName": "X-XSRF-TOKEN",
-            "clientName": "XSRF-TOKEN",
-            "requireSsl": false
-        },
-        "defaultCulture": "en",
-        "defaultTimeZone": "AUS Eastern Standard Time",
-        "webroot": "./wwwroot"
-    },
-    "service": {
-        "authenticationProviders": [
-            {
-                "clientId": "1012191853724-f9u0dcapj679ggokk5mblma4fbd77jmv.apps.googleusercontent.com",
-                "profileUri": "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token={0}",
-                "providerId": "GOOGLE",
-                "revokeUri": "https://accounts.google.com/o/oauth2/revoke?token={0}"
-            },
-            {
-                "clientId": "56d7559c-2488-4ee2-9f4d-5bb2aa8b3b58",
-                "profileUri": "",
-                "providerId": "MICROSOFT",
-                "revokeUri": ""
-            }
-        ],
-        "tokenProvider": {
-            "tokenExpiration": "10",
-            "tokenSecurityKey": "startrekkingacrosstheuniverseonthestarshipenterpriseundercaptainkirk",
-            "tokenSecurityAlgorithm": "HS256",
-            "tokenIssuer": "localhost",
-            "tokenAudience": "toucanapp"
-        }
-    },
-    "Logging": {
-        "IncludeScopes": true,
-        "Debug": {
-            "LogLevel": {
-                "Default": "Information"
-            }
-        },
-        "Console": {
-            "LogLevel": {
-                "Default": "Information"
-            }
-        },
-        "LogLevel": {
-            "Default": "Information"
-        }
+  "data": {
+    "connectionString": "",
+    "schemaName": ""
+  },
+  "kestrel": {
+    "endpoints": {
+      "localhost": {
+        "address": "localhost",
+        "port": 5000
+      }
     }
+  },
+  "server": {
+    "areas": ["admin"],
+    "antiForgery": {
+      "cookieName": "XSRF-COOKIE",
+      "headerName": "X-XSRF-TOKEN",
+      "clientName": "XSRF-TOKEN",
+      "requireSsl": false
+    },
+    "defaultCulture": "en",
+    "defaultTimeZone": "AUS Eastern Standard Time",
+    "webroot": "./wwwroot"
+  },
+  "service": {
+    "authenticationProviders": [
+      {
+        "clientId": "1012191853724-f9u0dcapj679ggokk5mblma4fbd77jmv.apps.googleusercontent.com",
+        "profileUri": "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token={0}",
+        "providerId": "GOOGLE",
+        "revokeUri": "https://accounts.google.com/o/oauth2/revoke?token={0}"
+      },
+      {
+        "clientId": "56d7559c-2488-4ee2-9f4d-5bb2aa8b3b58",
+        "profileUri": "",
+        "providerId": "MICROSOFT",
+        "revokeUri": ""
+      }
+    ],
+    "claimsNamespace": "//toucan/claims/",
+    "tokenProvider": {
+      "tokenExpiration": "60",
+      "tokenSecurityKey": "startrekkingacrosstheuniverseonthestarshipenterpriseundercaptainkirk",
+      "tokenSecurityAlgorithm": "HS256",
+      "tokenIssuer": "localhost",
+      "tokenAudience": "toucanapp"
+    }
+  },
+  "Logging": {
+    "IncludeScopes": true,
+    "Debug": {
+      "LogLevel": {
+        "Default": "Information"
+      }
+    },
+    "Console": {
+      "LogLevel": {
+        "Default": "Information"
+      }
+    },
+    "LogLevel": {
+      "Default": "Information"
+    }
+  }
 }

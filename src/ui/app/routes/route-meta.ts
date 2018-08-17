@@ -1,5 +1,6 @@
 
 export interface IRouteMeta {
     private?: boolean;
-    roles?: string[];
+    claims?: string[];
+    any?: boolean;
 }

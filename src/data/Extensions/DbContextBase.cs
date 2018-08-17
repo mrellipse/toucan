@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Toucan.Data.Model;
 
@@ -7,19 +8,25 @@ namespace Toucan.Data
     {
         public static void UpdateUserRoles(this DbContextBase db, User user, string[] roleIds)
         {
-            var removeRoles = user.Roles.Where(o => !roleIds.Contains(o.RoleId)).ToList();
+            var remove = user.Roles.Where(o => !roleIds.Contains(o.RoleId)).ToArray();
+            db.UserRole.RemoveRange(remove);
 
-            removeRoles.ForEach(o => db.Remove(o));
+            for (int i = 0; i < remove.Length; i++)
+            {
+                user.Roles.Remove(remove[i]);
+            }
 
-            var addRoles = roleIds.Where(o => !user.Roles.Any(r => r.RoleId == o)).ToList();
+            var add = (from r in db.Role.Where(o => roleIds.Contains(o.RoleId))
+                       where !user.Roles.Any(o => o.RoleId == o.RoleId)
+                       select r);
 
-            addRoles.ForEach(o =>
-                db.UserRole.Add(new UserRole()
-                {
-                    RoleId = o,
-                    UserId = user.UserId
-                })
-            );
+            Func<Role, UserRole> map = (o) => new UserRole()
+            {
+                Role = o,
+                User = user
+            };
+
+            db.UserRole.AddRange(add.Select(map));
         }
     }
 }

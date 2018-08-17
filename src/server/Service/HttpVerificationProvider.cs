@@ -26,7 +26,7 @@ namespace Toucan.Server
 
         public override Task Send(IUser user, string code)
         {
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         protected override string DeriveFingerprint(IUser user)

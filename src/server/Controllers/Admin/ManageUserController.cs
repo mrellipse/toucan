@@ -7,10 +7,13 @@ using Toucan.Contract;
 using Toucan.Service;
 using Toucan.Server.Model;
 using Toucan.Service.Model;
+using Toucan.Contract.Security;
+using Toucan.Server.Security;
+using Toucan.Service.Security;
 
 namespace Toucan.Server.Controllers.Admin
 {
-    [Authorize(Policy = Policies.ManagerUserAccounts)]
+    [Authorize(Roles = RoleTypes.Admin + "," + RoleTypes.SiteAdmin)]
     [Route("api/manage/user/[action]")]
     [ServiceFilter(typeof(Filters.ApiResultFilter))]
     [ServiceFilter(typeof(Filters.ApiExceptionFilter))]
@@ -18,8 +21,7 @@ namespace Toucan.Server.Controllers.Admin
     {
         private readonly IManageUserService manageUserService;
 
-
-        public ManageUserController(IManageUserService manageUserService,IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
+        public ManageUserController(IManageUserService manageUserService, IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
         {
             this.manageUserService = manageUserService;
         }

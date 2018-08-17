@@ -4,6 +4,7 @@ export * from './key-value';
 export * from './jwt-token';
 export * from './login-provider';
 export * from './payload';
+export * from './role';
 export * from './search-result';
 export * from './signup-option';
 export * from './status-bar-data';

@@ -1,6 +1,9 @@
 <main class="col-md-10 border-top-md-down">
   <h1>{{user.displayName}}</h1>
-  <p>
+  <p v-if="content === ''">
     {{$t('dict.notImplemented')}}
+  </p>
+  <p v-else-if="content !== ''" >
+    {{content}}
   </p>
 </main>

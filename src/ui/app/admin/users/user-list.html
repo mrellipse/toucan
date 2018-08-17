@@ -6,7 +6,7 @@
         <thead>
           <tr>
             <th>{{$t('dict.name')}}</th>
-            <th class="hidden-md-down">{{$t('dict.email')}}</th>
+            <th class="d-md-table-cell">{{$t('dict.email')}}</th>
             <th>{{$t('dict.enabled')}}</th>
           </tr>
         </thead>
@@ -17,7 +17,7 @@
                 <span :title="user.email">{{user.displayName}}</span>
               </router-link>
             </td>
-            <td class="hidden-md-down">{{user.email}}</td>
+            <td class="d-md-table-cell">{{user.email}}</td>
             <td>
               <toggle v-model="user.enabled" :on-text="onText" :off-text="offText" v-on:input="updateUserStatus(user)"></toggle>
             </td>

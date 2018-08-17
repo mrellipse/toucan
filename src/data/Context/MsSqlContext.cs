@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Toucan.Common;
+using Toucan.Contract.Security;
 using Toucan.Data.Model;
 
 namespace Toucan.Data
@@ -58,8 +59,20 @@ namespace Toucan.Data
 
             modelBuilder.Entity<Role>(entity =>
             {
+                entity.HasKey(e => e.RoleId)
+                    .HasName("PK_RoleId");
+
                 entity.Property(e => e.RoleId)
-                    .HasMaxLength(16);
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.Property(e => e.ParentRoleId)
+                    .HasMaxLength(32);
+
+                entity.HasOne(e => e.Parent)
+                    .WithMany(p => p.Children)
+                    .HasForeignKey(o => o.ParentRoleId)
+                    .IsRequired(false);
 
                 entity.Property(e => e.Enabled);
 
@@ -68,6 +81,53 @@ namespace Toucan.Data
                     .HasMaxLength(64);
 
                 entity.AddAuditColumns();
+            });
+
+            modelBuilder.Entity<SecurityClaim>(entity =>
+            {
+                entity.Property(e => e.SecurityClaimId)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.Property(e => e.Origin)
+                    .IsRequired()
+                    .HasMaxLength(32);
+                
+                entity.Property(e => e.ValidationPattern)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(512);
+
+                entity.AddAuditColumns();
+            });
+
+            modelBuilder.Entity<RoleSecurityClaim>(entity =>
+            {
+                entity.HasKey(e => new { e.RoleId, e.SecurityClaimId})
+                    .HasName("PK_RoleSecurityClaim");
+
+                entity.Property(e => e.RoleId)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.HasOne(e => e.Role)
+                    .WithMany(p => p.SecurityClaims)
+                    .HasForeignKey(o => o.RoleId);
+
+                entity.Property(e => e.SecurityClaimId)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.HasOne(e => e.SecurityClaim)
+                    .WithMany(p => p.Roles)
+                    .HasForeignKey(o => o.SecurityClaimId);
+
+                entity.Property(e => e.Value)
+                    .IsRequired()
+                    .HasMaxLength(64);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -115,9 +175,6 @@ namespace Toucan.Data
             {
                 entity.HasKey(e => new { e.ProviderId, e.UserId })
                     .HasName("PK_UserProvider");
-
-                entity.HasIndex(e => e.UserId)
-                    .HasName("IX_UserProvider_UserId");
 
                 entity.Property(e => e.ProviderId)
                     .HasMaxLength(64);
@@ -195,7 +252,7 @@ namespace Toucan.Data
                 entity.HasIndex(e => e.UserId)
                     .HasName("IX_UserRole_UserId");
 
-                entity.Property(e => e.RoleId).HasMaxLength(16);
+                entity.Property(e => e.RoleId).HasMaxLength(32);
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)

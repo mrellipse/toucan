@@ -5,7 +5,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Toucan.Contract;
+using Toucan.Contract.Security;
 using Toucan.Data;
 using Toucan.Data.Model;
 
@@ -15,11 +17,13 @@ namespace Toucan.Service
     {
         private readonly ICryptoService crypto;
         private readonly DbContextBase db;
+        private readonly Config config;
         private readonly IDeviceProfiler deviceProfiler;
         private readonly IServiceProvider serviceProvider;
 
-        public SignupService(DbContextBase db, ICryptoService crypto, IDeviceProfiler deviceProfiler, System.IServiceProvider serviceProvider)
+        public SignupService(DbContextBase db, IOptions<Config> config, ICryptoService crypto, IDeviceProfiler deviceProfiler, System.IServiceProvider serviceProvider)
         {
+            this.config = config.Value;
             this.crypto = crypto;
             this.db = db;
             this.deviceProfiler = deviceProfiler;
@@ -66,7 +70,7 @@ namespace Toucan.Service
 
             var fingerprint = this.deviceProfiler.DeriveFingerprint(user);
 
-            return user.ToClaimsIdentity(fingerprint);
+            return user.ToClaimsIdentity(this.config.ClaimsNamespace, fingerprint);
         }
 
         public async Task<ClaimsIdentity> RedeemVerificationCode(IUser user, string code)
@@ -83,7 +87,7 @@ namespace Toucan.Service
 
                     var fingerprint = this.deviceProfiler.DeriveFingerprint(dbUser);
 
-                    return dbUser.ToClaimsIdentity(fingerprint);
+                    return dbUser.ToClaimsIdentity(this.config.ClaimsNamespace, fingerprint);
                 }
             }
 

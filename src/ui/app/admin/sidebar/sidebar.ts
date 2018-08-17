@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { RouteNames } from '../routes/route-names'
-import { IRouterMixin, IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
-import { AreaDashboard } from '../dashboard/dashboard';
+import { IRouteMixinData, IRouterMixinData } from '../../mixins/mixin-router';
 import { SiteSettingsSidebar } from '../settings/settings-sidebar';
 import { SiteReportsSidebar } from '../reports/reports-sidebar';
 
@@ -21,7 +19,6 @@ export class AreaSidebar extends Vue {
     let sidebar: string = Object.keys(this.$options.components).find((value: string) => value === routeName);
 
     return sidebar;
-
   }
 
   $route: IRouteMixinData;

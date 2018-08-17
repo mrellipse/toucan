@@ -7,7 +7,10 @@ export const RouteNames = {
   verify: 'verify',
   search: 'search',
   siteReports: 'siteReports',
+  siteSecurity: 'siteSecurity',
   siteSettings: 'siteSettings',
+  manageRole: 'manageRole',
+  manageRoles: 'manageRoles',
   manageUser: 'manageUser',
   manageUsers: 'manageUsers'
 }

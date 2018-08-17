@@ -1,133 +1,160 @@
 {
-    "admin": {
-        "navigation": {
-            "users": "Utilisateurs"
-        }
-    },
-    "dict": {
-        "clock": "L'horloge",
-        "culture": "Culture",
-        "email": "Email",
-        "errors": {
-            "unanticipated": "Une erreur imprévue s'est produite"
-        },
-        "enabled": "Activée",
-        "header": "Entête",
-        "heading": "Titre",
-        "hello": "Salut",
-        "logo": "Logo du site",
-        "label": "Étiquette",
-        "link": "Hyperlien",
-        "name": "Prénom",
-        "no": "Non",
-        "notImplemented": "Pas mis en œuvre",
-        "of": "de",
-        "project": "Projet",
-        "reports": "Rapports",
-        "role": "Rôle",
-        "search": "Chercher",
-        "secureContent": "Affichage de contenu sécurisé uniquement pour les utilisateurs enregistrés",
-        "settings": "Paramètres",
-        "stranger": "Étranger",
-        "success": "Succès",
-        "update": "Mettre à jour",
-        "verified": "Vérifié",
-        "warnings": {
-            "stub": "Fins d'illustration seulement"
-        },
-        "yes": "Oui"
-    },
-    "forbidden": {
-        "title": "Accès refusé",
-        "content": "Autorisations insuffisantes"
-    },
-    "home": {
-        "text": "Terre française. Temps de parcours {0}",
-        "body": [
-            "<p>Quand la justice a-t-elle été aussi simple qu'un livre de règles?</p>",
-            "<p>Je pense que vous avez laissé vos sentiments personnels assombrir votre jugement.</p>"
-        ]
-    },
-    "login": {
-        "title": "s'identifier",
-        "instruction": "Connectez-vous à votre compte",
-        "invalid_token": "Jeton invalide",
-        "secureRoute": "Connectez-vous pour continuer",
-        "provider": {
-            "local": "ce site",
-            "google": "google",
-            "microsoft": "microsoft",
-            "external": "externe"
-        },
-        "placeholder": {
-            "email": "Entrer votre Email",
-            "password": "Tapez votre mot de passe"
-        },
-        "button": {
-            "submit": "Accès"
-        }
-    },
+  "admin": {
     "navigation": {
-        "admin": "Admin",
-        "dashboard": "Tableau de bord",
-        "home": "Accueil",
-        "login": "S'identifier",
-        "logout": "Se déconnecter",
-        "profile": "Mon profil",
-        "signup": "S'inscrire"
+      "users": "Utilisateurs"
     },
-    "notfound": {
-        "title": "Page non trouvée",
-        "instruction": "Malheureuses circonstances"
-    },
-    "token": {
-        "expiresAt": "Votre jeton de connexion expire à{0}",
-        "expired": "Votre jeton de connexion a expiré"
-    },
-    "search": {
-        "title": "Résultats de recherche pour '{0}'",
-        "instruction": "Pas mis en œuvre"
-    },
-    "signup": {
-        "title": "S'inscrire",
-        "instruction": "Inscrivez-vous pour un compte",
-        "placeholder": {
-            "displayName": "",
-            "userName": "Entrez votre nom d'affichage",
-            "password": "Tapez votre mot de passe",
-            "confirmPassword": "Confirmer votre mot de passe"
-        },
-        "button": {
-            "submit": "Soumettre"
-        },
-        "registered": "Déjà enregistré",
-        "complexity": "Ne répond pas aux exigences de complexité",
-        "password": "Mot de passe"
-    },
-    "site": {
-        "copyright": "© Droits d'auteur 2058, Toucan Société"
-    },
-    "user": {
-        "updated": "Mise à jour de l'utilisateur"
-    },
-    "validation": {
-        "email": "Doit être une adresse e-mail valide",
-        "required": "Obligatoire",
-        "minLength": "Doit contenir au moins {0} caractères",
-        "sameAs": "Doit correspondre {0}",
-        "login": {
-            "EmailAddressInUse": "L'adresse e-mail est déjà utilisée",
-            "InvalidUsernameOrPassword": "Nom d'utilisateur ou mot de passe incorrect",
-            "FailedToVerifyUser": "Échec de la vérification de l'utilisateur",
-            "Network": "Erreur de réseau"
-        },
-        "unknownCulture": "Culture inconnue",
-        "unknownUser": "Utilisateur inconnu"
-    },
-    "verify": {
-        "title": "Vérification",
-        "sendCode": "Envoyer le code de vérification",
-        "enterCode": "Entrez le code de vérification",
-        "codeAck": "Code reconnu"
+    "role": {
+      "claims": "Autorisations",
+      "parentRoleId": "Hérite de",
+      "isSystemRole": "Rôle du système",
+      "lastUpdated": "Dernière mise à jour",
+      "created": "Un nouveau rôle a été créé",
+      "updated": "Un rôle existant a été mis à jour"
     }
+  },
+  "dict": {
+    "all": "Tout",
+    "cancel": "Annuler",
+    "copy": "Copie",
+    "clock": "L'horloge",
+    "culture": "Culture",
+    "create": "Créer",
+    "delete": "Effacer",
+    "deny": "Nier",
+    "email": "Email",
+    "errors": {
+      "unanticipated": "Une erreur imprévue s'est produite"
+    },
+    "enabled": "Activée",
+    "header": "Entête",
+    "heading": "Titre",
+    "hello": "Salut",
+    "key": "Clé",
+    "logo": "Logo du site",
+    "label": "Étiquette",
+    "link": "Hyperlien",
+    "name": "Prénom",
+    "no": "Non",
+    "none": "Aucun",
+    "notImplemented": "Pas mis en œuvre",
+    "of": "de",
+    "origin": "Origine",
+    "project": "Projet",
+    "read": "Vue",
+    "readonly": "Lecture seulement",
+    "reports": "Rapports",
+    "role": "Rôle",
+    "search": "Chercher",
+    "security": "Sécurité",
+    "secureContent": "Affichage de contenu sécurisé uniquement pour les utilisateurs enregistrés",
+    "settings": "Paramètres",
+    "stranger": "Étranger",
+    "submit": "Soumettre",
+    "success": "Succès",
+    "update": "Mettre à jour",
+    "value": "Valeur",
+    "verified": "Vérifié",
+    "warnings": {
+      "stub": "Fins d'illustration seulement"
+    },
+    "yes": "Oui"
+  },
+  "forbidden": {
+    "title": "Accès refusé",
+    "content": "Autorisations insuffisantes"
+  },
+  "home": {
+    "text": "Terre française. Temps de parcours {0}",
+    "body": [
+      "<p>Quand la justice a-t-elle été aussi simple qu'un livre de règles?</p>",
+      "<p>Je pense que vous avez laissé vos sentiments personnels assombrir votre jugement.</p>"
+    ]
+  },
+  "login": {
+    "title": "s'identifier",
+    "instruction": "Connectez-vous à votre compte",
+    "invalid_token": "Jeton invalide",
+    "secureRoute": "Connectez-vous pour continuer",
+    "accessDenied": "Permission insuffisante",
+    "provider": {
+      "local": "ce site",
+      "google": "google",
+      "microsoft": "microsoft",
+      "external": "externe"
+    },
+    "placeholder": {
+      "email": "Entrer votre Email",
+      "password": "Tapez votre mot de passe"
+    },
+    "button": {
+      "submit": "Accès"
+    }
+  },
+  "navigation": {
+    "admin": "Admin",
+    "dashboard": "Tableau de bord",
+    "home": "Accueil",
+    "login": "S'identifier",
+    "logout": "Se déconnecter",
+    "profile": "Mon profil",
+    "signup": "S'inscrire"
+  },
+  "notfound": {
+    "title": "Page non trouvée",
+    "instruction": "Malheureuses circonstances"
+  },
+  "search": {
+    "title": "Résultats de recherche pour '{0}'",
+    "instruction": "Pas mis en œuvre"
+  },
+  "signup": {
+    "title": "S'inscrire",
+    "instruction": "Inscrivez-vous pour un compte",
+    "placeholder": {
+      "displayName": "",
+      "userName": "Entrez votre nom d'affichage",
+      "password": "Tapez votre mot de passe",
+      "confirmPassword": "Confirmer votre mot de passe"
+    },
+    "button": {
+      "submit": "Soumettre"
+    },
+    "registered": "Déjà enregistré",
+    "complexity": "Ne répond pas aux exigences de complexité",
+    "password": "Mot de passe"
+  },
+  "site": {
+    "copyright": "© Droits d'auteur 2058, Toucan Société"
+  },
+  "token": {
+    "expiresAt": "Votre jeton de connexion expire à{0}",
+    "expired": "Votre jeton de connexion a expiré"
+  },
+  "user": {
+    "updated": "Mise à jour de l'utilisateur"
+  },
+  "validation": {
+    "alphaNum": "Chiffres et lettres seulement",
+    "duplicate": "Dupliquer",
+    "email": "Doit être une adresse e-mail valide",
+    "required": "Obligatoire",
+    "minLength": "Doit contenir au moins {0} caractères",
+    "sameAs": "Doit correspondre {0}",
+    "login": {
+      "EmailAddressInUse": "L'adresse e-mail est déjà utilisée",
+      "InvalidAccessToken": "Jeton d'accès valide",
+      "InvalidNonce": "Nonce invalide",
+      "InvalidUsernameOrPassword": "Nom d'utilisateur ou mot de passe incorrect",
+      "FailedToVerifyUser": "Échec de la vérification de l'utilisateur",
+      "Network": "Erreur de réseau"
+    },
+    "unknownCulture": "Culture inconnue",
+    "unknownUser": "Utilisateur inconnu"
+  },
+  "verify": {
+    "title": "Vérification",
+    "sendCode": "Envoyer le code de vérification",
+    "enterCode": "Entrez le code de vérification",
+    "codeAck": "Code reconnu"
+  }
 }

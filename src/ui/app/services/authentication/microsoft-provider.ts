@@ -10,7 +10,7 @@ const options: ClientOAuth2.Options = {
     clientId: MICROSOFT_CLIENT_ID,
     accessTokenUri: 'https://accounts.google.com/o/oauth2/token',
     authorizationUri: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-    redirectUri: GlobalConfig.uri.site,
+    redirectUri: 'https:' + GlobalConfig.uri.site,
     scopes: ['profile', 'email', 'openid'],
     query: {
         prompt: 'login',

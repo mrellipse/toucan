@@ -15,7 +15,6 @@ namespace Toucan.Service
 
         public SigningCredentials SigningCredentials { get; set; }
 
-        public Func<Task<string>> NonceGenerator { get; set; }
-            = new Func<Task<string>>(() => Task.FromResult(Guid.NewGuid().ToString()));
+        public Func<Task<string>> NonceGenerator { get; set; } = new Func<Task<string>>(() => Task.FromResult(Guid.NewGuid().ToString()));
     }
 }

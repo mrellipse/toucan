@@ -10,11 +10,13 @@ namespace Toucan.Data
 {
     public abstract class DbContextBase : DbContext
     {
+        public virtual DbSet<UserProviderLocal> LocalProvider { get; set; }
         public virtual DbSet<Provider> Provider { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<RoleSecurityClaim> RoleSecurityClaim { get; set; }
+        public virtual DbSet<SecurityClaim> SecurityClaim { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserProvider> UserProvider { get; set; }
-        public virtual DbSet<UserProviderLocal> LocalProvider { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
         public virtual DbSet<Verification> Verification { get; set; }
 

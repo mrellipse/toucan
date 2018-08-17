@@ -1,136 +1,160 @@
 {
-    "admin": {
-        "navigation": {
-            "users": "Users"
-        }
-    },
-    "dict": {
-        "clock": "Clock",
-        "culture": "Culture",
-        "email": "Email",
-        "errors": {
-            "unanticipated": "An unanticipated error has occured"
-        },
-        "enabled": "Enabled",
-        "header": "Header",
-        "heading": "Heading",
-        "hello": "Hello",
-        "logo": "Site logo",
-        "label": "Label",
-        "link": "Link",
-        "name": "Name",
-        "no": "No",
-        "notImplemented": "Not Implemented",
-        "of": "of",
-        "project": "Project",
-        "reports": "Reports",
-        "role": "Role",
-        "search": "Search",
-        "secureContent": "Displaying secure content for registered users only",
-        "settings": "Settings",
-        "stranger": "Stranger",
-        "success": "Success",
-        "update": "Update",
-        "verified": "Verified",
-        "warnings": {
-            "stub": "Illustration purposes only"
-        },
-        "yes": "Yes"
-    },
-    "forbidden": {
-        "title": "Access Denied",
-        "content": "Insufficent permissions"
-    },
-    "home": {
-        "text": "Earth English. Round Trip Time {0}",
-        "body": [
-            "<p>When has justice ever been as simple as a rule book?</p>",
-            "<p>I think you've let your personal feelings cloud your judgement.</p>"
-        ]
-    },
-    "login": {
-        "title": "Log In",
-        "instruction": "Log in to your account.",
-        "invalid_token": "Invalid token",
-        "secureRoute": "Log in to continue",
-        "accessDenied": "Insufficient permission",
-        "provider": {
-            "local": "local",
-            "google": "google",
-            "microsoft": "microsoft",
-            "external": "external"
-        },
-        "placeholder": {
-            "email": "Enter your email",
-            "password": "Enter your password"
-        },
-        "button": {
-            "submit": "Access"
-        }
-    },
+  "admin": {
     "navigation": {
-        "admin": "Admin",
-        "dashboard": "Dashboard",
-        "home": "Home",
-        "login": "Login",
-        "logout": "Logout",
-        "profile": "My Profile",
-        "signup": "Sign Up"
+      "users": "Users"
     },
-    "notfound": {
-        "title": "Page Not Found",
-        "instruction": "Unfortunate circumstances"
-    },
-    "search": {
-        "title": "Search Results for '{0}'",
-        "instruction": "Not implemented"
-    },
-    "signup": {
-        "title": "Sign Up",
-        "instruction": "Sign up for an account.",
-        "placeholder": {
-            "displayName": "Enter your display name",
-            "userName": "Enter your user name",
-            "password": "Enter your password",
-            "confirmPassword": "Confirm your password"
-        },
-        "button": {
-            "submit": "Submit"
-        },
-        "registered": "Already registered",
-        "complexity": "Does not meet complexity requirements",
-        "password": "password"
-    },
-    "site": {
-        "copyright": "© Copyright 2058, Toucan Corporation"
-    },
-    "token": {
-        "expiresAt": "Your login token expires at {0}",
-        "expired": "Your login token has expired"
-    },
-    "user": {
-        "updated": "User updated"
-    },
-    "validation": {
-        "email": "Must be a valid email address",
-        "required": "Required",
-        "minLength": "Must be at least {0} characters",
-        "sameAs": "Must match {0}",
-        "login": {
-            "EmailAddressInUse": "Email address is already being used",
-            "InvalidAccessToken": "Invalid access token",
-            "InvalidNonce": "Invalid nonce",
-            "InvalidUsernameOrPassword": "Invalid username or password",
-            "FailedToVerifyUser": "Failed to verify user",
-            "Network": "Network error"
-        },
-        "unknownCulture": "Unknown culture",
-        "unknownUser": "Unknown user"
-    },
-    "verify": {
-        "title": "Verification",
-        "sendCode": "Send verification code",
-        "enterCode": "Enter verification code",
-        "codeAck": "Code acknowledged"
+    "role": {
+      "claims": "Permissions",
+      "parentRoleId": "Inherits From",
+      "isSystemRole": "System Role",
+      "lastUpdated": "Last Update",
+      "created": "A new role was created",
+      "updated": "An existing role was updated"
     }
+  },
+  "dict": {
+    "all": "All",
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "clock": "Clock",
+    "culture": "Culture",
+    "create": "Create",
+    "delete": "Delete",
+    "deny": "Deny",
+    "email": "Email",
+    "errors": {
+      "unanticipated": "An unanticipated error has occured"
+    },
+    "enabled": "Enabled",
+    "header": "Header",
+    "heading": "Heading",
+    "hello": "Hello",
+    "key": "Key",
+    "logo": "Site logo",
+    "label": "Label",
+    "link": "Link",
+    "name": "Name",
+    "no": "No",
+    "none": "None",
+    "notImplemented": "Not Implemented",
+    "of": "of",
+    "origin": "Origin",
+    "project": "Project",
+    "read": "View",
+    "readonly": "Read-Only",
+    "reports": "Reports",
+    "role": "Role",
+    "search": "Search",
+    "security": "Security",
+    "secureContent": "Displaying secure content for registered users only",
+    "settings": "Settings",
+    "stranger": "Stranger",
+    "submit": "Submit",
+    "success": "Success",
+    "update": "Update",
+    "value": "Value",
+    "verified": "Verified",
+    "warnings": {
+      "stub": "Illustration purposes only"
+    },
+    "yes": "Yes"
+  },
+  "forbidden": {
+    "title": "Access Denied",
+    "content": "Insufficent permissions"
+  },
+  "home": {
+    "text": "Earth English. Round Trip Time {0}",
+    "body": [
+      "<p>When has justice ever been as simple as a rule book?</p>",
+      "<p>I think you've let your personal feelings cloud your judgement.</p>"
+    ]
+  },
+  "login": {
+    "title": "Log In",
+    "instruction": "Log in to your account.",
+    "invalid_token": "Invalid token",
+    "secureRoute": "Log in to continue",
+    "accessDenied": "Insufficient permission",
+    "provider": {
+      "local": "local",
+      "google": "google",
+      "microsoft": "microsoft",
+      "external": "external"
+    },
+    "placeholder": {
+      "email": "Enter your email",
+      "password": "Enter your password"
+    },
+    "button": {
+      "submit": "Access"
+    }
+  },
+  "navigation": {
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "My Profile",
+    "signup": "Sign Up"
+  },
+  "notfound": {
+    "title": "Page Not Found",
+    "instruction": "Unfortunate circumstances"
+  },
+  "search": {
+    "title": "Search Results for '{0}'",
+    "instruction": "Not implemented"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "instruction": "Sign up for an account.",
+    "placeholder": {
+      "displayName": "Enter your display name",
+      "userName": "Enter your user name",
+      "password": "Enter your password",
+      "confirmPassword": "Confirm your password"
+    },
+    "button": {
+      "submit": "Submit"
+    },
+    "registered": "Already registered",
+    "complexity": "Does not meet complexity requirements",
+    "password": "password"
+  },
+  "site": {
+    "copyright": "© Copyright 2058, Toucan Corporation"
+  },
+  "token": {
+    "expiresAt": "Your login token expires at {0}",
+    "expired": "Your login token has expired"
+  },
+  "user": {
+    "updated": "User updated"
+  },
+  "validation": {
+    "alphaNum": "Numbers and letters only",
+    "duplicate": "Duplicate",
+    "email": "Must be a valid email address",
+    "required": "Required",
+    "minLength": "Must be at least {0} characters",
+    "sameAs": "Must match {0}",
+    "login": {
+      "EmailAddressInUse": "Email address is already being used",
+      "InvalidAccessToken": "Invalid access token",
+      "InvalidNonce": "Invalid nonce",
+      "InvalidUsernameOrPassword": "Invalid username or password",
+      "FailedToVerifyUser": "Failed to verify user",
+      "Network": "Network error"
+    },
+    "unknownCulture": "Unknown culture",
+    "unknownUser": "Unknown user"
+  },
+  "verify": {
+    "title": "Verification",
+    "sendCode": "Send verification code",
+    "enterCode": "Enter verification code",
+    "codeAck": "Code acknowledged"
+  }
 }

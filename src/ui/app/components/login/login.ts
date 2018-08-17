@@ -104,7 +104,7 @@ export class Login extends Vue {
             password: this.password
         }
 
-        let returnUrl: RawLocation = this.returnUrl || { name: 'home' };
+        let returnUrl: RawLocation = this.returnUrl || { path: '/home' };
 
         this.auth.login(credentials)
             .then((value) => this.$store.dispatch(StoreTypes.updateUser, value))

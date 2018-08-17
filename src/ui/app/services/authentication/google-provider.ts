@@ -9,7 +9,7 @@ const options: ClientOAuth2.Options = {
     clientId: GOOGLE_CLIENT_ID,
     accessTokenUri: 'https://accounts.google.com/o/oauth2/token',
     authorizationUri: 'https://accounts.google.com/o/oauth2/auth',
-    redirectUri: GlobalConfig.uri.site,
+    redirectUri: 'https:' + GlobalConfig.uri.site,
     scopes: ['profile', 'email', 'openid'],
     query: {
         access_type: 'online',

@@ -23,7 +23,7 @@
       <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="roles">{{$t('dict.role')}}</label>
         <div class="col-sm-6 col-lg-4">
-          <drop-down id="roles" class="form-control" v-model="user.roles" :items="availableRoles" @input="$v.user.roles.$touch()" />
+          <v-select id="roles" v-model="selectedRole" :options="availableRoles" :searchable="false"/>
           <span v-show="$v.user.roles.$dirty">
               <span class="alert-danger" v-if="!$v.user.roles.required">{{$t('validation.required')}}</span>
           </span>
@@ -33,7 +33,7 @@
       <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="culture">{{$t('dict.culture')}}</label>
         <div class="col-sm-6 col-lg-4">
-          <drop-down id="culture" class="form-control" v-model="user.cultureName" :items="supportedCultures" @input="$v.user.cultureName.$touch()" />
+          <v-select id="culture" v-model="selectedCulture" :options="supportedCultures" :searchable="false"/>
           <span v-show="$v.user.cultureName.$dirty">
               <span class="alert-danger" v-if="!$v.user.cultureName.required">{{$t('validation.required')}}</span>
           </span>
@@ -42,8 +42,8 @@
 
       <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="timezones">{{$t('dict.clock')}}</label>
-        <div class="col-sm-6 col-lg-4">
-          <drop-down id="timezones" class="form-control" v-model="user.timeZoneId" :items="supportedTimeZones" @input="$v.user.timeZoneId.$touch()" />
+        <div class="col-sm-10 col-md-8 col-lg-6">
+          <v-select id="timezones" v-model="selectedTimeZone" :options="supportedTimeZones"/>
           <span v-show="$v.user.timeZoneId.$dirty">
               <span class="alert-danger" v-if="!$v.user.timeZoneId.required">{{$t('validation.required')}}</span>
           </span>

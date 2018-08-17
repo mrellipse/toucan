@@ -4,6 +4,7 @@ import { default as VueRouter } from 'vue-router';
 import { default as Vuelidate } from 'vuelidate';
 import { GlobalConfig, TokenHelper, UseAxios } from '../common';
 import { Loader, StatusBar } from '../components';
+import { VueSelect } from 'vue-select';
 import { AreaFooter } from './footer/footer';
 import { InitI18n } from '../locales';
 import { IUser } from '../model';
@@ -46,6 +47,7 @@ let loadApp = (cb: (vue: Vue) => void) => {
     UseAxios(router);
 
     Vue.component('status-bar', StatusBar);
+    Vue.component('v-select', VueSelect);
 
     let app = new Vue({
 

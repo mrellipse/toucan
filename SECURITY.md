@@ -23,7 +23,21 @@ This is performed using a variation on the [implicit workflow](https://tools.iet
 If this is the first time a user has logged in using this external provider, a user account will be created for them based on data from external profile data APIs.
 
 ## Authorization
-Server-side routes are protected via [policies](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies) which provide more flexibility than traditional role-based models.
+Server-side routes are protected in two possible ways.
+
+You can check for role membership using the standard MVC __[Authorize]__ attribute.
+
+For more precise control, you can check for security claims by using the custom __[AuthorizeClaim]__ attribute.
+
+The attribute works via mapping of a custom [policy handler](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies) during startup.
+
+The role management page found in /admin enables you to configure a claim with following values
+
+* C = Create
+* R = Read
+* U = Update
+* D = Delete
+* X = _Deny Access_
 
 Client-side routes are protected via [navigation guards](http://router.vuejs.org/en/advanced/navigation-guards.html), which check user claims contained in access tokens issued by the server.
 
@@ -40,7 +54,7 @@ The default implementation is as follows
 * client browser outputs the verification code using `console.info()` and displays form on page
 * the verification code is submitted, and a new access token (with updated details) is issued by the server
 
-The entire process is 'platform aware'. If a user logs in from a different browser or device, they will need to repeat the verification process again before the server will allow access to secured paths
+> The verification process is 'platform aware'. If a user logs in from a different browser or device, they will need to _repeat_ the verification process again before access to secured paths is allowed
 
 ## Requests
 

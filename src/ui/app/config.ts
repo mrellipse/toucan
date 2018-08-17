@@ -1,27 +1,30 @@
 
 interface IUriConfig {
     auth?: string;
+    content?: string;
     site?: string;
     services?: string;
 }
 
-const uri : IUriConfig = {};
+const uri: IUriConfig = {};
 
-const addProp = (obj, propName, value) => {
+const addProp = (obj: {}, propName: string, value: string) => {
     Object.defineProperty(obj, propName, {
         enumerable: false,
         get: () => {
-            return window.location.protocol + '//' + window.location.host + value;
+            return '//' + window.location.host + value;
         }
     });
 };
 
 addProp(uri, 'auth', '/auth/');
+addProp(uri, 'content', '/api/content/');
 addProp(uri, 'site', '');
 addProp(uri, 'services', '/api/');
 
 const config = {
     uri: uri,
+    claimsNamespace: '//toucan/claims',
     auth: {
         accessTokenKey: 'AUTH-LOCAL',
         externalProviderKey: 'AUTH-EXTERNAL'

@@ -112,8 +112,9 @@ namespace Toucan.Server
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(Policies.ManagerUserAccounts, p => p.RequireRole(Toucan.Data.RoleTypes.Admin));
-                options.AddPolicy(Policies.ManageSiteSettings, p => p.RequireRole(Toucan.Data.RoleTypes.Admin));
+                options.AddPolicy(Security.AuthorizeClaimAttribute.PolicyName, o => {
+                    o.RequireAssertion(Security.AuthorizeClaimAttribute.PolicyHandler);
+                });
             });
         }
 

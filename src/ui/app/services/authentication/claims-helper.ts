@@ -2,5 +2,6 @@
 import { IUser } from '../../model';
 
 export interface IClaimsHelper {
-    isInRole(user:IUser, role: string): boolean;
+    satisfies(user: IUser, claims: string[]): boolean;
+    satisfiesAny(user: IUser, claims: string[]): boolean;
 }

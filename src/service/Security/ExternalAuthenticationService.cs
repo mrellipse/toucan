@@ -4,7 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Toucan.Contract;
+using Toucan.Contract.Security;
 using Toucan.Data;
 using Toucan.Data.Model;
 
@@ -12,13 +14,15 @@ namespace Toucan.Service
 {
     public class ExternalAuthenticationService : IExternalAuthenticationService
     {
+        private readonly Config config;
         private readonly ICryptoService crypto;
         private readonly DbContextBase db;
         private readonly IDeviceProfiler deviceProfiler;
         private readonly IEnumerable<IExternalAuthenticationProvider> providers;
 
-        public ExternalAuthenticationService(DbContextBase db, ICryptoService crypto, IDeviceProfiler deviceProfiler, IList<IExternalAuthenticationProvider> providers)
+        public ExternalAuthenticationService(DbContextBase db, IOptions<Config> config, ICryptoService crypto, IDeviceProfiler deviceProfiler, IList<IExternalAuthenticationProvider> providers)
         {
+            this.config = config.Value;
             this.crypto = crypto;
             this.db = db;
             this.deviceProfiler = deviceProfiler;
@@ -68,7 +72,7 @@ namespace Toucan.Service
 
             string fingerprint = this.deviceProfiler.DeriveFingerprint(user);
 
-            return user.ToClaimsIdentity(fingerprint);
+            return user.ToClaimsIdentity(this.config.ClaimsNamespace, fingerprint);
         }
 
         public void RevokeToken(string providerId, string accessToken)

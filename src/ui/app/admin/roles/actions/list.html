@@ -1,0 +1,51 @@
+<main class="col">
+  <fieldset>
+    <legend>{{$t('dict.role')}}</legend>
+    <div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>{{$t('dict.name')}}</th>
+            <th class="d-none d-md-table-cell">Users</th>
+            <th class="d-none d-md-table-cell">{{$t('dict.enabled')}}</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(role,index) in roles">
+            <td class="caps-low">
+              <router-link :to="{ name: 'viewRole', params: { id: role.roleId }}">
+                <span :title="role.roleId">{{role.name}}</span>
+              </router-link>
+            </td>
+            <td class="d-none d-md-table-cell">{{role.assignedUserCount}}</td>
+            <td class="d-none d-md-table-cell">
+              <toggle v-model="role.enabled" :enabled="!role.isSystemRole" :on-text="onText" :off-text="offText" v-on:input="updateRoleStatus(role)"></toggle>
+            </td>
+            <td>
+              <router-link v-if="role.roleId !== 'admin'" :to="{ name: 'createRole', params: { id: role.roleId }}">
+                <span :title="$t('dict.copy')" class="fa fa-lg fa-clone"></span>
+              </router-link>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot v-show="total">
+          <tr>
+            <td colspan="4">
+              <div v-if="currentPage > 1" @click="navigate(false)" class="btn btn-primary">
+                <i class="fa fa-arrow-left"></i>
+              </div>
+              <div class="paging-splice">{{start}}-{{end}}
+                <span class="paging-of">{{$t('dict.of')}}</span>
+                <span class="paging-total">{{total}}</span>
+              </div>
+              <div v-if="(end < total)" @click="navigate(true)" class="btn btn-primary">
+                <i class="fa fa-arrow-right"></i>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </fieldset>
+</main>
