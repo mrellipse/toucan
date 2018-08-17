@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Toucan.Contract;
 
@@ -29,7 +30,7 @@ namespace Toucan.Server.Core
 
                 DateTime date = value.GetType() == typeof(DateTime?) ? (DateTime)value : ((DateTime?)value).Value;
 
-                existingValue = date.ToSourceUtc(this.sourceTimeZone, null);
+                existingValue = date.ToSourceUtc(this.sourceTimeZone);
             }
 
             return existingValue;
@@ -41,13 +42,22 @@ namespace Toucan.Server.Core
 
             if (t.Type == JTokenType.Date)
             {
-                if (value != null)
+                DateTime date = (DateTime)value;
+                DateTime local;
+
+                switch (date.Kind)
                 {
-                    DateTime? date = new Nullable<DateTime>((DateTime)value);
-                    string kind = date.HasValue ? date.Value.Kind.ToString() : "";
-                    date = TimeZoneInfo.ConvertTimeFromUtc(date.Value, this.sourceTimeZone);
-                    t = JToken.FromObject(date);
+                    case DateTimeKind.Local:
+                        local = date;
+                        break;
+                    default:
+                        local = TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.Local);
+                        break;
                 }
+
+                local = TimeZoneInfo.ConvertTime(local, TimeZoneInfo.Local, this.sourceTimeZone);
+
+                t = JToken.FromObject(local);
             }
 
             t.WriteTo(writer);

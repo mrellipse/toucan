@@ -1,24 +1,25 @@
-
 using System;
 using System.Buffers;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json.Serialization;
 using Toucan.Contract;
 using Toucan.Server.Core;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Toucan.Server.Formatters
 {
-    public class DateTimeInputFormatterJson: JsonInputFormatter
+    public class DateTimeInputFormatterJson : JsonInputFormatter
     {
         public DateTimeInputFormatterJson(ILogger logger, JsonSerializerSettings serializerSettings, ArrayPool<char> charPool, ObjectPoolProvider objectPoolProvider, bool suppressInputFormatterBuffering) : base(logger, serializerSettings, charPool, objectPoolProvider, suppressInputFormatterBuffering)
         {
+
         }
 
         public DateTimeInputFormatterJson(ILogger logger, JsonSerializerSettings serializerSettings, ArrayPool<char> charPool, ObjectPoolProvider objectPoolProvider) : base(logger, serializerSettings, charPool, objectPoolProvider)
@@ -26,17 +27,25 @@ namespace Toucan.Server.Formatters
 
         }
 
-        public override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+        public async override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
         {
             var resolver = context.HttpContext.RequestServices.GetService<IHttpServiceContextResolver>();
 
             IDomainContext domainContext = resolver.Resolve();
 
-            this.SerializerSettings.Culture = domainContext.Culture;
-            this.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
-            this.SerializerSettings.Converters.Add(new DateTimeConverter(domainContext.SourceTimeZone));
+            var settings = new JsonSerializerSettings()
+            {
+                ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy() },
+                Converters = new List<JsonConverter>() { new DateTimeConverter(domainContext.SourceTimeZone) },
+                Culture = domainContext.Culture,
+                DateTimeZoneHandling = DateTimeZoneHandling.Local
+            };
 
-            return base.ReadRequestBodyAsync(context, encoding);
+            var value = await context.HttpContext.Request.GetRawBodyStringAsync(encoding);
+
+            var @object = JsonConvert.DeserializeObject(value, context.Metadata.ModelType, settings);
+
+            return InputFormatterResult.Success(@object);
         }
     }
 }

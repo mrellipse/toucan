@@ -55,7 +55,7 @@ Above steps may require a restart of the service/daemon. You can then proceed to
 
 * update *<data:connectionString>* configuration key inside src/server/app.development.json*
 * update `ConfigureServices()` method in src/server/startup.cs*, and uncomment the code block starting `services.AddDbContext<NpgSqlContext>`
-* update ./src/server/ContainerRegistry.cs, and uncomment the line stating`For<DbContextBase>().Use<NpgSqlContenxt>();`
+* update ./src/server/ContainerRegistry.cs, and uncomment the line stating`For<DbContextBase>().Use<NpgSqlContext>();`
 * add the same connection string details to src/data/npgsql.json* (required for EF tooling)
 * (optional) add a database schema name to src/data/npgsql.json*
 * scaffold migrations by switching to src/data* and running

@@ -10,6 +10,7 @@ using Toucan.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Toucan.Contract.Model;
+using Toucan.Contract.Security;
 
 namespace Toucan.Server.Controllers.Admin
 {
@@ -21,12 +22,15 @@ namespace Toucan.Server.Controllers.Admin
     {
         private readonly CultureService cultureService;
         private readonly IManageProfileService profileService;
+        private readonly ITokenProviderService<Token> tokenService;
+
         public ILocalizationService localizationService { get; }
 
-        public ProfileController(CultureService cultureService, IManageProfileService profileService, IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
+        public ProfileController(CultureService cultureService, IManageProfileService profileService, ITokenProviderService<Token> tokenService, IDomainContextResolver resolver, ILocalizationService localization) : base(resolver, localization)
         {
             this.cultureService = cultureService;
             this.profileService = profileService;
+            this.tokenService = tokenService;
         }
 
         [HttpPut]
@@ -42,16 +46,14 @@ namespace Toucan.Server.Controllers.Admin
 
             string cultureName = user.CultureName;
             string timeZoneId = user.TimeZoneId;
+            Token? token = null;
 
             if (this.ApplicationUser() != null && this.ApplicationUser().UserId == user.UserId)
             {
-                var dbUser = await this.profileService.UpdateUserCulture(user.UserId, user.CultureName, user.TimeZoneId);
+                var identity = await this.profileService.UpdateUserCulture(user.UserId, user.CultureName, user.TimeZoneId);
 
-                if (dbUser != null)
-                {
-                    cultureName = dbUser.CultureName;
-                    timeZoneId = dbUser.TimeZoneId;
-                }
+                // if (identity != null)
+                //     token = await this.tokenService.IssueToken(identity, identity.Name);
             }
 
             var resources = await this.Localization.ResolveCulture(cultureName);
@@ -62,7 +64,8 @@ namespace Toucan.Server.Controllers.Admin
             {
                 CultureName = cultureName,
                 Resources = resources,
-                TimeZoneId = timeZoneId
+                TimeZoneId = timeZoneId,
+                Token = token
             };
         }
     }

@@ -58,19 +58,34 @@ namespace Toucan.Data
 
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.Property(e => e.RoleId)
-                    .HasMaxLength(16);
+                entity.HasKey(e => e.RoleId)
+                    .HasName("PK_RoleId");
 
-                entity.Property(e => e.CreatedOn)
+                entity.Property(e => e.RoleId)
                     .IsRequired()
-                    .HasColumnType("timestamp WITH TIME ZONE")
-                    .HasDefaultValueSql("current_timestamp AT TIME ZONE 'UTC'");
+                    .HasMaxLength(32);
+
+                entity.Property(e => e.ParentRoleId)
+                    .HasMaxLength(32);
+
+                entity.HasOne(e => e.Parent)
+                    .WithMany()
+                    .HasForeignKey(o => o.ParentRoleId)
+                    .IsRequired(false);
 
                 entity.Property(e => e.Enabled);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(64);
+
+                entity.Property(e => e.CreatedOn)
+                    .IsRequired()
+                    .HasColumnType("timestamp WITH TIME ZONE")
+                    .HasDefaultValueSql("current_timestamp AT TIME ZONE 'UTC'");
+
+                entity.Property(e => e.LastUpdatedOn)
+                    .HasColumnType("timestamp WITH TIME ZONE");
 
                 entity.HasOne(e => e.CreatedByUser)
                     .WithMany()
@@ -81,6 +96,54 @@ namespace Toucan.Data
                     .WithMany()
                     .HasForeignKey(o => o.LastUpdatedBy)
                     .IsRequired(false);
+            });
+
+            modelBuilder.Entity<SecurityClaim>(entity =>
+            {
+                entity.Property(e => e.SecurityClaimId)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(512);
+
+                entity.Property(e => e.CreatedOn)
+                    .IsRequired()
+                    .HasColumnType("timestamp WITH TIME ZONE")
+                    .HasDefaultValueSql("current_timestamp AT TIME ZONE 'UTC'");
+
+                entity.HasOne(e => e.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey(o => o.CreatedBy)
+                    .IsRequired();
+
+                entity.HasOne(e => e.LastUpdatedByUser)
+                    .WithMany()
+                    .HasForeignKey(o => o.LastUpdatedBy)
+                    .IsRequired(false);
+            });
+
+            modelBuilder.Entity<RoleSecurityClaim>(entity =>
+            {
+                entity.HasKey(e => new { e.RoleId, e.SecurityClaimId })
+                    .HasName("PK_RoleSecurityClaim");
+
+                entity.Property(e => e.RoleId)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.HasOne(e => e.Role)
+                    .WithMany(p => p.SecurityClaims)
+                    .HasForeignKey(o => o.RoleId);
+
+                entity.Property(e => e.SecurityClaimId)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.HasOne(e => e.SecurityClaim)
+                    .WithMany(p => p.Roles)
+                    .HasForeignKey(o => o.SecurityClaimId);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -211,12 +274,11 @@ namespace Toucan.Data
                 entity.HasIndex(e => e.UserId)
                     .HasName("IX_UserRole_UserId");
 
-                entity.Property(e => e.RoleId).HasMaxLength(16);
+                entity.Property(e => e.RoleId).HasMaxLength(32);
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK_UserRole_Role")
+                    .HasForeignKey(d => d.RoleId) 
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.User)

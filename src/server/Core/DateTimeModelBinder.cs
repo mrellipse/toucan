@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +28,8 @@ namespace Toucan.Server.Core
             var resolver = bindingContext.HttpContext.RequestServices.GetService<IHttpServiceContextResolver>();
 
             IDomainContext context = resolver.Resolve();
-
-            DateTime? utcDate = value.ToSourceUtc(context.Culture, context.SourceTimeZone);
+            
+            DateTime? utcDate = value.FromSourceUtc(context.Culture, context.SourceTimeZone);
 
             if (!utcDate.HasValue)
             {
