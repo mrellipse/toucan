@@ -1,5 +1,4 @@
 import { default as Axios, AxiosResponse } from "axios";
-import { every } from "lodash/fp";
 import { IClaimsHelper } from "./claims-helper";
 import { GlobalConfig, PayloadMessageTypes, TokenHelper } from "../../common";
 import {
@@ -49,13 +48,17 @@ export class AuthenticationService extends StoreService
   satisfies(user: IUser, claims: string[]): boolean {
     if (!user.claims) return false;
 
-    return every(o => user["claims"] !== undefined, claims);
+    var actual = claims.filter(o => user.claims[o] !== undefined).length;
+
+    return actual === claims.length;
   }
 
   satisfiesAny(user: IUser, claims: string[]): boolean {
     if (!user.claims) return false;
 
-    return claims.find(o => user["claims"] !== undefined) !== undefined;
+    var actual = claims.filter(o => user.claims[o] !== undefined).length;
+    
+    return actual > 0;
   }
 
   login(credentials: ICredential) {
